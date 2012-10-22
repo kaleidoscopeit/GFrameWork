@@ -1,96 +1,6 @@
 <?php
 class auth {
 
-	// ===================================================================================================
-	// Register user
-	// ===================================================================================================
-	
-	// param:user:string:1:User name
-	// param:pass:string:1:User password 
-
-	// ===================================================================================================
-
-	function login(&$_, $_buf, &$_out)
-	{
-		// Import authentication files
-		$passwd = file('vars/auth/passwd.php');
-		$groups  = file('vars/auth/group.php');
-
-		// Cheks if the user exists
-		foreach ($passwd as $record) {
-			// Splits the database record
-			$record = explode(':', trim ($record));
-			
-			// If at least in one record the user name exists try to authenticate
-			if ('//'.$_buf['user'] == $record[0])
-				
-				// If also the md5 hash match the given password hash proceed with the authentication
-				if (md5($_buf['pass']) == $record[2]) {
-					$_->static['auth']['user']['id'] = 	substr($record[0], 2);
-					$_->static['auth']['user']['name'] =	$record[1];
-
-					// Imports group where the user seats
-					foreach ($groups as $group) {
-						$group = explode(':', $group);
-						$users = explode(',', trim($group[1]));
-						$group = substr($group[0],2);
-
-						if (in_array($uid, $users)) $_->static['auth']['user']['group'][] = $group;						
-					}
-
-					// Executes the configured login function
-					$_out = $this->_executes_login_function('accepted');
-					if ($_out) return FALSE;					
-					
-					return TRUE;
-				}
-				
-				else {
-					// Executes the configured login function
-					$_out = $this->_executes_login_function('wrong password');
-					if ($_out) return FALSE;		
-					
-					// >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<<		
-					$error['title'] = "Authentication failed.";
-					$error['caller'] = $this->_path.'.'.$this->_subject;
-					$error['desc'][] = "Wrong password";
-					$_out['error'] = $error;
-					return FALSE;		
-				}; 
-		}
-
-		// Executes the configured login function
-		$_out = $this->_executes_login_function('wrong user');
-		if ($_out) return FALSE;	
-					
-		// >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<<		
-		$error['title'] = "Authentication failed.";
-		$error['caller'] = $this->_path.'.'.$this->_subject;
-		$error['desc'][] = "Wrong user";
-		$_out['error'] = $error;
-		return FALSE;
-	}
-
-	
-	// ===================================================================================================
-	// Login function helper
-	// ===================================================================================================
-		
-	function _executes_login_function($cause){
-		global $_;
-		
-		if (!is_callable($_->settings['auth_login_event'])) return;
-
-		// >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<<
-		if (!$_->settings['auth_login_event']($cause)){
-			$_out['title'] = "Authentication failed.";
-			$_out['caller'] = $this->_path.'.'.$this->_subject;
-			$_out['desc'][] = "Authentication stack error!!!! Contact your sys admin.";
-			return $_out;
-		}
-	}
-	
-	
 	
 	// ===================================================================================================
 	// Various checks in order to determine if the access to the current object is allowed
@@ -299,55 +209,7 @@ class auth {
 		global $_;
 	}
 
-	// ===================================================================================================
-	// Returns an array with the user name and the real name of the existing users 
-	//	It's possible to apply a group based filter
-	// ===================================================================================================
-	
-	// param:filter:array:0:Group name filter
-
-	// ===================================================================================================
-
-	function get_users_list(&$_, $_buf, &$_out)
-	{
-		// Loads the authentication files
-		$passwd = file('vars/auth/passwd.php');
-		$groups = file('vars/auth/group.php');
-		$ulist = array();
-
-		// Prepare the default result with all users
-		foreach ($passwd as $record) {
-			$record = explode(':', $record);
-			if (substr($record[0], 0, 2) == '//') {
-				$ulist[substr($record[0], 2)]['uid'] = substr($record[0], 2);
-				$ulist[substr($record[0], 2)]['uname'] = $record[1];
-			}
-		}
-
-		foreach ($groups as $group) {
-			$group = explode(':', $group);
-			if (substr($group[0], 0, 2) == '//' && trim($group[1]) != '') {
-				$users = explode(',',$group[1]);
-				$group = substr($group[0], 2);
-
-				foreach ($users as $user) {
-					$ulist[trim($user)]['group'][] = $group;
-				}
-			}
-		}					
-
-		// Filter results
-		if ($_buf['filter']){
-			foreach ($ulist as $key => $user) {
-				if (!array_intersect($_buf['filter'], $user['group'])) unset($ulist[$key]);
-			}  
-		}
-
-		$_out = $ulist;
-		return TRUE;
-	}
-
-	// ===================================================================================================
+		// ===================================================================================================
 	// Group based match filter
 	// Accept an array of group and returns an array of group matching the ones of the current user
 	// ===================================================================================================
@@ -367,53 +229,6 @@ class auth {
 		return TRUE;
 	}
 
-
-	// -----------------------------------------------------------------------------------------
-	// Fetch user data
-	//
-	// param:user_id:string:1:User id
-
- 	function get_user_info(&$_, $_buf, &$_out)
- 	{
-		// Check params
-		$_out = $this->param_check($_, $_buf, array('user_id'));
-		if ($_out) return FALSE;
-		
-		// Loads the authentication files
-		$passwd = file('vars/auth/passwd.php');
-		$groups = file('vars/auth/group.php');
-		$ulist = array();
-		
-		// Prepare the default result with all users
-		foreach ($passwd as $record) {
-			$record = explode(':', $record);			
-			if (substr($record[0], 2)==$_buf['user_id']) {
-				$_out['uid'] = substr($record[0], 2);
-				$_out['uname'] = $record[1];
-				break;
-			}
-		}
-
-		// >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<<
-		if (!isset($_out['uid'])){
-			$error['title'] = "User not found.";
-			$error['caller'] = $this->_path.'.'.$this->_subject;
-			$error['desc'][] = "User not found.";
-			$_out['error'] = $error;
-			return FALSE;		
-		}
-		
-		foreach ($groups as $group) {
-			$group = explode (':', $group);
-			if (substr($group[0], 0, 2) == '//' && trim($group[1]) != '') {
-				$users = explode(',', $group[1]);
-				if (in_array($_buf['user_id'],$users))
-					$_out['group'] = substr($group[0], 2);
-			}
-		}					
-
-		return TRUE;
-	}
 
 	
 	// -----------------------------------------------------------------------------------------------------------

@@ -1,38 +1,79 @@
 Planned :
 
-	- RPC core reviewed
-	- Localization by using dynamic entities definition files (as firefox extensions does)
+ - Localization by using dynamic entities definition files
+   (as firefox extensions does)
+ - RPC CALLS parameter inter dependency and enabling triggers
+ - RPC CALLS better separation e interaction with STDIN STDOUT STDERR 
+ - RPC CALLS better handling database transaction inheritance
+
+ 
+01-10-2012
+
+ - API V2.6
+ 
+ - RPC core reviewed :
+   - each call lives inside it's own file
+   - use of anonymous function
+   - new unified parameter check system with mandatory flag, type check and
+     complex automatic sourcing stack
 
 12-09-2012
 
-	- Upgraded the report engine, fpdf plugin to the API v2
-	- Some XML improvements (Uses of XML entities)
-	
+ - API V2.5
+ 
+ - Upgraded the report engine, fpdf plugin to the API v2
+ - Some XML improvements (Uses of XML entities)
+ 
 12-07-2012
 
-	- Optimized the use of special property UUID and changed into 'wid', furthermore the coding style has changed from 
-		0000-00([0-9A-F]0-9A-F]0-9A-F]0-9A-F]-0-9A-F]0-9A-F]) to 0000 ([0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z]) (2 digit for family,1 for webget,1 for subwebget)
-	- new webget 'switch'
-	- improved the webget wrap client code by removing rendundant code (construct method) and changed the method of defininig and storing the code
-		('$_.js.reg' for storing client code, $_.tmp.wid_cache as <<<- cache) and start migrating all client library
-	- new boxing funcion which automatically register the generated boxing style in the styles registry and return the class name. Start migrating all
-		webget to the cleaned version whitout in-line style  
-	- Started a complete webget reorganization
-	- Started some compatibility test wiht IE and Opera
-	- Improved 'progressbar' now it's possible to put inside webgets
-	
+ - Optimized the use of special property UUID and changed into 'wid', 
+   furthermore the coding style has changed from 
+   0000-00([0-9A-F]0-9A-F]0-9A-F]0-9A-F]-0-9A-F]0-9A-F]) to
+   0000 ([0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z])
+   (2 digit for family,1 for webget,1 for subwebget)
+   
+ - new webget 'switch'
+ 
+ - improved the webget wrap client code by removing rendundant code
+   (construct method) and changed the method of defininig and storing the code
+   ('$_.js.reg' for storing client code, $_.tmp.wid_cache as <<<- cache)
+   and start migrating all client library
+   
+ - new boxing funcion which automatically register the generated boxing style
+   in the styles registry and return the class name. Start migrating all
+   webget to the cleaned version whitout in-line style
+     
+ - Started a complete webget reorganization
+ 
+ - Started some compatibility test wiht IE and Opera
+ 
+ - Improved 'progressbar' now it's possible to put inside webgets
+ 
 02-07-2012
 
-	- New pack webgets for vertical and orrizontal layout, based upon vbox and hbox but I've used 'DIV' instead of 'TABLE'
-	- hbox and vbox were considered obsolete
-	- Complete rewrite of data:table by using 'DIV' instead of 'TABLE'
-	- Brand new aggregation method for in line styles, from now webgets doens't have any more in-line styles, but dynamyc css were created instead
-	- Brand new experimental webget feauture 'naked' which removes the main parent 'DIV' useful when webgets are repeated many time by using 'data' 
-		family parent webgets in order to reduce the size of the html
-	- New method to identify what webget has 'painted' anonymous 'DIV' in the HTML data by using a special property 'uuid' and a registry code "0000-00" instead of 'type' + 'webget type name'  
-	- Testing php json_encode instead of my custom function, needs furter improvement because the data transferred 'in-line' the TAG need to escape
-		quotes(data:table). I'm evalutating the possibility to tranfer data only through javascript
-		
+ - New pack webgets for vertical and orrizontal layout, based upon vbox and
+   hbox but I've used 'DIV' instead of 'TABLE'
+   
+ - hbox and vbox were considered obsolete
+ 
+ - Complete rewrite of data:table by using 'DIV' instead of 'TABLE'
+ 
+ - Brand new aggregation method for in line styles, from now webgets doens't
+   have any more in-line styles, but dynamyc css were created instead
+   
+ - Brand new experimental webget feauture 'naked' which removes the main
+   parent 'DIV' useful when webgets are repeated many time by using 'data'
+   family parent webgets in order to reduce the size of the html
+   
+ - New method to identify what webget has 'painted' anonymous 'DIV' in the HTML
+   data by using a special property 'uuid' and a registry code "0000-00"
+   instead of 'type' + 'webget type name'
+   
+ - Testing php json_encode instead of my custom function, needs furter
+   improvement because the data transferred 'in-line' the TAG need to escape
+   quotes(data:table). I'm evalutating the possibility to tranfer data only
+   through javascript
+  
 13-04-2012
 
-	- Completed the client-side asynchronous call (webform.js)
+ - Completed the client-side asynchronous call (webform.js)

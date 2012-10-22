@@ -95,7 +95,7 @@ class _
   {
     if (!isset($_buffer)) $_buffer = array();
 
-    $context_path['system'] = '../core/phps/rpc_calls/';
+    $context_path['system'] = '../core/rpc_calls/';
     $context_path['user']   = 'lib/rpc_calls/';
 
     /* TODO : checks for valid characters */
@@ -119,21 +119,26 @@ class _
       $this->rpcs[$rpc_name]['name'] = $rpc_name;
    // } 
 
-    $self                   = $this->rpcs[$rpc_name];
-    $function               = $this->rpcs[$rpc_name][1];    
+    $self      = $this->rpcs[$rpc_name];
+    $function  = $this->rpcs[$rpc_name][1];    
 
     /* checks inputs parameters rules */
     $rpc_check = $this->_call_param_check($_buffer, $this->rpcs[$rpc_name]);
 
-		if($rpc_check !== true) {
-		  $_buffer = $rpc_check;
-			return false;
-		}
-		
+    if($rpc_check !== true) {
+      $_buffer['STDERR'] = $rpc_check;
+     return false;
+    }
+ 
+    /* call the RPC */
     $rpc_status = $function($this, $_buffer, $rpc_response);
 
-    /* in case of fail do following dependig by choosen output option */
-    if ($rpc_status === false) {
+//    echo $rpc_name. '    '.$rpc_status."\n";
+    
+    /* FAILURE BEHAVIOUR */
+
+    /* in case of FAILURE do following dependig by choosen output option */
+    if ($rpc_status == false) {
       
       /* directly die */
       if (in_array('die',$options))
@@ -143,15 +148,18 @@ class _
       if (in_array('dialog',$options) && $_->ROOT)
         $_->ROOT->system_error(print_r($rpc_response['error']));
 
-      /* else prints the error to the stdout */          
+      /* else prints the error to the stdout (default behaviour)*/          
       else print_r($rpc_response['error']);
     }
 
-    /* outputs results in a custom labeled array */
+
+    /* OUTPUT OPTIONS */
+
+    /* put results in a custom labeled array */
     if ($label = array_search('label',$options))
       $output_buffer[$options[$label+1]] = $rpc_response;
 
-    /* outputs results in a labeled array with the class name */      
+    /* put results in a labeled array with the class name as label */      
     if (in_array('path',$options))
       $output_buffer[$class->name] = $rpc_response;
 
@@ -166,73 +174,103 @@ class _
     /* or returns only the call response */          
     else $_buffer = $rpc_response;
 
+
+    /* CALL END */
+  
     return $rpc_status;    
   }
 
-	function _call_param_check(&$_buffer, $call)
-	{
-	  global $_;
-
-		foreach ($call[0] as $name => $options) {
-		  
-		  /* try to fetch the source value depending by 'origin' rules */
-		  foreach ($options['origin'] as $rule) {
-		    $rule = explode(':', $rule);
-
-		    switch ($rule[0]) {
-		      case 'variable' :
-		          eval('if(isset('.$rule[1].'))$_buffer[$name] = '.$rule[1].';');
-		        break;
-		      case 'call' :
-		        $this->call($rule[1], $_buffer[$name]);
-		        break;
-		    }
-		  }
 
 
-      /* check strict rules (VERY VERY UGLY CODE)*/
-      if (!isset($_buffer[$name])) {
-        if ($options['required'] == true)
-          $bad = "Cannot get required param -> '".$name."'.";
+ function _call_param_check(&$_buffer, $call)
+ {
+   global $_;
+
+  foreach ($call[0] as $name => $options) {
+
+    /* try to fetch the source value depending by 'origin' rules */
+    foreach ($options['origin'] as $rule) {
+      $rule = explode(':', $rule);
+
+      switch ($rule[0]) {
+        case 'variable' :
+          eval('if(isset('.$rule[1].'))$_buffer[$name] = '.$rule[1].';');
+          break;
+          
+        case 'call' :
+          $this->call($rule[1], $_buffer[$name]);
+          break;
+          
+        case 'string' :
+          eval('$_buffer[$name] = '.$rule[1].';');
+          eval('$_buffer[$name] = '.$_buffer[$name].';');
+          //$_buffer[$name] = $rule[1];
+          break;
+          
+        case 'code' :
+          ob_start();
+          eval($rule[1].";");
+          $_buffer[$name] = ob_get_contents();
+          ob_end_clean();
+
+          break;
       }
-   
-      else {
-        $bad_text = "Required param type not match (".
-            "param : '".$name."', ".
-            "required : '".$options['type']."', ".
-            "found : '".gettype($_buffer[$name])."').";
-            
-        if (gettype($_buffer[$name]) != $options['type'])
-          if(gettype($_buffer[$name]) == 'string') {
 
-            /* needs a cast to reconize the correct type */
-            switch($options['type']) {
-              case 'float' :
-              case 'bool' :
-              case 'integer' :
-                if(!is_numeric($_buffer[$name])) $bad = $bad_text;
-                break;
-            }
+      /* breaks if one of the origin gives a result */
+      if($_buffer[$name] !== null) break;
+    }
+
+    /* check strict rules (IT'S A VERY VERY UGLY CODE)*/
+    if (!isset($_buffer[$name])) {
+      if ($options['required'] == true)
+        $bad = "Cannot get required param -> '".$name."'.";
+    }
+ 
+    else {
+      $bad_text = "Required param type not match (".
+          "param : '".$name."', ".
+          "required : '".$options['type']."', ".
+          "found : '".gettype($_buffer[$name])."').";
+          
+      if (gettype($_buffer[$name]) != $options['type'])
+
+        /* not alwais a number is passed as it is, but may be passed as string
+         * this code verify, in case of a numeric value is required but a
+         * string is recognized, if it's really a numberic value */ 
+        if(gettype($_buffer[$name]) == 'string' &&
+           ($options['type'] == 'float' ||
+            $options['type'] == 'bool' ||
+            $options['type'] == 'integer')) {
+
+          /* needs a cast to reconize the correct type */
+          switch($options['type']) {
+            case 'float' :
+            case 'bool' :
+            case 'integer' :
+              if(!is_numeric($_buffer[$name])) $bad = $bad_text;
+              break;
           }
-         
-          else $bad = $bad_text;
-      }
-      
-  		if (isset($bad)) {
-  				$error['title'] = "Param check failed!";
-  				$error['call']  = $call['name'];
-  				$error['desc']  = $bad;
-  				$error['rules'] = $call[0];
-          $error['param'] = $_buffer;
-  				return $error;
-  		}
-		}
+        }
 
-		return true;
-	}	 
-	
-	
-	
+        /* finally gives an error in no rules matches */       
+        else $bad = $bad_text;
+    }
+      
+    if (isset($bad)) {
+      return $_error = array(
+        'desc'   => $bad,
+        'signal' => 'PARAM_CHECK_ERROR', 
+        'call'   => array($call['name']),
+        'rule'   => $call[0],
+        'param'  => $_buffer);
+    }
+  }
+
+  return true;
+ }  
+ 
+ 
+ 
   /* Wrapper for classes with some improvements.
    *  
    *
