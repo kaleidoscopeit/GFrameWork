@@ -1,0 +1,1 @@
+opera specific javascript
