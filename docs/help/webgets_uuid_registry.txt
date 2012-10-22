@@ -1,0 +1,34 @@
+base:webform      0000  (virtual)
+base:label        0010
+base:image        0020
+base:progressbar  0030
+base:icon         0040
+base:codesnippet  0050
+
+pack:area         0100
+pack:hlayout      0110
+pack:hlaycell     0111
+pack:hlaycell:sub 0112
+pack:vlayout      0120
+pack:vlaycell     0121
+pack:vlaycell:sub 0122
+pack:stack        0130
+pack:stackelm     0131
+pack:iframe       0140
+pack:iview        0150
+
+form:simple       0200
+form:entry        0210
+form:hidden       0220
+form:text         0230
+form:password     0240
+form:button       0250
+form:togglebutton 0260
+form:checkbox     0270
+form:radio        0280
+form:switch       0290
+form:combo        02A0      
+form:list         02B0
+
+data:table        0300
+data:tablecell    0301

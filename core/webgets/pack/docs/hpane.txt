@@ -1,0 +1,70 @@
+DEFINIZIONE :
+
+	- Webget composito per l'organizzazione del layout. ( pack:hpaned + pack:hpane )
+	- Frazione di spazio organizzata da "pack:hpaned"
+	- Nel albero XML questo webget va usato come figlio di "pack:hpaned". Se usato diversamente porta a risultati inspettati
+	- Se è il primo figlio corrisponderà al pannello di sinistra se il secondo corrisponderà al pannello di destra.  
+	- Questo webget non rispetta lo schema di posizionamento globale.
+
+PROPRIETÀ :
+
+	- Le proprietà che si riferiscono alle dimensioni hanno comportamenti mutualmente esclusivi fra i due pannelli con prefrenza per il primo.
+	- Il comportamento predefinito, senza dimensioni impostate, è spazio suddiviso esattamente a metà, ridimensionamento proporzionale,
+	  nessuna dimensione minima dei pannelli (il contenuto viene nascosto).
+	- Se a entrambi i pannelli è assegnata la stessa proprietà i cui parametri vanno in conflitto, la prima ha prevalenza sulla seconda.
+	- Ridimensionando il contenitore di questo webget quando le dimensioni impostate non sono più applicabili queste vengono disabilitate
+	
+	locked		Determina se al ridimensionamento del contenitore il pannello deve essere ridimensionato proporzionalmente.
+					Booleiano predefinito false ( non richiesto )
+					Interazione A-B : se un pannello ha true l'altro si ridimensiona. Se A è true B è automaticamente false. Se la dimensione
+	min-size		Determina la larghezza minima del pannello.
+					Interazione A-B :
+						Un pannello ha min-size impostato e lock-size falso ->
+							Quando il contenitore riduce le dimensioni    
+						Quando il contenitore aumenta le dimensioni e supera "min-size(A)+handle-size+min-size(B)" lo spazio eccedente fra i due min-size
+							viene ripartito equamente e la "maniglia" viene posta al centro.
+						Se entrambi hanno min-size impostato quando raggiunto il min-size di entrambi (larg.contenitore=min-size(a)+handle-size+min-size(B))
+							viene tenuto conto solo di entrambi i min-size e l'eccedenza viene nascosta dal contenitore
+						Quando il contenitore aumenta le dimensioni e supera "min-size(A)+handle-size+min-size(B)" lo spazio eccedente fra i due min-size
+							viene ripartito equamente e la "maniglia" viene posta al centro.
+							
+	max-size		Larghezza massima
+
+	
+	Interazioni fra proprieta :
+	
+	pannello A -> lock-size=false ; min-size=null ; max-size=null
+	pannello B -> lock-size=false ; min-size=null ; max-size=null
+	
+	- Maniglia alla posizione impostata alla proprietà "hsize" della classe contenitore
+	- All'aumento e riduzione del contenitore i due pannelli vengono scalati proporzionalmente.
+	- L'area di gioco virtuale della maniglia è massima sia per l'azione diretta che come conseguenza del ridimensionamento contenitore.
+	
+	pannello A -> lock-size=true ; min-size=null ; max-size=null
+	pannello B -> lock-size=N.A. ; min-size=null ; max-size=null	
+
+	pannello A -> lock-size=false ; min-size=null ; max-size=null
+	pannello B -> lock-size=true ; min-size=null ; max-size=null
+	
+	- Maniglia alla posizione impostata alla proprietà "hsize" della classe contenitore.
+	- All'aumento e riduzione del contenitore il pannello con il lock oppure A se sono entrambi impostati rimane a dimensione fissa.
+	- Quando la dimensione del contenitore è inferiore alla dimensione corrente del pannello più la dimensione della maniglia
+	  anche il pannello con il lock si riduce fino a zero.
+	- Per l'azione diretta l'area di gioco virtuale della maniglia è massima.
+	- In conseguenza del ridimensionamento l'area di gioco virtuale va dal limite del pannello con il lock fino all'opposto del conenitore.
+	
+	pannello A -> lock-size=true ; min-size=xx ; max-size=null
+	pannello B -> lock-size=N.A. ; min-size=null ; max-size=null	
+
+	pannello A -> lock-size=false ; min-size=null ; max-size=null
+	pannello B -> lock-size=true ; min-size=xx ; max-size=null
+	
+	- Maniglia alla posizione impostata alla proprietà "hsize" della classe contenitore o .
+	- All'aumento e riduzione del contenitore il pannello con il lock oppure A se sono entrambi impostati rimane a dimensione fissa.
+	- Quando la dimensione del contenitore è inferiore alla dimensione corrente del pannello più la dimensione della maniglia
+	  anche il pannello con il lock si riduce fino a zero.
+	- Per l'azione diretta l'area di gioco virtuale della maniglia è massima.
+	- In conseguenza del ridimensionamento l'area di gioco virtuale va dal limite del pannello con il lock fino all'opposto del conenitore.
+
+	
+	N.A. : Non Applicabile

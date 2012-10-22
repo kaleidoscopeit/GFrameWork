@@ -1,0 +1,10 @@
+div[wid="02B0"]
+{
+	overflow:visible;
+}
+
+select[wid="02B1"]
+{
+	height:100%;
+	width:100%;
+}

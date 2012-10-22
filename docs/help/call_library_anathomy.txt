@@ -1,0 +1,56 @@
+This document descibe the right srtucture of a call-library file.
+
+
+There are two places where you can put a call-library : 
+
+- 'system' context : /core/rpc_calls
+- 'user' context   : /[project-root]/lib/calls
+
+The name of the file is a part of the virtual call path :
+
+e.g.
+
+- file name : common.call_tools.php
+- context   : system
+- call_path : system.common.call_tools
+
+call from php : $_->call("system.common.call_tools" , $arguments);
+call from js  : $_.call("system.common.call_tools" , arguments);
+
+
+--
+
+- Every library starts and ends always with the php block tag '<?php' and '?>' 
+- A call is an array with 2 elements : argument definition and anonymous function
+- Inside the function call are available a number of reserved variables :
+		$_       : reference to the 'buck'
+		$_buffer : array of input arguments
+		$_output : custom response
+		$self    : similar to this, for now has a limited use
+- The function has to return a true/false status
+--
+
+Argument definition
+
+Array containing the definition of the input arguments, this data will be used
+in order to obtain the source value of each input argument and validate it.
+
+Strutcutre :
+
+array(
+
+	'[variable_name]'  => array (
+	  'type'     => '[costraint : variable_type]',
+  	'required' => [constraint : true or false],
+  	'origin'   => array (
+  	    'variable:$_buffer["sequence"]',
+  	    '[personalized_origin]',
+)),
+
+variable_name  : the argument name, referenced as $_buffer[variable_name]
+variable_type  : data type of argument, gives error if not match
+required			 : gives error if the argument value is null
+origin				 : array of origin sources, the first matched stops the stack.
+								 2 type of origin (for now) :
+								 - variable
+								 - call

@@ -1,0 +1,12 @@
+div[wid="0300"]
+{
+	overflow:auto;
+}
+
+div[wid="0301"]
+{
+	position:relative;
+	width:100%;
+	overflow:hidden;
+	float:left;
+}

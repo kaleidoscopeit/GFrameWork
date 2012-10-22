@@ -1,0 +1,10 @@
+Properties :
+
+id
+
+insteadof	:	if sets tells to the cell iterator to see if there is a normal cell witch is called as this value
+					and evalutate the 'showif' condition
+
+showif 		:	if the evautation of this contition returns 'true' the cell witch own this property will be
+					used as  the sobstitution of the cell witch the name is in 'insteadof' property.
+					NOTE : the code in this property have to be in PHP and will be executed inside the parent tag (table)

@@ -1,0 +1,11 @@
+* {
+	/* [if eq Gecko] */ -moz-box-sizing:border-box;
+	/* [else if eq Webkit] */ -webkit-box-sizing:border-box;
+	/* [else] */ box-sizing:border-box; /* [endif] */
+	overflow:hidden;
+}
+
+body
+{
+	margin:0;
+}

@@ -1,0 +1,19 @@
+div[wid="0010"]
+{
+	cursor:default;
+	white-space:normal;
+}
+
+div[wid="0010"]>span
+{
+	display:table;
+	width:100%;
+	height:100%;
+
+}
+
+div[wid="0010"]>span>span
+{
+	display:table-cell;
+	vertical-align:middle;
+}

@@ -1,0 +1,13 @@
+// Iterate a table-formatted data array with one cell per record by rows and columns
+
+// Accepts input data in GIDE-Embeded Data Exchange Format ( G-EDEF )
+ 
+// Can also retrieve data from a database using the embedded facility
+
+// Properties :
+//
+// resultset	:	Array whith tabled data used to fill the webget
+//						You need to enable by setting sendtoclient="true" in the XML View
+//
+// cell			:	Due of some limitations of GIDE all tablecell are not instantiated in the global context
+//						but as an sub array of the table ( this webget )  

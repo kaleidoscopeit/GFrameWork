@@ -1,0 +1,72 @@
+.label {
+font: 12px sans,arial;
+}
+
+.labelB {
+font: bold 11px sans,arial;
+}
+
+.biglabel {
+font: 16px/40px sans,arial;
+}
+
+.biglabelB {
+font: bold 16px sans,arial;
+}
+
+.biglabelLB {
+font: 16px sans,arial;
+background-color:lightblue;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding-left:5px;
+}
+
+.biglabelLBG {
+font: bold 16px sans,arial;
+background-color:lightgrey;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding-left:5px;
+}
+
+.errorbox {
+font: bold 16px sans,arial;
+background-color:yellow;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border:2px solid lightgrey;
+}
+
+.biglabelLBB {
+font: bold 16px sans,arial;
+background-color:lightblue;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding-left:5px;
+}
+
+.title {
+font: bold 20px sans,arial;
+}
+
+.bigtextB {
+font: 16px sans,arial;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border:1px inset grey;
+padding-left:5px;
+}
+
+.radius5 {
+	border:1px solid gray;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.radius10 {
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+

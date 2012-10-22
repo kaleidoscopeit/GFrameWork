@@ -1,0 +1,12 @@
+div[wid="0210"]
+{
+	overflow:visible;
+}
+
+div[wid="0210"] >input
+{
+	position:relative;
+	height:100%;
+	width:100%;
+	left:0px;
+}

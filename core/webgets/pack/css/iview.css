@@ -1,0 +1,8 @@
+div[wid="0150"]>iframe
+{
+	overflow:auto;
+	position:absolute;
+	border:0px;	
+	width:100%;
+	height:100%;
+}

@@ -1,0 +1,65 @@
+Elemento principale per le viste basate su html.
+
+
+Schema di posizionamento : 
+
+-	Ogni webget, salvo diversamente specificato, occupa tutto lo spazio reso disponibile dal webget
+	che lo contiene ( parent ).
+	
+-	I webget accettano un allineamento predefinito che può essere :
+	
+		- sul piano verticale		-> left, center, right
+		- sul piano orizzontale		-> top, middle, bottom
+		
+	
+-	Oltre all'allineamento può essere aggiunto un offset sul piano orizzontale e uno sul piano verticale
+	I punto zero di questo offset varia in base all'allineamento scelto
+	
+	Sul piano orizzontale abbiamo l'allineamento ed il rispettivo punto zero di offset : 
+	
+		left		-> margine sinistro
+		center	-> linea mediana orizzontale
+		right		-> margine destro
+
+	Sul piano verticale abbiamo l'allineamento ed il rispettivo punto zero di offset : 
+	
+		top		-> margine superiore
+		middle	-> linea mediana verticale
+		bottom	-> margine inferiore
+		
+		
+-	Il posizionamento dei webget è normalmente riferito al rispettivo contenitore parent, ma specificando il
+	parametro 'root' il posizionamento sarà riferito alla finestra del browser; questa comodità è stata introdotta
+	per facilitare l'inserimento di finestre di dialogo, alerts, immagini offscree, windows managers, ecc... 
+	
+-	L'offset orizzontale e verticale sono normalmento a zero, ma possono essere specificati
+
+-	Al posto dei parametri che specificano l'allineamento possono essere messi dei valori in pixel o percentuale;
+	questo significa che si vuole specificare un margine rispettivamente destro e inferiore del webget
+	
+	In questa situazione l'offset orizzontale o verticale saranno forzatamente il margine sinistro e superiore
+	
+	I parametri numerici no devono necessariemente essere inseriti entrambi, ma anche solo per il piano orizzontale
+	o verticale
+	
+
+Funzione 'boxing'
+
+Questa funzione fornisce i giusti parametri css per posizionare correttamente i webget secondo lo stile di
+posizionamento adottato in Gaia IDE.
+
+	Parametri della funzione, i numerici possono essere espressi in pixel o percentuale :
+	 
+	 	1 -> dimensione orizzontale oppure margine sinistro se il parametro 3 è numerico
+		2 -> dimensione verticale in oppure margine superiore se il parametro 5 è numerico
+		
+		3 -> allineamento orizontale ( letterale : left, center, right) oppure margine destro ( se specificato ignora l'allineamento)
+		4 -> allineamento verticale ( letterale : top, middle, bottom ) oppure margine inferiore ( se specificato ignora l'allineamento)
+		
+		5 -> offset orizzontale
+		6 -> offset verticale
+		
+		
+	Esempi :
+	
+		

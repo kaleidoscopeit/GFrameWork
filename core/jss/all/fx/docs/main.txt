@@ -1,0 +1,12 @@
+Libreria principale per gli effetti
+
+fadein, passa da completamente trasparente a opaco un webget
+
+	accetta : webget, e oggetto con i parametri
+	
+	parametri :
+		duration	-> durata in millisecondi della transizione
+		grit		->	numero di passaggi intermedi per completare la transizione
+		
+		
+_stopfx, cancella l'intervallo

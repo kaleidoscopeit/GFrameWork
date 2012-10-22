@@ -1,0 +1,1 @@
+array_search=function(n,h,a){var s=!!a,k='';if(h&&typeof h==='object'&&h.change_key_case)return h.search(n,a);if(typeof n==='object'&&n.exec){if(!s){var f='i'+(n.global?'g':'')+(n.multiline?'m':'')+(n.sticky?'y':'');n=new RegExp(n.source,f)}for(k in h)if(n.test(h[k]))return key;return false}for(k in h)if((s&&h[k]===n)||(!s&&h[k]==n))return k;	return false}

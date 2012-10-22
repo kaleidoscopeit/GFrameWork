@@ -1,0 +1,22 @@
+DEFINIZIONE :
+
+	- Webget composito per l'organizzazione del layout. ( pack:hpaned + pack:hpane ) 
+	- Fraziona orrizzontalmente uno spazio in due parti. 
+	- Questo spazio è separato da una "maniglia" che trascinata consente all'utente di variare le dimensioni relative delle due parti.
+	- È possibile inserire in cascata più Webget di questo tipo per ottenere layout molto complessi.
+	- Nel albero XML questo webget può contenere solo 2 "pack:hpane". Altri webget portano a risultati inaspettati.
+	- Questo webget rispetta lo schema di posizionamente globale.
+
+PROPRIETÀ :
+
+	id				Identificativo per l'interazione php/javascript (non richiesto)
+	boxing		Posizionamento secondo le regole globali (non richiesto)
+	handle		Larghezza della "maniglia" in pixel. Predefinito 5px (non richiesto)
+	hsize			Posizione predefinita della "maniglia" in pixel da sinistra. Predefinito è a metà dell'area del webget.
+					Rispetta il le dimensioni minime e massime dei pannelli ove applicabile (non richiesto)
+	style			Stile css personalizzato (non richiesto)
+	theme		Tema da utilizzare. Predefinito nessun bordo e maniglia grigio-chiaro.
+	
+METODI :
+
+EVENTI :

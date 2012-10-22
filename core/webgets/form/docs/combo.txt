@@ -1,0 +1,94 @@
+// Combo BOX
+//
+// Properties :
+//
+//	Items -> static assignements in the 'view'
+//
+// CSV properties, values is used as labels if param 'labels' is not given
+// 
+//	labels = "param|param|param|..."
+// values = "param|param|param|..."
+// default = "param"
+//
+// 	$items	:	$items['values'][] = "param";
+//						$items['labels'][] = "param";
+
+
+JS CODE
+
+---------------------------------------------------------------------------------------------------
+bool items_insert(value,label,p)
+
+Insert a new item in the stack
+
+v :	Value of the new item
+l :	Label of the new item, if null 'v' is used instead
+p :	Position where the new item will be put, all remaining items will be shifted down.
+		- The default behaviour is to put the new item at the bottom of the stack (when p is null)
+		- I's possible to pass a numeric value between -n.length and n.length
+		- Negative values cause the insertion starting from the bottom of the stack
+		- If the value passed is 'bc', the new item will be placed before the current item
+		- If the value passed is 'ac', the new item will be placed after the current item
+		- If there's no current item and 'ac' or 'bc' has passed, the default behaviour will adopted
+		- If the specified position doesn't exists the behaviour will as follow:
+			the position is greater than n.length -> place the new item at the bottom
+			the position is lower than 0 -> place the new item at the top
+---------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+bool items_remove(i)
+
+Removes one or more items
+
+i = null		remove current
+i = num		remove the item at selected index.
+				if i < 0 or i > n.lenght don't do anything and returns 0
+i = string	remove all item the value matches i  
+---------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------
+void clear_all()
+
+Removes all items
+
+---------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------
+void populate()
+
+Removes all previous items and fill-up with the content of 'v'
+
+v :	New Items to use. Has to be an array (for now)
+		v=Array(
+			Item=>Array(
+				Value,
+				Label
+			)
+		)
+
+
+---------------------------------------------------------------------------------------------------
+
+
+PHP CODE
+
+---------------------------------------------------------------------------------------------------
+bool function items_insert($value, $label, $index)
+
+Insert a new item in the stack
+
+v :	Value of the new item
+l :	Label of the new item, if null 'v' is used instead
+p :	Position where the new item will be put, all other item will be shifted down.
+		- The default behaviour is to put the new item after all the stack of items ( when p is null )
+(NA)	- Tipically will be pass a numeric value between -n.length and n.length
+(NA)	- If the value passed is 'bc', the new item will be placed before the current item
+(NA)	- If the value passed is 'ac', the new item will be placed after the current item
+(NA)	- If there's no current item and 'ac' or 'bc' was set, the default behaviour will be adopted
+(NA)	- Negative values cause the insertion starting from the bottom of the stack
+		- If the specified position doesn't exists the behaviour will as follow:
+			the position is greater than n.length -> place the new item at the bottom
+			the position is lower than 0 -> place the new item at the top
+
+TODO : This function is not complete, this should do the same operations  as its javascript counterpart 

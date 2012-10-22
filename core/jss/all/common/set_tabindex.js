@@ -1,0 +1,1 @@
+set_tabindex=function(w,l){for(i in w)window[w[i]].tabIndex=i+1;if(l==1)window[w[i]].onblur=function(){window[w[0]].focus()}}
