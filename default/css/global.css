@@ -1,72 +1,90 @@
-.label {
-font: 12px sans,arial;
+.radius5
+{
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
-.labelB {
-font: bold 11px sans,arial;
+.radius10
+{
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
 }
 
-.biglabel {
-font: 16px/40px sans,arial;
+.fade
+{
+  opacity: 0.3;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
 }
 
-.biglabelB {
-font: bold 16px sans,arial;
+.fade:hover
+{
+  opacity: 1;
 }
 
-.biglabelLB {
-font: 16px sans,arial;
-background-color:lightblue;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
-padding-left:5px;
+.text-shadowed
+{
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+  color:white;
+  font-family: sans;
 }
 
-.biglabelLBG {
-font: bold 16px sans,arial;
-background-color:lightgrey;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
-padding-left:5px;
+.menu-text
+{
+  color:#999999;
+  font-family: sans;
+  font-size: 10px;
 }
 
-.errorbox {
-font: bold 16px sans,arial;
-background-color:yellow;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
-border:2px solid lightgrey;
+.font10
+{
+  font-size: 20px;
 }
 
-.biglabelLBB {
-font: bold 16px sans,arial;
-background-color:lightblue;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
-padding-left:5px;
+.font20
+{
+  font-size: 20px;
 }
 
-.title {
-font: bold 20px sans,arial;
+.italic
+{
+  font-style:italic;
 }
 
-.bigtextB {
-font: 16px sans,arial;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
-border:1px inset grey;
-padding-left:5px;
+.menuitem
+{
+  background: linear-gradient(to bottom, #292929 0px, #252525 100%)
+    repeat scroll 0 0 #272727;
+  border-bottom: 1px solid #1B1B1B;
+  border-top: 1px solid #323232;
 }
 
-.radius5 {
-	border:1px solid gray;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+.menuitem:hover
+{
+  background: none repeat scroll 0 0 #1C1C1C;
 }
 
-.radius10 {
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
+.iview_normal {
+	opacity:1;
+	-moz-transition: opacity 0.2s ease-in-out 0s;
+	-webkit-transition: opacity 0.2s ease-in-out 0s; 
+}
+
+.iview_out {
+	opacity:0;
+}
+
+.iview_in {
+	opacity:0;
 }
 
 
+.iview {
+	visibility:visible;
+	opacity:1;
+}

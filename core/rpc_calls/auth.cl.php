@@ -9,7 +9,7 @@ class auth {
 	function check(&$_, $_buf, &$_out)
 	{
 		// Temporary escape
-		if (!isset($_->static['auth']['user']['id'])) {
+		if (isset($_->settings['auth_login_page'])) {
 			$error['title'] = "User not authenticated.";
 			$error['caller'] = $this->_path.'.'.$this->_subject;
 			$_out = $error;

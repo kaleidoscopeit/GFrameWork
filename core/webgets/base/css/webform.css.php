@@ -1,6 +1,7 @@
 <?php
 	session_start();	
 	
+	header('Content-type: text/css');
 	$_ = (object) '';
 	$_->STATIC = &$_SESSION['__gidestatic__'];
 	$_->CALL_UUID = array_shift(array_keys($_GET));

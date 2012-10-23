@@ -1,7 +1,7 @@
 <?php
-$this->settings['auth_engine'] = 'simple';
+#$this->settings['auth_engine'] = 'simple';
 $this->settings['auth_admin_group'] = 'administrators';
-$this->settings['auth_login_page'] = 'default';
+#$this->settings['auth_login_page'] = 'default';
 $this->settings['auth_logout_page'] = 'logout';
 $this->settings['auth_denied_page'] = 'denied';
 $this->settings['gideconf_admin'] = 'administrator';

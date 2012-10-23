@@ -1,7 +1,68 @@
 <?xml version="1.0"  encoding="UTF-8" ?>
 
-<base:webform title="G-Framework Web3.0 Toolkit">
-  <base:codesnippet id="sample_code" hilight="xml" 
-    style="border:1px dashed #B0BEC7;font:10px mono;background-color:#F1F5F6;"
-    boxing="500,200"/>
+<base:webform title="G-Framework Web3.0 Toolkit"
+style="background-image:url('images/body-noise.png');">
+  <pack:vlayout boxing="800px">
+  
+    <pack:vlaycell height="70px">
+      <pack:hlayout>
+      
+        <pack:hlaycell width="454px">
+          <base:image src="images/logo.png" />
+        </pack:hlaycell>
+        
+        <pack:hlaycell>
+        </pack:hlaycell>
+      </pack:hlayout>
+    </pack:vlaycell>
+    
+    <pack:vlaycell class="radius10" style="background-color:white;">
+      <pack:hlayout>
+      
+        <pack:hlaycell width="200px">
+         <pack:vlayout >
+         
+            <pack:vlaycell height="50px" style="background-color:#6A6A6A;">
+              <base:label
+                caption="Reference table"
+                halign="center"
+                valign="middle"
+                class="text-shadowed font20 italic"/>
+            </pack:vlaycell>
+            
+            <pack:vlaycell style="background-color:#262626;">
+              <data:table id="table" rowheight="30px">
+                <data:tablecell class="menuitem">
+                  <base:label
+                    field="table:description"
+                    halign="center"
+                    valign="middle"
+                    class="menu-text"/>
+                </data:tablecell>
+              </data:table>
+            </pack:vlaycell>
+            
+          </pack:vlayout>      
+        </pack:hlaycell>
+        
+        <pack:hlaycell>
+          <pack:iview 
+            id="mainpane"
+            view="codesnippet"
+            class="iview"
+            normal_class="iview_normal"
+            in_class="iview_in"
+            out_class="iview_out"
+            trans_class="iview_transition"/>
+        </pack:hlaycell>
+        
+      </pack:hlayout>                  
+    </pack:vlaycell>
+    
+  </pack:vlayout>
+  <base:image
+    src="images/text-xml.png"
+    boxing=",,right,top,-4px,4px"
+    class="fade"
+    tip="view source"/>
 </base:webform>
