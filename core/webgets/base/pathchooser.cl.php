@@ -26,7 +26,7 @@ class base_pathchooser {
     /* building code */
     $_->buffer .= '<div wid="0060" id="'.$this->id.'" '.$css_style.
                   ($this->path ? 'path="'.$this->path.'" ' : '').
-                  $_->ROOT->format_html_events($this, array('mouse')).'>'.
+                  $_->ROOT->format_html_events($this).'>'.
                   '<input type="text" name="'.$this->id.'" />'.
                   '<button type="button" ></button>'.
                   '<div></div>'.

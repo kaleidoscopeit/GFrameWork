@@ -203,8 +203,10 @@ class _
           
         case 'string' :
           eval('$_buffer[$name] = '.$rule[1].';');
+          if(substr($_buffer[$name],0,1) != '"') $pre = '"';
+          if(substr($_buffer[$name],-1,1) != '"') $post = '"';
+          $_buffer[$name] = $pre.$_buffer[$name].$post;
           eval('$_buffer[$name] = '.$_buffer[$name].';');
-          //$_buffer[$name] = $rule[1];
           break;
           
         case 'code' :
@@ -212,7 +214,6 @@ class _
           eval($rule[1].";");
           $_buffer[$name] = ob_get_contents();
           ob_end_clean();
-
           break;
       }
 
