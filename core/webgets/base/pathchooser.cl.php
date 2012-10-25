@@ -17,11 +17,11 @@ class base_pathchooser {
 
     /* no paint switch */    
     if ($this->nopaint) return;
-  
+
     /* builds syles */  
-    $style       = $_->ROOT->boxing($this->boxing).$this->style;
-    $css_style   = $_->ROOT->style_registry_add($style).$this->class;
-    if($css_style) $css_style = 'class="'.$css_style.'" ';
+    $css_style = $_->ROOT->boxing($this->boxing).
+                 $_->ROOT->style_registry_add($this->style).$this->class;
+    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
     /* building code */
     $_->buffer .= '<div wid="0060" id="'.$this->id.'" '.$css_style.

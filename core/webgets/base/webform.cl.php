@@ -73,7 +73,7 @@ class base_webform
       if(is_file($webget_js.'.php'))
         $js_includes[$webget_js.'.php?'.$_->CALL_UUID] = true;        
 
-      /* includes STATIC css files by client engine */
+      /* includes STATIC css files by specific client engine */
       if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css'))
         $css_includes[$webget_css.'.'. $_->static['client']['engine'].'.css'] 
           = true;
@@ -82,7 +82,7 @@ class base_webform
       else if(is_file($webget_css.'.css')) $css_includes[$webget_css.'.css'] 
         = true;
 
-      /* includes DYNAMIC css files by client engine */
+      /* includes DYNAMIC css files by specific client engine */
       if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css.php'))
         $css_dyn_includes[$webget_css.'.'.$_->static['client']['engine'].
           '.css.php?'.$_->CALL_UUID] = true;
@@ -93,10 +93,17 @@ class base_webform
 
     }
 
-    /* project global (has to be globalS) CSS */
+    /* project global CSS */
     if(is_file('css/global.css')) $css_includes['css/global.css'] = 1;
 
-    /* Specific CSS stylesheet for this view */
+    /* project selected CSS by this view */
+    if($this->css != '') {
+      $css_enabled = explode(' ', $this->css);
+      foreach($css_enabled as $css)
+        if(is_file('css/'.$css.'.css')) $css_includes['css/'.$css.'.css'] = 1;
+    }
+
+    /* CSS stylesheet of this view */
     if(is_file('views/'.$_->CALL_SOURCE.'.css'))
       $css_includes['views/'.$_->CALL_SOURCE.'.css'] = 1;
 

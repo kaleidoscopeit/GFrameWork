@@ -161,22 +161,20 @@ class _
 
     /* put results in a labeled array with the class name as label */      
     if (in_array('path',$options))
-      $output_buffer[$class->name] = $rpc_response;
+      $output_buffer[$rpc_name] = $rpc_response;
+
+    if (!isset($output_buffer)) $output_buffer = $rpc_response;
 
     /* merge input buffer with the call response */    
     if (in_array('stack',$options)) {
-      if (is_array($rpc_response) === FALSE) 
-        $rpc_response = array($rpc_response);
-        
-      $_buffer = array_merge($_buffer, $rpc_response);
+      if (!is_array($output_buffer)) $output_buffer = array($output_buffer);
+      $_buffer = array_merge($_buffer, $output_buffer);
     }
 
     /* or returns only the call response */          
-    else $_buffer = $rpc_response;
+    else $_buffer = $output_buffer;
 
-
-    /* CALL END */
-  
+    /* CALL END */  
     return $rpc_status;    
   }
 

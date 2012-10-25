@@ -1,6 +1,6 @@
 <?php
-class pack_hlayout {
-  
+class pack_hlayout
+{ 
   function __construct(&$_, $attrs)
   {
     /* imports properties */
@@ -26,8 +26,10 @@ class pack_hlayout {
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
     /* builds code */
-    if(!$this->naked) $_->buffer .= '<div id="'.$this->id.
-                                    '" wid="0110" '.$css_style.'>';
+    if(!$this->naked) $_->buffer .= '<div id="'.$this->id.'" '.
+                                    'wid="0110" '.$css_style.
+                                    $_->ROOT->format_html_events($this).
+                                    '>';
 
     /* children size definining */
     foreach ((array) @$this->childs as $key => $child)

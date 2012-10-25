@@ -43,7 +43,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
   }
   
   $_STDOUT['user_data']['id']    = $_STDIN['user'];
-  $_STDOUT['user_data']           = $passwd[$_STDIN['user']];
+  $_STDOUT['user_data']          = $passwd[$_STDIN['user']];
   $_STDOUT['user_data']['group'] = array();
   
   
