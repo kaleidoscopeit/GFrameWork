@@ -25,12 +25,6 @@ class pack_hlayout
                  
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
-    /* builds code */
-    if(!$this->naked) $_->buffer .= '<div id="'.$this->id.'" '.
-                                    'wid="0110" '.$css_style.
-                                    $_->ROOT->format_html_events($this).
-                                    '>';
-
     /* children size definining */
     foreach ((array) @$this->childs as $key => $child)
       if (get_class($child)=='pack_hlaycell') {
@@ -39,7 +33,7 @@ class pack_hlayout
         
         else $float_childs[] = $key;        
       }
-
+      
     if(count($float_childs) > 0) {
       $float_div = 100/count($float_childs);
 
@@ -54,7 +48,13 @@ class pack_hlayout
         $this->childs[$key]->within = $within;
       }      
     }
-
+    
+    /* builds code */
+    if(!$this->naked) $_->buffer .= '<div id="'.$this->id.'" wid="0110" '.
+                                    'style="min-width:'.$fixed_width.'px" '.
+                                    $css_style.
+                                    $_->ROOT->format_html_events($this).'>';
+                                    
     /* flushes children */
     foreach ((array) @$this->childs as  $child)
       if (get_class($child)=='pack_hlaycell') $child->__flush($_);

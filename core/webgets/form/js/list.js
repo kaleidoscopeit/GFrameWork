@@ -1,59 +1,66 @@
 $_.js.reg['02B0']={
-	a:[],
-	f:[],
-	b:function(n){
-		n=n.firstChild;
-		with(n){
-		n.items_insert=function(v,l,p){
-			var no=n.options;var nl=n.length;var se=no.selectedIndex;
-			p=p?p:nl+'';
-			if(p.search(/ac/i)>-1)p=se>-1?se:nl;
-			else if(p.search(/bc/i)>-1)p=se>-1?se+1:nl;
-			p=p<0?eval(nl+1+p):p;
-			if(p<0)p=0;if(p>nl)p=nl;
-			for(var x=nl;x>p;x--){no[x]=new Option(no[x-1].text,no[x-1].value)}
-			no[p]=new Option(v,(l||l==0?l:v));
-			if(se>=p)se++;if(se>-1)no[se].selected=true;
-			return 0;
-		},
-		
-		n.items_remove=function(i)
-		{with(this){			
-			if(n.length==0)return 0;													// no items -> returns false
-			
-			if(!i&&i!=0){																	// no param gived -> deletes current item
-				n.options[n.options.selectedIndex]=null;
-				return 1;
-			}
-			
-			if(isNaN(i))																	// i is a string -> try to delete those who have the same value
-				for(x=0;x<n.options.length;x++){
-					if(i==n.options[x].value){
-						n.options[x]=null;
-						return 1;
-					}
-				}
+  a:[],
+  f:[],
+  b:function(n){
+    n=n.firstChild;
+    with(n){
+      
+    n.addEventListener('change', function(){
+      var opt=this.copy(),i;
+      this.selected=[];
+      for(i in opt) this.selected.push(opt[i].value)
+    }, false),
+    
+    n.copy = function(){
+      var out=[],opt=this.options,i;
+      this.values=[];
+      this.labels=[];
+      for(i in opt) {
+        this.values.push(opt[i].value);
+        this.labels.push(opt[i].text);
+        if(opt[i].selected) out.push(opt[i]);}
+      return out;
+    },
 
-			if(n.length>i || n.length<0) return 0;								// if there's not index match -> returns false
-			return 0;																		// returns false
-		}},
+    n.cut = function(){
+      var out=[],opt=this.copy(),i;
+      while(opt[0]) {
+        this.options[opt[0].index] = null;
+        out.push(opt.shift())
+      }
+      return out;
+    },
 
-		// Clear all items		
-		n.clear_all=function()
-		{
-			for(var i=n.options.length;i>=0;i--){n.options[i]=null}
-		},
+    n.paste = function(o){
+      while(o[0]) this.add(o.shift());
+    },
 
-		n.populate=function(v)
-		{
-			if(v.length==null)return false;
-			n.clear_all();
-			$_.tmp.n=n;
-			$_.each(v,function(v,i){$_.tmp.n.items_insert(v[0],(v[1]?v[1]:v[0]))
-			})
-		}
-	}},
-	
-	fs:function(n){
-	}
+    n.clear = function(){
+      while(this.length!=0)this.remove(0);
+    },
+
+    n.populate = function(v){
+      if(v.length==null)return false;
+      n.clear();
+      $_.tmp.n=n;
+      $_.each(v,function(v,i){$_.tmp.n.items_insert(v[0],(v[1]?v[1]:v[0]))
+      })
+    },
+
+    n.sort = function(){
+      var out=[],i,opt=this.options;
+      for(i=0;i<opt.length;i++) out.push(opt[i]);
+      out.sort(function(x,y) {
+        var x=x.text,y=y.text,z=0;
+        if (x>y) z=1;
+        if (x<y) z=-1;
+        return z;
+      });
+      this.clear();
+      this.paste(out);       
+    }
+  }},
+  
+  fs:function(n){
+  }
 };

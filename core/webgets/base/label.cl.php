@@ -18,15 +18,6 @@ class base_label
     /* no paint switch */
     if ($this->nopaint) return;  
 
-    /* builds syles */
-    $style     = $this->style.
-                 ($this->halign ? 'text-align:'.$this->halign : '');
-                 
-    $css_style = $_->ROOT->boxing($this->boxing).
-                 $_->ROOT->style_registry_add($style).$this->class;
-                 
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
-
     /* set caption depending by the presence of 'field' property */
     if($this->field){
       $field        = explode(',', $this->field);
@@ -43,19 +34,61 @@ class base_label
     
     else $caption = $this->caption;
 
+
+    /* label type switch */
+    if($this->valign == 'middle' || $this->valign == 'bottom') $align = 10;
+
+    $boxing = explode(',', $this->boxing);
+    
+    if(preg_match('/x|%/',substr($boxing[2], -1).substr($boxing[3], -1)))
+      $margins = 1; 
+
+    /* builds syles */
+    $style     = $this->style.
+                 ($this->halign ? 'text-align:'.$this->halign : '');
+                 
+    $css_style = $_->ROOT->boxing($this->boxing).
+                 $_->ROOT->style_registry_add($style).$this->class;
+                 
+
     /* builds code */
-    if ($this->valign == 'middle' || $this->valign == 'bottom')
-   
-    $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
-                  $_->ROOT->format_html_events($this, array('mouse')).'>'.
-                  '<span><span style="vertical-align:'.$this->valign.'">'.
-                  $caption.'</span></span></div>';
-              
-    else
-  
-    $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
-                  $_->ROOT->format_html_events($this, array('mouse')).'>'.
-                  $caption.'</div>';
+    switch($align+$margins){
+      case 11:
+
+        if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
+        
+        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
+                      $_->ROOT->format_html_events($this).'>'.
+                      '<span class="w0011" style="vertical-align:'.
+                      $this->valign.'"><span>'.
+                      $caption.'</span></span></div>';
+        break;
+
+
+      case 10 :             
+
+        if($css_style!="") $css_style = 'class="w0010 w0011 '.$css_style.'" ';
+        
+        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
+                      $_->ROOT->format_html_events($this).'>'.
+                      '<span style="vertical-align:'.$this->valign.'">'.
+                      $caption.'</span></div>';
+
+        break;
+
+
+      default :
+
+        if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
+                            
+        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
+                      $_->ROOT->format_html_events($this).'>'.
+                      $caption.'</div>';
+
+        break;
+    }
+    
+ //   $_->ROOT->attach_client_events($this,$this->id);
   }
 }
 ?>

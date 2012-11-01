@@ -1,18 +1,17 @@
-div[wid="0010"]
+.w0010>span
 {
-	cursor:default;
-	white-space:normal;
+  	cursor:default;
+  	width:100%;
+  	height:100%;
 }
 
-div[wid="0010"]>span
+.w0011
 {
-	display:table;
-	width:100%;
-	height:100%;
-
+  	display:table;
+  	cursor:default;
 }
 
-div[wid="0010"]>span>span
+.w0011>span
 {
 	display:table-cell;
 	vertical-align:middle;

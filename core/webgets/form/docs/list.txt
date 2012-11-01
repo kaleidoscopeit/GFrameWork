@@ -1,0 +1,132 @@
+List Box
+
+  This webget is the equivalent of a select whith 'multiple' flag set
+  All operations assume every item has a value and a label. Value is what
+  programming side uses, label is what will be shown to the user
+
+
+                            Server side
+
+Defining properties
+
+  labels            : List of strings separated by `labels_separator`
+  labels_separator  : Separator for `labels`, default is | (pipe)
+  values            : List of string separated by `values_separator`
+  values_separator  : Separator for `values`, default is | (pipe)
+
+
+Server Methods
+
+  add_item          : add a new item
+  remove_item       : remove an item
+
+
+
+
+                            Client side
+
+  Default DOM sub-elements still usable and are refer to the SELECT.
+
+
+Client properties
+
+  selected          : array containing the values of the selected options
+
+  
+Client Method
+
+* item_push - Add a new item at the end of the list
+  
+  Syntax
+  
+    BOOL Object.item_push(value, label)
+  
+      value    :	 Value of the new item
+
+      label    :	 Label of the new item, if null 'value' will be used instead
+
+
+* item_unshift - Add a new item at the top of the list
+  
+  Syntax
+  
+    BOOL Object.item_unshift(value, label)
+  
+      value    :	 Value of the new item
+
+      label    :	 Label of the new item, if null 'value' will be used instead     
+
+
+* cut
+
+  Cut selected items
+  
+  Syntax
+  
+    OBJECT Object.cut();
+    
+
+* paste - Paste a previous cutted items block
+  
+  Syntax
+  
+    BOOL Object.paste(snippet, position)    
+
+      snippet   : item block obtained from a previous cut
+      
+      position  : not yet implemented
+      
+      
+* sort - Sort the items by value or labels
+  
+  Syntax
+
+  BOOL Object.sort(sort_by, direction)
+
+    sort_by   : may be 'v' or 'l' and indicates the sorting subject
+ 
+    direction : 'a'scending or 'd'escending
+       
+
+* populate - Removes all items and fill-up with new content
+  
+  Syntax
+  
+  BOOL Object.populate(content)
+
+    content   : array of array, each sub array may contain a value or a pair
+                of value/label. If only a value is passed this one will be
+                used also for the label.
+ 
+ 
+* clear - Removes all items
+  
+  Syntax
+
+  BOOL Object.clear()
+          
+          
+    
+    
+    
+    
+    
+    
+    
+    
+           
+- remove_selected
+  
+  Remove selected
+        
+p :	Position where the new item will be put, all remaining items will be shifted down.
+		- The default behaviour is to put the new item at the bottom of the stack (when p is null)
+		- I's possible to pass a numeric value between -n.length and n.length
+		- Negative values cause the insertion starting from the bottom of the stack
+
+		- If the specified position doesn't exists the behaviour will as follow:
+			the position is greater than n.length -> place the new item at the bottom
+			the position is lower than 0 -> place the new item at the top  
+  
+  
+  .remove_item      : remove an item

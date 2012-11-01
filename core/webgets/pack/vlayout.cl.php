@@ -26,12 +26,6 @@ class pack_vlayout
 
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
-    /* builds code */
-    if(!$this->naked) $_->buffer .= '<div id="'.$this->id.'" '.
-                                    'wid="0120" '.$css_style.
-                                    $_->ROOT->format_html_events($this).
-                                    '>';
-
     /* children size definining */
     foreach ((array) @$this->childs as $key => $child)
       if (get_class($child)=='pack_vlaycell'){
@@ -53,9 +47,17 @@ class pack_vlayout
       foreach ($float_childs as $key){
         $this->childs[$key]->height = $float_div.'%';
         $this->childs[$key]->within = $within;
+        $fixed_height += $this->childs[$key]->minheight;
       }      
     }
 
+    /* builds code */
+    if(!$this->naked) $_->buffer .= '<div id="'.$this->id.'" wid="0120" '.
+                                    'style="min-height:'.$fixed_height.'px" '.
+                                    $css_style.
+                                    $_->ROOT->format_html_events($this).
+                                    '>';
+                                    
     /* flushes children */    
     foreach ((array) @$this->childs as  $child)
       if (get_class($child)=='pack_vlaycell') $child->__flush($_);

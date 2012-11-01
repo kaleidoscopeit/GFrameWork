@@ -83,7 +83,7 @@ class _
   function execute ($source)
   {
     $exGET    = $_GET;             /* Store previous GET values */
-    parse_str  ($source, $_GET);   /* Create a new _GET array from the source */
+    parse_str   ($source, $_GET);  /* Create a new _GET array from the source */
     $subview  = new _();           /* Creates a new subview */
     $_buffer  = $subview->main();  /* Start the subview */
     $_GET     = $exGET;            /* Restore previous _GET array */
@@ -92,7 +92,7 @@ class _
   
 
   function call_new ($rpc_name, &$_buffer, $options = '')
-  {
+  { 
     if (!isset($_buffer)) $_buffer = array();
 
     $context_path['system'] = '../core/rpc_calls/';
@@ -155,10 +155,12 @@ class _
 
     /* OUTPUT OPTIONS */
 
-    /* put results in a custom labeled array */
-    if ($label = array_search('label',$options))
+    /* put results in a custom labeled array */    
+    if (in_array('label',$options)) {
+      $label = array_search('label',$options);
       $output_buffer[$options[$label+1]] = $rpc_response;
-
+    }
+    
     /* put results in a labeled array with the class name as label */      
     if (in_array('path',$options))
       $output_buffer[$rpc_name] = $rpc_response;
