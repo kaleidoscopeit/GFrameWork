@@ -14,10 +14,10 @@ $_.js.reg['02B0']={
     n.copy = function(){
       var out=[],opt=this.options,i;
       this.values=[];
-      this.labels=[];
+      this.captions=[];
       for(i in opt) {
         this.values.push(opt[i].value);
-        this.labels.push(opt[i].text);
+        this.captions.push(opt[i].text);
         if(opt[i].selected) out.push(opt[i]);}
       return out;
     },
@@ -51,9 +51,9 @@ $_.js.reg['02B0']={
       var out=[],i,opt=this.options;
       for(i=0;i<opt.length;i++) out.push(opt[i]);
       out.sort(function(x,y) {
-        var x=x.text,y=y.text,z=0;
-        if (x>y) z=1;
-        if (x<y) z=-1;
+        var a=x.text,b=y.text,z=0;
+        if (a>b) z=1;
+        if (a<b) z=-1;
         return z;
       });
       this.clear();

@@ -27,7 +27,7 @@ class pack_stack {
 		if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 		
     /* builds code */
-		$_->buffer .=	'<div wid="0130" id="'.$this->id.'" '.$css_style.
+		$_->buffer .=	'<div wid="0130" wbg id="'.$this->id.'" '.$css_style.
 								  ($this->mode ? 'mode="'.$this->mode.'" ':'mode="loop" ').
 								  'preset="'.$preset.'" >';
 

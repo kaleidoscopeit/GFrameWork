@@ -12,8 +12,7 @@ class simple_gantt {
 	
 	
 	function __flush(&$_)
-	{
-		
+	{		
 		// flow control server event
 		eval($this->onflush);
 
@@ -22,7 +21,7 @@ class simple_gantt {
 
 		$_->buffer .=	'<div id="'.$this->id.'" style="overflow:hidden;'.$this->style.";".
 								$_->webgets['root']->boxing($this->boxing).';" '.
-				 				$_->webgets['root']->format_html_events($this, array('mouse')).
+				 				$_->webgets['root']->format_html_events($this).
 								'class = "'.($this->boxing == null ? 'g-default' : '' ).$this->class.'" '.
 				 				'> ';
 

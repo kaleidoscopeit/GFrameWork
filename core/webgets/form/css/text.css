@@ -1,9 +1,9 @@
-div[wid="0230"]
+.w0230
 {
 	overflow:visible;
 }
 
-div[wid="0230"] > textarea
+.w0230>textarea
 {
 	position:relative;
 	height:100%;

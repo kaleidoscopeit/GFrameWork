@@ -120,7 +120,7 @@ class base_overlay
       ($this->onunload ? 'onunload="'.$this->onunload.'"' : '').
       ($this->onbeforeunload ? 'onbeforeunload="'.$this->onbeforeunload.'"' : '').
       'class="'.$this->class.'" '.
-      'wid="0000" '.
+      'wid="0000" wbg '.
       ($this->style ? 'style="'.$this->style.'" ' : '').
       $this->format_html_events($this, array('all')).
       '>';

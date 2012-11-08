@@ -26,7 +26,7 @@ $_.js.reg['0290']={
         lever.className="";  
       } else {
         input.value=1;
-        lever.className="wid0290";
+        lever.className="w0291";
       }
 
       this.value=input.value;

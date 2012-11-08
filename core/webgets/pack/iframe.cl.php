@@ -24,15 +24,15 @@ class pack_iframe {
        NOTE : parentView became available only after the onload event in 
        the contained document */       
     if($this->enableparent)
-      $onload = 'this.contentWindow.parentView=window;'.$onload;
+      $onload = 'this.contentDocument.parentView=window;'.$onload;
     
     if($onload)
       $onload = 'onload="'.$onload.'" ';
 
     /* builds syles */
-    $style         = $_->ROOT->boxing($this->boxing).$this->style;
-    $css_style     = $_->ROOT->style_registry_add($style).$this->class;
-    if($css_style) $css_style = 'class="'.$css_style.'" ';
+    $style         =  $_->ROOT->boxing($this->boxing).$this->style;
+    $css_style     =  'class="w0140 '.$_->ROOT->style_registry_add($style).
+                      $this->class.'" ';
 
     /* builds code */
     $_->buffer .= '<div wid="0140" '.$css_style.'>'.

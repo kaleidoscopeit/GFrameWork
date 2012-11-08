@@ -1,9 +1,9 @@
-div[wid="02A0"]
+.w02A0
 {
 	overflow:visible;
 }
 
-select[wid="02A1"]
+.w02A0>select
 {
 	height:100%;
 	width:100%;

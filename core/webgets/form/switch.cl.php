@@ -19,10 +19,9 @@ class form_switch
     if ($this->nopaint) return;
 
     /* builds syles */  
-    $css_style = $_->ROOT->boxing($this->boxing).
-                 $_->ROOT->style_registry_add($this->style).$this->class;
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
-
+    $css_style = 'class="w0290 '.$_->ROOT->boxing($this->boxing).
+                 $_->ROOT->style_registry_add($this->style).$this->class.'" ';
+                 
     /* builds code */
     $_->buffer .= '<div id="'.$this->id.'" wid="0290" '.
                   ($this->disabled ? 'disabled="disabled" ' : '').

@@ -1,21 +1,21 @@
-div[wid="0060"] > *
+.w0060>*
 {
   height:100%;
   float: left;
 }
 
-div[wid="0060"] > input
+.w0060>input
 {
   left: -1000%;
   position:absolute;
 }
 
-div[wid="0060"] > button
+.w0060>button
 {
   width:30px;
 }
 
-div[wid="0060"] > div 
+.w0060>div 
 {
   direction:rtl;
   left:30px;
@@ -24,7 +24,7 @@ div[wid="0060"] > div
   text-align:left;
 }
 
-div[wid="0060"] > div > button
+.w0060>div>button
 {
- height:100%;
+  height:100%;
 }

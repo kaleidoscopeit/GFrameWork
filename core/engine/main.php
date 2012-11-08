@@ -198,7 +198,14 @@ class _
           break;
           
         case 'call' :
-          $this->call($rule[1], $_buffer[$name]);
+          $rule[1] = explode(';', $rule[1]);
+          $call = $rule[1][0];
+          $args = explode(',', $rule[1][1]);
+          foreach($args as $argv){
+            $argv = explode('=', $argv);
+            $_buffer[$name][$argv[0]] = $argv[1];
+          }
+          $this->call($call, $_buffer[$name]);
           break;
           
         case 'string' :

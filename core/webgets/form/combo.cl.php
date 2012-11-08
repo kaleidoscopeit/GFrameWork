@@ -27,13 +27,13 @@ class form_combo {
           $this->items['labels'] = $this->items['values'];
     }
     
-    $boxing          = 'class="'.$_->ROOT->boxing($this->boxing).'" ';
+    $w_class         = 'class="w02A0 '.$_->ROOT->boxing($this->boxing).'" ';
     $css_style       = $_->ROOT->style_registry_add($this->style).$this->class;
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
     
-    $_->buffer .= '<div wid="02A0" '.$boxing.'>'.
+    $_->buffer .= '<div wid="02A0" '.$w_class.'>'.
                   '<select name="'.$this->id.'" id="'.
-                  $this->id.'" wid="02A1" '.$css_style.
+                  $this->id.'" '.$css_style.
                   ($this->size ? 'size="'.$this->size.'" ' : '').
                   ($this->disabled ? 'disabled="true" ' : '').
                   $_->ROOT->format_html_events($this, array('all' )).

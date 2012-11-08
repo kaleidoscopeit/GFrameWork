@@ -31,14 +31,13 @@ class data_tablecell
                   (100/$this->parent->columns).'% !important;' : '').
                   'height:'.$this->parent->rowheight.';'.$this->style;
                  
-    $css_style =  $_->ROOT->style_registry_add($style).$this->class;
+    $css_style =  'class="w0301 '.$_->ROOT->style_registry_add($style).
+                  $this->class.'" ';
     
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
-  
     /* builds code */
     $_->buffer  .=  '<div id="'.$this->id.'" parent="'.$this->parent->id.
                     '" wid="0301" index="'.$this->index.'" '.$css_style.
-                    $_->ROOT->format_html_events($this, array('all')).'>';
+                    $_->ROOT->format_html_events($this).'>';
   
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
   

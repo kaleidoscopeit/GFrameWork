@@ -27,7 +27,7 @@ class form_list
     }
 
     /* builds syles */
-    $boxing = 'class="'.$_->ROOT->boxing($this->boxing).'" ';
+    $wclass    = 'class="w02B0 '.$_->ROOT->boxing($this->boxing).'" ';
                  
     $css_style = $_->ROOT->style_registry_add($this->style).
                  $this->class;
@@ -42,9 +42,9 @@ class form_list
 
 
     /* builds code */    
-    $_->buffer .= '<div wid="02B0" '.$boxing.'>'.
+    $_->buffer .= '<div wid="02B0" '.$wclass.'>'.
                   '<select name="'.$this->id.'" id="'.$this->id.'" '.
-                  'wid="02B1" multiple '.$css_style.
+                  'multiple '.$css_style.
                   ($this->disabled ? 'disabled="true" ' : '').
                   $_->ROOT->format_html_events($this).
                   ($this->tip ? 'title="'.$this->tip.'" ' : '').'>';

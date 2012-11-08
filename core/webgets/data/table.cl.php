@@ -50,10 +50,9 @@ class data_table
     }    
 
     /* builds syles */
-    $css_style = $_->ROOT->boxing($this->boxing).
-                 $_->ROOT->style_registry_add($this->style).$this->class;
-                 
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+    $css_style = 'class="w0300 '.$_->ROOT->boxing($this->boxing).
+                 $_->ROOT->style_registry_add($this->style).
+                 $this->class.'" ';
 
     /* builds code */
     $_->buffer .=  '<div id="'.$this->id.'" wid="0300" '.$css_style.

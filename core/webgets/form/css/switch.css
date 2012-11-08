@@ -1,4 +1,4 @@
-div[wid="0290"] > *
+.w0290>*
 {
   position:absolute;
   left:0px;
@@ -7,17 +7,17 @@ div[wid="0290"] > *
   height:100%;
 }
 
-div[wid="0290"] > input
+.w0290>input
 {
   color:transparent
 }
 
-div[wid="0290"] > div
+.w0290>div
 {
   border:4px solid transparent;
 }
 
-div[wid="0290"] > div > button
+.w0290>div>button
 {
   -moz-transition: left 0.2s ease-in-out 0s;
   -webkit-transition: left 0.2s ease-in-out 0s;
@@ -28,12 +28,12 @@ div[wid="0290"] > div > button
   left:0%;
 }
 
-div[wid="0290"] > span
+.w0290>span
 {
   display:table;
 }
 
-div[wid="0290"] > span > span
+.w0290>span>span
 {
   vertical-align:middle;
   display:table-cell;
@@ -41,7 +41,7 @@ div[wid="0290"] > span > span
   text-align:center;
 }
 
-.wid0290
+.w0291
 {
   left:50% !important;
 }

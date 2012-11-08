@@ -57,7 +57,7 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
         
-        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
+        $_->buffer .= '<div id="'.$this->id.'" wid="0010" wbg '.$css_style.
                       $_->ROOT->format_html_events($this).'>'.
                       '<span class="w0011" style="vertical-align:'.
                       $this->valign.'"><span>'.
@@ -69,7 +69,7 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 w0011 '.$css_style.'" ';
         
-        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
+        $_->buffer .= '<div id="'.$this->id.'" wid="0010" wbg '.$css_style.
                       $_->ROOT->format_html_events($this).'>'.
                       '<span style="vertical-align:'.$this->valign.'">'.
                       $caption.'</span></div>';
@@ -81,7 +81,7 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
                             
-        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
+        $_->buffer .= '<div id="'.$this->id.'" wid="0010" wbg '.$css_style.
                       $_->ROOT->format_html_events($this).'>'.
                       $caption.'</div>';
 

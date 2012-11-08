@@ -19,11 +19,10 @@ class base_codesnippet
     if ($this->nopaint) return;
 
     /* builds syles */
-    $css_style = $_->ROOT->boxing($this->boxing).
+    $css_style = 'class="w0050 '.
+                 $_->ROOT->boxing($this->boxing).
                  $_->ROOT->style_registry_add($this->style).
-                 $this->class;
-                 
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+                 $this->class.'" ';
 
     /* hilights */
     switch($this->hilight) {
@@ -72,7 +71,7 @@ class base_codesnippet
     }
     /* builds code */
     $_->buffer .=  '<div id="'.$this->id.'" wid="0050" '.$css_style.
-                   $_->ROOT->format_html_events($this, array('mouse')).
+                   $_->ROOT->format_html_events($this).
                    '> '.$this->code.'</div>';
   }  
 

@@ -19,7 +19,7 @@ class pack_stackelm {
     if ($this->nopaint) return;
 
     /* builds code */    
-    $_->buffer .= '<div style="'.
+    $_->buffer .= '<div wbg style="'.
                   $this->style.($this->preset ? '' : 'display:none;').
                   '" wid="0131" id="'.$this->id.'" '.
                   ($this->onshow ? 'onshow="'.$this->onshow.'" ' : '').

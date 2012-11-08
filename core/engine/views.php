@@ -172,8 +172,9 @@ class _engine_views {
 
     /* Request to register the explicit webget id in the global 
        javascipt context */    
-    if ($library_attribs['id'] && $this->ROOT)
-      $this->ROOT->visible_webgets[] = $library_attribs['id'];   
+    // (deprecated in favour of javascript mloop auto hierarcy 05-11-2012)
+/*    if ($library_attribs['id'] && $this->ROOT)
+      $this->ROOT->visible_webgets[] = $library_attribs['id'];*/   
   
     /* If not explicitly requested assigns an automatic id 
        (for internal coherence) */
@@ -215,11 +216,12 @@ class _engine_views {
     // sets the new webget as current webget
     $this->current_webget = &$this->webgets[$library_attribs['id']];
 
-    // append the new webget to the hierarcy stack
-    $this->hierarchy_stack[] = $library_attribs["id"];
+    // append the new webget to the hierarcy stack 
+    // (deprecated in favour of javascript mloop auto hierarcy 05-11-2012)
+/*    $this->hierarchy_stack[] = $library_attribs["id"];
     eval('$this->hierarchy[\'' .
          implode("']['", $this->hierarchy_stack).
-         "'] = array();");
+         "'] = array();");*/
   }
 
 
@@ -234,7 +236,8 @@ class _engine_views {
       $this->current_webget = &$this->current_webget->parent;
   
     // remove the current webget from the hierarcy stack
-    array_pop($this->hierarchy_stack);
+    // (deprecated in favour of javascript mloop auto hierarcy 05-11-2012)
+    //array_pop($this->hierarchy_stack);
   }
 }
 ?>

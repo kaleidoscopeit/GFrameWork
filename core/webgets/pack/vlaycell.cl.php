@@ -27,14 +27,14 @@ class pack_vlaycell {
 
     /* builds code */
     $_->buffer .= '<div id="'.$this->id.'" wid="0121" '.
-                  'class="'.$css_style.($this->within ? '' : $this->class).'" '.
+                  'class="w0121 '.$css_style.
+                  ($this->within ? '' : $this->class).'" '.
                   $_->ROOT->format_html_events($this).
                   '>';
 
     if($this->within) 
-      $_->buffer .=  '<div wid="0122" '.
+      $_->buffer .=  '<div class="w0122 '.$this->class.'" '.
                      ($this->style ? 'style="'.$this->style.'" ' : '').
-                     ($this->class ? 'class="'.$this->class.'" ' : '').
                      '>';
 
     /* flushes children */

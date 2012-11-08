@@ -19,7 +19,7 @@ class pack_modalw {
     if ($this->nopaint) return;
 
     /* builds code */
-    $_->buffer .= '<div class="modalwa" type="pack:modalw" id="'.$this->id.'">'.
+    $_->buffer .= '<div class="modalwa" type="pack:modalw" wbg id="'.$this->id.'">'.
                   '<div class="modalwb gwha" onclick="this.parentNode.hide()">'.
                   '</div><div style="overflow:auto;'.$this->style.";".
                   $_->webgets['root']->boxing( $this->boxing ).';" '.

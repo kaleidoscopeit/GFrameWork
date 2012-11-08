@@ -66,15 +66,14 @@ class base_progressbar
     $css_style_bar = ($bar_style!="" ? 'class="'.
                      $_->ROOT->style_registry_add($bar_style).'" ' : '');
                      
-    $css_style     = $_->ROOT->boxing($this->boxing).
-                     $_->ROOT->style_registry_add($this->style).$this->class;
+    $css_style     = 'class="w0030 '.$_->ROOT->boxing($this->boxing).
+                     $_->ROOT->style_registry_add($this->style).
+                     $this->class.'" ';
                      
-    if($css_style) $css_style = 'class="'.$css_style.'" ';
-        
     /* builds code */
     $_->buffer .= '<div id="'.$this->id.
                   '" wid="0030" type="base:progressbar" ' . $css_style.
-                  $_->ROOT->format_html_events($this, array('mouse')).
+                  $_->ROOT->format_html_events($this).
                   'ornt="'.$this->orientation.'">'.
                   '<div '.$css_style_bar.'></div>';
               

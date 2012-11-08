@@ -128,28 +128,17 @@ class base_webform
     /**************************************************************************/
 
     $_->buffer .= 
-      '<!DOCTYPE HTML5><html>'.
-      '<head>'.
+      '<!DOCTYPE HTML5><html><head>'.
       ($this->title ? '<title>'.$this->title.'</title>' : '').
       '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">'.
-      $css_includes.
-      $js_includes.
-      '<script type="text/JavaScript">'.
-        '$_.onload=function(){'.
-          '$_.hcy(\''.json_encode($this->hierarchy).'\');'.
-          ($this->visible_webgets ?
-            '$_.gbw(Array("'.implode('","', $this->visible_webgets).'"));':'').
-        '};'.
-        $this->global_javascript.
-      '</script>'.
-      '<body onload="$_.start();' . $this->onload . '" ' .
-      ($this->onunload ? 'onunload="'.$this->onunload.'"' : '').
-      ($this->onbeforeunload ? 'onbeforeunload="'.$this->onbeforeunload.'"' : '').
-      'class="'.$this->class.'" '.
-      'wid="0000" '.
+      $css_includes.$js_includes.
+      '<script type="text/JavaScript">'.$this->global_javascript.'</script>'.
+      '<body wid="0000" class="'.$this->class.'" '.
+      ($this->onload ? 'onload="'.$this->onload.'" ' : '').
+      ($this->onunload ? 'onunload="'.$this->onunload.'" ' : '').
+      ($this->onbeforeunload?'onbeforeunload="'.$this->onbeforeunload.'" ':'').
       ($this->style ? 'style="'.$this->style.'" ' : '').
-      $this->format_html_events($this, array('all')).
-      '>';
+      $this->format_html_events($this).'>';
 
     /* flushes children */
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
@@ -174,8 +163,8 @@ class base_webform
     $boxing,
     $hsize    = "100%",
     $vsize    = "100%",
-    $halign    = "center", 
-    $valign    = "middle",   
+    $halign   = "center", 
+    $valign   = "middle",   
     $hoffset  = "0px", 
     $voffset  = "0px",
     $refer    = "parent"
@@ -188,8 +177,8 @@ class base_webform
     /* sets default values */
     $hsize    = ($boxing[0] == "" ? $hsize   : $boxing[0]);
     $vsize    = ($boxing[1] == "" ? $vsize   : $boxing[1]);
-    $halign    = ($boxing[2] == "" ? $halign  : $boxing[2]);
-    $valign    = ($boxing[3] == "" ? $valign  : $boxing[3]);
+    $halign   = ($boxing[2] == "" ? $halign  : $boxing[2]);
+    $valign   = ($boxing[3] == "" ? $valign  : $boxing[3]);
     $hoffset  = ($boxing[4] == "" ? $hoffset : $boxing[4]);
     $voffset  = ($boxing[5] == "" ? $voffset : $boxing[5]);
     $refer    = ($boxing[6] == "" ? $refer   : $boxing[6]);
@@ -198,13 +187,13 @@ class base_webform
     $lpc = $lpx = $tpc = $tpx = $wpc = $wpx = $hpc = $hpx = 0;
 
     /* determine if positional value is passed as pixel or percent */    
-    strpos($hsize, '%')    ? $wpc = str_replace("%", null, $hsize)    
+    strpos($hsize, '%')   ? $wpc = str_replace("%", null, $hsize)    
       : $wpx = str_replace("px", null, $hsize);
-    strpos($vsize, '%')    ? $hpc = str_replace("%", null, $vsize)    
+    strpos($vsize, '%')   ? $hpc = str_replace("%", null, $vsize)    
       : $hpx = str_replace("px", null, $vsize);
-    strpos($hoffset, '%')  ? $lpc = str_replace("%", null, $hoffset)  
+    strpos($hoffset, '%') ? $lpc = str_replace("%", null, $hoffset)  
       : $lpx = str_replace("px", null, $hoffset);
-    strpos($voffset, '%')  ? $tpc = str_replace("%", null, $voffset)  
+    strpos($voffset, '%') ? $tpc = str_replace("%", null, $voffset)  
       : $tpx = str_replace("px", null, $voffset);
 
     if (strpos($halign, '%') || strpos($halign, 'px'))
@@ -222,12 +211,12 @@ class base_webform
     
     $hpos['left']   = $hoffset != 0 ? "left:".$hoffset.";" : null;
     $hpos['center'] = "left:".round(0+$lpx-$wpx/2,2)."px;margin-left:".
-      round(50-$wpc/2+$lpc,2)."%;";
+                      round(50-$wpc/2+$lpc,2)."%;";
     $hpos['right']  = "right:".-($lpc + $lpx).($lpx == "0" ? "%" : "px").";";
     
     $vpos['top']    = "top:".$voffset.";";
     $vpos['middle'] = 'top:'.round(50-$hpc/2+$tpc,2).'%;margin-top:'.
-      round(0-$hpx/2+$tpx,2).'px;';
+                      round(0-$hpx/2+$tpx,2).'px;';
     $vpos['bottom'] = "bottom:".-($tpc + $tpx).($tpx == "0" ? "%" : "px").";";
 
     if ($rpc!=null || $rpx!=null) {
@@ -244,9 +233,9 @@ class base_webform
 
     if ($bpc!=null || $bpx!=null) {
 
-      $top = $hpx+$tpx;
+      $top  = $hpx+$tpx;
       $mtop = $hpc+$tpc;
-      $bot = $bpx-$tpx;
+      $bot  = $bpx-$tpx;
       $mbot = $bpc-$tpc;
       
       $vparams = 'top:'.$top.'px;'.

@@ -18,7 +18,7 @@ class form_simple
     /* no paint switch */    
     if ($this->nopaint) return;
     
-    $_->buffer .= '<form method="post" id="'.$this->id.'" '.
+    $_->buffer .= '<form method="post" id="'.$this->id.'" wid="0200" '.
                   'name="'.$this->id.'" enctype="multipart/form-data" '.
                   ($this->action ? 'action="'.$this->action.'" ' : '').
                   ($this->onsubmit ? 'onsubmit="'.$this->onsubmit.'" ' : '').

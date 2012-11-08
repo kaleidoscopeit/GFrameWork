@@ -1,16 +1,16 @@
-div[wid="0121"]
+.w0121
 {
-	position:relative;
-	overflow:hidden;
-	float:left;
-	width:100%;
+  position:relative;
+  overflow:hidden;
+  float:left;
+  width:100%;
 }
 
 
-div[wid="0122"]
+.w0122
 {
-	position:relative;
-	width:100%;
-	height:100%;
-	overflow:hidden;
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
 }

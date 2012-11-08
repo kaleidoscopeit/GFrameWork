@@ -19,9 +19,8 @@ class base_pathchooser {
     if ($this->nopaint) return;
 
     /* builds syles */  
-    $css_style = $_->ROOT->boxing($this->boxing).
-                 $_->ROOT->style_registry_add($this->style).$this->class;
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+    $css_style = 'class="w0060 '.$_->ROOT->boxing($this->boxing).
+                 $_->ROOT->style_registry_add($this->style).$this->class.'" ';
 
     /* building code */
     $_->buffer .= '<div wid="0060" id="'.$this->id.'" '.$css_style.

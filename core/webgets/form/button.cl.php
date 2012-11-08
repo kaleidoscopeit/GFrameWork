@@ -19,15 +19,14 @@ class form_button {
     if ($this->nopaint) return;
 
     /* builds syles */
-    $css_style = $_->ROOT->boxing($this->boxing).
+    $css_style = 'class="w0250 '.
+                 $_->ROOT->boxing($this->boxing).
                  $_->ROOT->style_registry_add($style).
-                 $this->class;
+                 $this->class.'" ';
                  
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
-
     /* builds code */		    
     $_->buffer .= '<button name="'.$this->id.'" id="'.$this->id.'" wid="0250" '.
-                  $_->ROOT->format_html_events($this, array('mouse')).
+                  $_->ROOT->format_html_events($this).
                   $css_style.
                   ($this->tip ? 'title="'.$this->tip.'" ' : '').                
                   ($this->type ? 'type="'.$this->type.'" ' : 'type="button" ').

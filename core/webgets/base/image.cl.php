@@ -56,8 +56,8 @@ class base_image
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
     /* builds code */    
-    $_->buffer .= '<img id="'.$this->id.'" '.'src="'.$src.'" '.$css_style.                
-                  $_->ROOT->format_html_events($this, array('mouse')).
+    $_->buffer .= '<img id="'.$this->id.'" wid="0020" src="'.$src.'" '.
+                  $css_style.$_->ROOT->format_html_events($this).
                   ($this->tip ? 'title="'.$this->tip.'"' : ' ').
                   '/>';
   }  
