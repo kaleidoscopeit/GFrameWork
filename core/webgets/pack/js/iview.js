@@ -24,8 +24,8 @@ $_.js.reg['0150']={
     ifa.onload=ifb.onload=ifc.onload=
       function(e){
         this.parent.show(this);
-        //this.contentWindow.parent=window;
-        
+
+        this.contentWindow.parentView=window;
         //this.parent.onload();
       };
     

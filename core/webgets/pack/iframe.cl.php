@@ -24,7 +24,7 @@ class pack_iframe {
        NOTE : parentView became available only after the onload event in 
        the contained document */       
     if($this->enableparent)
-      $onload = 'this.contentDocument.parentView=window;'.$onload;
+      $onload = 'this.contentWindow.parentView=window;'.$onload;
     
     if($onload)
       $onload = 'onload="'.$onload.'" ';

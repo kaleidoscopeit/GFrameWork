@@ -23,8 +23,9 @@ class pack_iview
     /* Enable a reference to te parent View in the contained iframe View
        NOTE : parentView became available only after the onload event in 
        the contained document */       
-    if($this->enableparent)
-      $onload = 'this.contentWindow.parentView=window;'.$onload;
+    if($this->enableparent){
+      $onload = 'this.contentDocument.parentView=window;'.$onload;
+     }
     
     if($onload)
       $onload = 'onload="'.$onload.'" ';
