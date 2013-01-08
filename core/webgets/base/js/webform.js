@@ -143,13 +143,21 @@ var $_={
     else l.push(c);
     w.className=l.join(' ');
   },
- 
+
+  addClass:function(w,c,l,ll){
+    l=w.className.split(' ');
+    ll=l.indexOf(c);
+    if(ll==-1)l.push(c);
+    w.className=l.join(' ');
+  },
+   
   removeClass:function(w,c,l,ll){
     l=w.className.split(' ');
     ll=l.indexOf(c);
     if(ll>-1)l.splice(ll,1);
     w.className=l.join(' ');
   }
+
 };
 
 

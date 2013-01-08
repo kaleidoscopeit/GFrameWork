@@ -8,28 +8,59 @@
 
 class _engine_views {
 
+  function init()
+  {
+    /* initialization */
+    $this->webget_enum           = 0;
+    $this->webget_path           = '../core/webgets/';
+    $this->static['js-includes'] = '';                                             /* resets js inclusion index */    
+  }
+  
   /****************************************************************************/
   /*                       Main function of this class.                       */
   /*                                                                          */
   /* By reading and 'decoding' the XML code in the view file, let the webget  */
   /* classes generate client code.                                            */
   /****************************************************************************/    
-  function build()
+  function build($source_url)
   {
-                  
-    /* initialization */
-    $_                        = $this;                                          /* loopback to the buck */
-    $_->webget_enum           = 0;
-    $_->webget_path           = '../core/webgets/';
-    $_->static['js-includes'] = '';                                             /* resets js inclusion index */
-
+    /* loopback to the buck */
+    $_ = $this;
+    
     /* Check if the view exists */
-    if(!is_file('views/'.$this->CALL_SOURCE.".xml"))
+    if(!is_file('views/'.$source_url.".xml"))
        die("View not found!");
 
-    /* import code file and parse it */
-    self::get_codes(); 
+    self::populate_root_object($source_url);
 
+    /****** from now we use ROOT as placeholder as the main view class ********/
+    
+    /* assign global scope javascript code in the root webget 
+       ( TODO: has to be more abstract ) */
+    $this->ROOT->global_javascript = $this->codes['global']['javascript'][''];
+
+    /* the view php code in the global scope will be executed */
+    eval($this->codes['global']['php']['']);
+                                              
+    /* starts cascading execution witch will fills output buffer */
+    $this->ROOT->__flush($this);
+
+    /* eventually appends system errors HTML code (needs improovements) */
+    if ($this->system_error_queue)
+      foreach ($this->system_error_queue as $error)
+        $this->buffer .= $error;
+
+    /* prints end microtime (for benchmarking purpuose) */
+    //echo 'microtime = '.( microtime (true) - $microtime);
+
+    return $this->buffer;
+  }
+
+  
+  function populate_root_object($source_url)
+  {
+    /* import code file and parse it */
+    self::get_codes($source_url); 
 
     /* XML parsing initialization and rules defining */
     $parser = xml_parser_create();
@@ -44,52 +75,22 @@ class _engine_views {
         array('self', "startelm"),
         array('self', "endelm"));
         
-    //xml_set_processing_instruction_handler ($parser, array ($this, "pihdl"));
-    //xml_set_character_data_handler($parser, array($this, "codeblk"));
+    /* loads main XML view and eventually merges external overlays */
+    $source = file_get_contents('views/'.$source_url.'.xml');
 
-
-    /* loads XML view code and launch parsing.
-       Parsing procedure builds the big object (ROOT) witch defines
-       the view */     
-    $source = file_get_contents('views/'.$this->CALL_SOURCE.'.xml');
-
+    /* parses the complete view. This will build the big ROOT object */
     if (!xml_parse($parser, $source, true))
       die (sprintf(
         "XML error in '%s' : %s at line %d",
-        $this->CALL_SOURCE,
+        $source_url,
         xml_error_string(xml_get_error_code ($parser)),
         xml_get_current_line_number($parser)));
 
     xml_parser_free($parser);
     unset($source); 
-
-    /****** from now we use ROOT as placeholder as the main view class ********/
-    
-    /* webgets tree hierarchy */
-    $_->ROOT->hierarchy = $this->hierarchy;
-
-    /* assign global scope javascript code in the root webget 
-       ( TODO: has to be more abstract ) */
-    $_->ROOT->global_javascript = $this->codes['global']['javascript'][''];
-
-    /* the view php code in the global scope will be executed */
-    eval($_->codes['global']['php']['']);
-                                              
-    /* starts cascading execution witch will fills output buffer */
-    $_->ROOT->__flush($_);
-    
-    /* eventually appends system errors HTML code (needs improovements) */
-    if ($this->system_error_queue)
-      foreach ($this->system_error_queue as $error)
-        $this->buffer .= $error;
-
-    /* prints end microtime (for benchmarking purpuose) */
-    //echo 'microtime = '.( microtime (true) - $microtime);
-
-    return $this->buffer;
   }
   
-
+  
   /****************************************************************************/
   /*               Handles codes file associated with the view.               */
   /*                                                                          */
@@ -97,12 +98,12 @@ class _engine_views {
   /* stub to the respective target                                            */
   /****************************************************************************/
       
-  function get_codes()
+  function get_codes($source_url)
   {
     /* checks if codes file exists */
-    if (!is_file('views/'.$this->CALL_SOURCE.'.php')) return;
-    $file = @file_get_contents('views/'.$this->CALL_SOURCE.'.php');
-    
+    if (!is_file('views/'.$source_url.'.php')) return;
+    $file = @file_get_contents('views/'.$source_url.'.php');
+
     /* strips comments if debug-mode is disabled */    
     if ($this->settings['debug'] == false)
       foreach (token_get_all($file) as $token) {
@@ -161,9 +162,9 @@ class _engine_views {
   {
     $library_url   = str_replace(':', '/', $library_name);
     $library_class = str_replace(':', '_', $library_name);
-  
+
     if (!is_file($this->webget_path.$library_url.'.cl.php'))
-      die ('STOP! The library "'.$library_name.'" doesn\'t not exists.');
+      die ('STOP! The library "'.$library_name.'" doesn\'t exists.');
   
     require_once $this->webget_path.$library_url.'.cl.php';
     

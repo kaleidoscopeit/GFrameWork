@@ -46,8 +46,8 @@ $_.js.reg['0150']={
     
     n.show=function(i,o){
       $_.ade(n.childNodes[ifcurr], 'webkitTransitionEnd', n.trans_end);
-        $_.ade(n.childNodes[ifcurr], 'oTransitionEnd', n.trans_end);
-        $_.ade(n.childNodes[ifcurr], 'transitionend', n.trans_end);
+      $_.ade(n.childNodes[ifcurr], 'oTransitionEnd', n.trans_end);
+      $_.ade(n.childNodes[ifcurr], 'transitionend', n.trans_end);
 
       if(tcn && tci && tco){
         if(n.action=='next'){

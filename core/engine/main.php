@@ -49,7 +49,8 @@ class _
 
         if (!$_->call('system.auth.check',$_buf))
           $this->CALL_SOURCE = $this->settings['auth_login_page'];
-        return _engine_views::build();
+        _engine_views::init();
+        return _engine_views::build($this->CALL_SOURCE);
         break;
 
       case 'reports' :
@@ -78,6 +79,11 @@ class _
     $_SESSION['__gidestatic__'] = $this->static;
   }
 
+
+  function extend_root($source){
+    _engine_views::populate_root_object($source);
+  }
+  
   /* Loopback function for retrieving the generated code of a view
    */
   function execute ($source)
@@ -193,6 +199,7 @@ class _
       $rule = explode(':', $rule);
 
       switch ($rule[0]) {
+         // Single variable assignement
         case 'variable' :
           eval('if(isset('.$rule[1].'))$_buffer[$name] = '.$rule[1].';');
           break;
@@ -207,7 +214,8 @@ class _
           }
           $this->call($call, $_buffer[$name]);
           break;
-          
+        
+        // composite string. May be made by a mix of quoted text and variables 
         case 'string' :
           eval('$_buffer[$name] = '.$rule[1].';');
           if(substr($_buffer[$name],0,1) != '"') $pre = '"';
@@ -373,6 +381,11 @@ class _
 
     return $return; 
   }
+
+
+
+
+
 
 /*  function set_webget_default($webget){
     if (!$webget->default) return;

@@ -29,12 +29,13 @@ class base_label
                        ($_->webgets[$param[0]]->current_record, $param[1]);           
       }
 
-      $caption = vsprintf($field_format, $field);    
+      $caption = vsprintf($field_format, $field); 
     }
     
     else $caption = $this->caption;
 
-
+    if($caption == "" && $this->default != "") $caption = $this->default;
+    
     /* label type switch */
     if($this->valign == 'middle' || $this->valign == 'bottom') $align = 10;
 

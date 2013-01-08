@@ -117,7 +117,7 @@ class _engine_reports {
     $library_class = str_replace(':', '_', $library_name);
   
     if (!is_file($this->webget_path.$library_url.'.cl.php'))
-      die ('STOP! The library "'.$library_name.'" doesn\'t not exists. ('.
+      die ('STOP! The library "'.$library_name.'" doesn\'t exists. ('.
            $this->webget_path.$library_url.'.cl.php)');
   
     require_once $this->webget_path.$library_url.'.cl.php';
