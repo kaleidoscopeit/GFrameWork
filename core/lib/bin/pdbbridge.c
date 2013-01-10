@@ -4,7 +4,7 @@ php ntlm authentication library
 Version 1.2
 verifyntlm.c - verifies NTLM credentials against samba using pdbedit
 
-Copyright (c) 2009-2010 Loune Lam
+Copyright (c) 2012-2013 Gabriele Rossetti
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,14 +31,13 @@ Prerequisites:
 
 
 To install, compile and set the sticky bit:
-# gcc verifyntlm.c -lssl -o verifyntlm
-# chown root verifyntlm
-# chmod u=rwxs,g=x,o=x verifyntlm
+# gcc verifyntlm.c -lssl -o pdbbridge
+# chown root pdbbridge
+# chmod u=rwxs,g=x,o=x pdbbridge
 
 Move the binary to a location such as /sbin/
-# mv verifyntlm /sbin
+# mv pdbbridge /sbin
 
-If you put the binary somewhere else, please modify $ntlm_verifyntlmpath in ntlm.php
 
 For more, see http://siphon9.net/loune/2010/12/php-ntlm-integration-with-samba/
 
@@ -364,13 +363,6 @@ int check_pass(int argc, char** argv)
     return(0);
   }    
 }
-
-
-
-
-
-
-
 
 int main(int argc, char** argv)
 {

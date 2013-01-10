@@ -37,10 +37,11 @@ class _engine_views {
     
     /* assign global scope javascript code in the root webget 
        ( TODO: has to be more abstract ) */
-    $this->ROOT->global_javascript = $this->codes['global']['javascript'][''];
+    $this->ROOT->global_javascript = 
+      $this->codes['global']['javascript']['default'];
 
     /* the view php code in the global scope will be executed */
-    eval($this->codes['global']['php']['']);
+    eval($this->codes['global']['php']['default']);
                                               
     /* starts cascading execution witch will fills output buffer */
     $this->ROOT->__flush($this);
@@ -75,7 +76,7 @@ class _engine_views {
         array('self', "startelm"),
         array('self', "endelm"));
         
-    /* loads main XML view and eventually merges external overlays */
+    /* loads main XML view and eventually merges nested overlays */
     $source = file_get_contents('views/'.$source_url.'.xml');
 
     /* parses the complete view. This will build the big ROOT object */
@@ -111,7 +112,7 @@ class _engine_views {
                 strpos($token[1],'//?webget').
                 strpos($token[1],'//?class');
         if ($token[0] != T_COMMENT || $find != '') continue;
-         $file = str_replace($token[1], '', $file);
+        $file = str_replace($token[1], '', $file);
       }
 
     /* transform it in an array */  
@@ -136,9 +137,9 @@ class _engine_views {
         $row = explode('.', ltrim(trim($row), '//?'));
         
         $code = array(
-          'type'   => $row[0],
-          'target' => $row[1],
-          'event'  => $row[2]);
+          'type'   => array_shift($row),
+          'event'  => array_pop($row),
+          'target' => implode('.', $row));
       } 
       
       else $code['data'] .= 

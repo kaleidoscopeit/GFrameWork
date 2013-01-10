@@ -9,12 +9,14 @@ class pack_hlaycell {
     /* flow control server event */
     eval($this->ondefine);
    }
+
+  function __preflush(&$_){
+    /* flow control server event */
+    eval($this->onflush);
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
     /* no paint switch */    
     if ($this->nopaint) return;
 
@@ -27,7 +29,8 @@ class pack_hlaycell {
 
     /* builds code */
     $_->buffer .= '<div id="'.$this->id.'" wid="0111" '.
-                  'class="w0111 '.$css_style.($this->within ? '' : $this->class).'" '.
+                  'class="w0111 '.$css_style.
+                  ($this->within ? '' : $this->class).'" '.
                   $_->ROOT->format_html_events($this).
                   '>';
 

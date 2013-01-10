@@ -24,14 +24,12 @@ $_.js.reg['0150']={
     ifa.onload=ifb.onload=ifc.onload=
       function(e){
         this.parent.show(this);
-
-        this.contentWindow.parentView=window;
-        //this.parent.onload();
       };
     
     n.goto=function(v){
       this.history.stack.push(v);
       v='?views/'+v;
+      $_.ade(n.childNodes[n.ifnext], 'load', this.onload);
       n.childNodes[n.ifnext].src=v;
       n.action='next';
     }

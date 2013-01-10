@@ -9,12 +9,14 @@ class pack_vlaycell {
     /* flow control server event */
     eval($this->ondefine);
    }
-  
-  function __flush(&$_)
-  {
+
+  function __preflush(&$_){
     /* flow control server event */
     eval($this->onflush);
-
+  }
+    
+  function __flush(&$_)
+  {
     /* no paint switch */    
     if ($this->nopaint) return;
 

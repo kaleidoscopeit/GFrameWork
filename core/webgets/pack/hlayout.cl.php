@@ -28,10 +28,13 @@ class pack_hlayout
     /* children size definining */
     foreach ((array) @$this->childs as $key => $child)
       if (get_class($child)=='pack_hlaycell') {
-        if(isset($child->width)) $fixed_width += 
-          str_replace('px','',$child->width);
+        if(method_exists($child, '__preflush')) $child->__preflush($_);
+        if(!isset($child->nopaint)) {
+          if(isset($child->width)) $fixed_width += 
+            str_replace('px','',$child->width);
         
-        else $float_childs[] = $key;        
+          else $float_childs[] = $key;
+        }        
       }
       
     if(count($float_childs) > 0) {

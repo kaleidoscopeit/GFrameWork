@@ -19,6 +19,10 @@ class _
     $this->CALL_OBJECT = array_shift($source);
     $this->CALL_SOURCE = implode('/', $source);
     $this->CALL_UUID   = hash('crc32',$this->CALL_SOURCE);
+
+    /* debug calls */
+    $message=array('message'=>'call debug');
+    $this->call('system.utils.write_debug',$message);
   }                        
   
 
@@ -43,12 +47,20 @@ class _
        the configuration database engine */
     require "config.php";                                    
 
+    /* Authentication checkpoint */
+//    if (!$_->call('system.auth.check',$_buf))
+//      $this->CALL_SOURCE = $this->settings['auth_login_page'];
+      
+    /* preprocess XML views/reports */
+    if($this->CALL_OBJECT == 'views' | 'reports'){
+     // require_once '../core/engine/xmlbuilder.php';
+      
+    }
+ 
     switch ($this->CALL_OBJECT) { 
       case 'views' :
         require_once '../core/engine/views.php';
 
-        if (!$_->call('system.auth.check',$_buf))
-          $this->CALL_SOURCE = $this->settings['auth_login_page'];
         _engine_views::init();
         return _engine_views::build($this->CALL_SOURCE);
         break;
@@ -56,8 +68,6 @@ class _
       case 'reports' :
         require_once '../core/engine/reports.php';
 
-        if (!$_->call('system.auth.check',$_buf))
-          $this->CALL_SOURCE = $this->settings['auth_login_page'];
         return _engine_reports::build();
         break;
         

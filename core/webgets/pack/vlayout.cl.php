@@ -27,12 +27,16 @@ class pack_vlayout
 
     /* children size definining */
     foreach ((array) @$this->childs as $key => $child)
-      if (get_class($child)=='pack_vlaycell'){
-        if(isset($child->height))$fixed_height += 
-          str_replace('px','',$child->height);
+      if (get_class($child)=='pack_vlaycell') {
+        if(method_exists($child, '__preflush')) $child->__preflush($_);
+        if(!isset($child->nopaint)) {
+          if(isset($child->height)) $fixed_height += 
+            str_replace('px','',$child->height);
         
-        else $float_childs[] = $key;        
+          else $float_childs[] = $key;
+        }        
       }
+
 
     if(count($float_childs) > 0) {
       $float_div = 100/count($float_childs);
