@@ -6,7 +6,16 @@ Planned :
  - RPC CALLS better separation e interaction with STDIN STDOUT STDERR 
  - RPC CALLS better handling database transaction inheritance
 
+10-01-2013
+
+ - New client side bootstrap called 'mloop' unifies all boot functions. 
+   - Auto hierarchy, JSON hierarchy will no more sent to client
+   - Implicit linking javascript Webgets payload
+
+ - New webget overlay
+ - Incomplete external enitity parsing by using XML preparser
  
+
 01-10-2012
 
  - API V2.6

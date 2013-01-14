@@ -60,14 +60,16 @@ class _
     switch ($this->CALL_OBJECT) { 
       case 'views' :
         require_once '../core/engine/views.php';
-
+if (!$_->call('system.auth.check',$_buf))
+$this->CALL_SOURCE = $this->settings['auth_login_page'];
         _engine_views::init();
         return _engine_views::build($this->CALL_SOURCE);
         break;
 
       case 'reports' :
         require_once '../core/engine/reports.php';
-
+if (!$_->call('system.auth.check',$_buf))
+$this->CALL_SOURCE = $this->settings['auth_login_page'];
         return _engine_reports::build();
         break;
         
@@ -107,7 +109,31 @@ class _
   }
   
 
-  function call_new ($rpc_name, &$_buffer, $options = '')
+  /* Structured RPC API.
+   *  
+   *
+   * $path        : 'path' of the RPC
+   *
+   * $_buffer      :  array to be used as buffer, contains the input values 
+   *                 when the macro is called and the final content depends
+   *                 on $output switches (default : only the result)
+   *
+   * $options     : list of switches
+   *
+   *   - stack  ->  the result of current macro will added to the $_buffer; 
+   *                every previous similar values will be overwritten
+   *   - path   ->  the result of current call will added to the $_buffer
+   *                in a sub array labeled as the path of the call
+   *   - label  ->  the result of current call will nested in a sub-array
+   *                with a key named as the next value in the $options array
+   *   - die    ->  on error (function report 'false') print a message and die
+   *
+   *
+   * returns an integer value, the programmer has the freedom to choose 
+   * right response.
+   */ 
+
+  function call ($rpc_name, &$_buffer, $options = '')
   { 
     if (!isset($_buffer)) $_buffer = array();
 
@@ -120,8 +146,8 @@ class _
     $context  = array_shift($rpc_path);
     $rpc_path = $context_path[$context].implode('.', $rpc_path).'.php';
 
-    if (!is_file($rpc_path)) return 'false'; 
-      //die("RPC not found : '".$rpc_name."'");
+    if (!is_file($rpc_path)) 
+      die("RPC not found : '".$rpc_name."'");
 
     /* imports RPC code */
 
@@ -143,7 +169,7 @@ class _
 
     if($rpc_check !== true) {
       $_buffer['STDERR'] = $rpc_check;
-     return false;
+      return false;
     }
  
     /* call the RPC */
@@ -293,119 +319,7 @@ class _
   }
 
   return true;
- }  
- 
- 
- 
-  /* Wrapper for classes with some improvements.
-   *  
-   *
-   * $path        : 'path' of the class+function
-   *
-   * $_buffer      :  array to be used as buffer, contains the input values 
-   *                 when the macro is called and the final content depends
-   *                 on $output switches (default : only the result)
-   *
-   * $options     : list of switches
-   *
-   *   - stack  ->  the result of current macro will added to the $_buffer; 
-   *                every previous similar values will be overwritten
-   *   - path   ->  the result of current call will added to the $_buffer
-   *                in a sub array labeled as the path of the call
-   *   - label  ->  the result of current call will nested in a sub-array
-   *                with a key named as the next value in the $options array
-   *   - die    ->  on error (function report 'false') print a message and die
-   *
-   *
-   * returns an integer value, the programmer has the freedom to choose 
-   * right response.
-   */    
-  
-  function call($path, &$_buf, $options = '')
-  {
-    /* workaroud for keep compatibility with old call method */ 
-    $test = $this->call_new($path, $_buf, $options);
-
-    if($test !== 'false') return $test;
-
-    if (!isset($_buf)) $_buf = array();
-
-    $context_path['system'] = '../core/rpc_calls/';
-    $context_path['user']   = 'lib/';
-
-    /* TODO : checks for valid characters */
-    $options  = explode(',', $options);
-    $path     = explode('.', $path);
-    $function = array_pop($path);                                              
-    $call     = implode('.', $path);
-    $context  = array_shift($path);
-    $class    = array_pop($path);
-    $path     = $context_path[$context].implode('/', $path).'/'.$class;
-
-    if (!is_file($path.".cl.php"))
-      die("Called class not found : '" . $call . "." .$function . "'");
-
-    /* construct the class and store it if not already made */
-    if (!isset($this->calls[$call])) {
-      require_once $path.".cl.php";
-
-      $this->calls[$call]        = new $class();
-      $this->calls[$call]->_path = $call;
-      
-    } 
-
-    $this->calls[$call]->_subject = $function;
-
-    if (isset($this->settings['calls'][$call]))
-      foreach ($this->settings['calls'][$call] as $key => $value )
-        $this->calls[$call]->$key = $value;
-
-    $return = $this->calls[$call]->$function($this, $_buf, $stdout);
-
-    if ($return===false) {
-      if (in_array('die',$options))
-        die('\'macro.'.$class->_path.'.'.$class->_subject.'\' failed.' );
-        
-      if (in_array('dialog',$options))
-        if ($_->webgets['root'])
-          $_->webgets['root']->system_error(print_r($stdout['error']));
-          
-        else print_r($stdout['error']);
-    }
-
-    if ($label = array_search('label',$options))
-      $outbuf[$options[$label+1]] = $stdout;
-      
-    if (in_array('path',$options))
-      $outbuf[$class->path] = $stdout;
-    
-    if (in_array('stack',$options)) {
-      if (is_array($stdout) === FALSE)
-        $stdout = array($stdout);
-      $outbuf = array_merge($_buf, $stdout);
-    }
-          
-    else $outbuf = $stdout;
-
-    $_buf = $outbuf;
-
-    return $return; 
-  }
-
-
-
-
-
-
-/*  function set_webget_default($webget){
-    if (!$webget->default) return;
-
-    foreach ($webget->default as $property => $options)
-      foreach ($options as $value)
-        if ($value != null && !$webget->$property)
-          $webget->$property = $value;
-  }*/
-  
+ }
 }
 
 function &array_get_nested(&$arr, $path, $separator = '.') 
