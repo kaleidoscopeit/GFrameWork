@@ -9,28 +9,28 @@ $rpc = array (array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["user"]',
+    'variable:$_STDIN["user"]',
 )),
 
 'pass' => array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["pass"]',
+    'variable:$_STDIN["pass"]',
 )),
 
 'domain' => array (
   'type'     => 'string',
   'required' => false,
   'origin'   => array (
-    'variable:$_buffer["domain"]',
+    'variable:$_STDIN["domain"]',
 )),
 
 'auth_engine' => array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["auth_engine"]',
+    'variable:$_STDIN["auth_engine"]',
     'variable:$_->settings["auth_engine"]',
 ))
 
@@ -38,23 +38,23 @@ $rpc = array (array (
 
 /* rpc function */
  
-function(&$_, $_buffer, &$_output) use (&$self)
+function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-  $user   = $_buffer['user'];
-  $pass   = $_buffer['pass'];
-  $domain = $_buffer['domain'];
+  $user   = $_STDIN['user'];
+  $pass   = $_STDIN['pass'];
+  $domain = $_STDIN['domain'];
 
   /* check authentication  credentials */  
-  $_->call("system.auth.engine.".$_buffer["auth_engine"].".ckuser", $_buffer);
+  $_->call("system.auth.engine.".$_STDIN["auth_engine"].".ckuser", $_STDIN);
 
-  if($_buffer[0]['signal'] == 'AUTH_CHECKUSER_ACCEPTED') 
-    $_->static['auth']['user'] = $_buffer[1];
+  if($_STDIN[0]['signal'] == 'AUTH_CHECKUSER_ACCEPTED') 
+    $_->static['auth']['user'] = $_STDIN[1];
  	
   /* calls login custom function */
   if (is_callable($_->settings['auth_login_event'])) {
    		/* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
-  		 if (!$_->settings['auth_login_event']($_buffer, $_)){
-  		   $_output[0] = array(
+  		 if (!$_->settings['auth_login_event']($_STDIN, $_)){
+  		   $_STDOUT[0] = array(
   		    'desc'   => "Authentication stack error!!!! Contact your sys admin.",
   		    'signal' => 'AUTH_LOGINSTACK_ERROR',
   		    'call'   => $self['name']);
@@ -62,9 +62,9 @@ function(&$_, $_buffer, &$_output) use (&$self)
     }
   }
 
-  $_output[0] = array('signal' => $_buffer[0], 'call' => $self['name']);
+  $_STDOUT[0] = array('signal' => $_STDIN[0], 'call' => $self['name']);
   
-  if($_buffer[0]['signal'] == 'AUTH_CHECKUSER_ACCEPTED')
+  if($_STDIN[0]['signal'] == 'AUTH_CHECKUSER_ACCEPTED')
     return TRUE;    
   else
     return FALSE;

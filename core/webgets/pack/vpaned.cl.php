@@ -21,7 +21,7 @@ class pack_vpaned {
     /* builds code */    
     $_->buffer .= '<div style="'.$this->style.";".
                   $_->ROOT->boxing($this->boxing ).'" '.
-                  'type="pack:vpaned" id="'.$this->id.'" '.
+                  'wid="0161" id="'.$this->id.'" '.
                   ($this->handle ? 'handle="'.$this->handle.'" ' : '').
                   ($this->vsize ? 'vsize="'.$this->vsize.'" ' : '').
                   '>';

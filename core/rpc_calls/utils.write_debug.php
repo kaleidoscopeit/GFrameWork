@@ -11,7 +11,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-      'variable:$_buffer["message"]',
+      'variable:$_STDIN["message"]',
 )),
 
 /*  debug file  */

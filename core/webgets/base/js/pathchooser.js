@@ -2,10 +2,10 @@ $_.js.reg['0060']={
   a:['path'],
   f:['onclick','onchange'],
   b:function(n){with(n){
-    c=n.children[2];
-    i=n.children[0];
+    n.c=n.children[2];
+    n.i=n.children[0];
     n.value=i.value;
-    
+
     n.setpath = function(p){
       p=p.split('/');
       if(p[0]=='')p.shift();
@@ -13,7 +13,7 @@ $_.js.reg['0060']={
       c.innerHTML='';
       
       while(p.length>0){
-        b=$_.cre('button');
+        var b=$_.cre('button');
         b.value='/'+p.join('/');
         i=p.pop();
         b.innerHTML=i;

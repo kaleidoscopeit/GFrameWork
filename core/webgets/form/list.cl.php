@@ -42,13 +42,15 @@ class form_list
 
 
     /* builds code */    
-    $_->buffer .= '<div wid="02B0" '.$wclass.'>'.
+    $_->buffer .= '<div wid="02B0" '.$wclass.' opt'.$item_style.'>'.
                   '<select name="'.$this->id.'" id="'.$this->id.'" '.
-                  'multiple '.$css_style.
+                  'multiple '.$css_style.                  
                   ($this->disabled ? 'disabled="true" ' : '').
                   $_->ROOT->format_html_events($this).
                   ($this->tip ? 'title="'.$this->tip.'" ' : '').'>';
-        
+
+
+    
     if($this->items['values']) {
       foreach ($this->items['values'] as $key => $value) {
         $_->buffer .= '<option value="'.$value.'" '.$item_style.

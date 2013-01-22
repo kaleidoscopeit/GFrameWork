@@ -45,7 +45,7 @@ class _
     
     /* imports the project configuration file and 
        the configuration database engine */
-    require "config.php";                                    
+    require "etc/config.php";                                    
 
     /* Authentication checkpoint */
 //    if (!$_->call('system.auth.check',$_buf))
@@ -112,17 +112,17 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
   /* Structured RPC API.
    *  
    *
-   * $path        : 'path' of the RPC
+   * $rpc_name    : 'path' of the RPC
    *
-   * $_buffer      :  array to be used as buffer, contains the input values 
+   * $_STDIN      :  array to be used as buffer, contains the input values 
    *                 when the macro is called and the final content depends
    *                 on $output switches (default : only the result)
    *
    * $options     : list of switches
    *
-   *   - stack  ->  the result of current macro will added to the $_buffer; 
+   *   - stack  ->  the result of current macro will added to the $_STDIN; 
    *                every previous similar values will be overwritten
-   *   - path   ->  the result of current call will added to the $_buffer
+   *   - path   ->  the result of current call will added to the $_STDIN
    *                in a sub array labeled as the path of the call
    *   - label  ->  the result of current call will nested in a sub-array
    *                with a key named as the next value in the $options array
@@ -133,9 +133,9 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
    * right response.
    */ 
 
-  function call ($rpc_name, &$_buffer, $options = '')
-  { 
-    if (!isset($_buffer)) $_buffer = array();
+  function call ($rpc_name, &$_STDIN, $options = '')
+  {
+    if (!isset($_STDIN)) $_STDIN = array();
 
     $context_path['system'] = '../core/rpc_calls/';
     $context_path['user']   = 'lib/rpc_calls/';
@@ -165,15 +165,15 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
     $function  = $this->rpcs[$rpc_name][1];    
 
     /* checks inputs parameters rules */
-    $rpc_check = $this->_call_param_check($_buffer, $this->rpcs[$rpc_name]);
+    $rpc_check = $this->_call_param_check($_STDIN, $this->rpcs[$rpc_name]);
 
     if($rpc_check !== true) {
-      $_buffer['STDERR'] = $rpc_check;
+      $_STDIN['STDERR'] = $rpc_check;
       return false;
     }
  
     /* call the RPC */
-    $rpc_status = $function($this, $_buffer, $rpc_response);
+    $rpc_status = $function($this, $_STDIN, $rpc_response);
 
 //    echo $rpc_name. '    '.$rpc_status."\n";
     
@@ -212,11 +212,11 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
     /* merge input buffer with the call response */    
     if (in_array('stack',$options)) {
       if (!is_array($output_buffer)) $output_buffer = array($output_buffer);
-      $_buffer = array_merge($_buffer, $output_buffer);
+      $_STDIN = array_merge($_STDIN, $output_buffer);
     }
 
     /* or returns only the call response */          
-    else $_buffer = $output_buffer;
+    else $_STDIN = $output_buffer;
 
     /* CALL END */  
     return $rpc_status;    
@@ -224,7 +224,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
 
 
 
- function _call_param_check(&$_buffer, $call)
+ function _call_param_check(&$_STDIN, $call)
  {
    global $_;
 
@@ -237,7 +237,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
       switch ($rule[0]) {
          // Single variable assignement
         case 'variable' :
-          eval('if(isset('.$rule[1].'))$_buffer[$name] = '.$rule[1].';');
+          eval('if(isset('.$rule[1].'))$_STDIN[$name] = '.$rule[1].';');
           break;
           
         case 'call' :
@@ -246,34 +246,34 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
           $args = explode(',', $rule[1][1]);
           foreach($args as $argv){
             $argv = explode('=', $argv);
-            $_buffer[$name][$argv[0]] = $argv[1];
+            $_STDIN[$name][$argv[0]] = $argv[1];
           }
-          $this->call($call, $_buffer[$name]);
+          $this->call($call, $_STDIN[$name]);
           break;
         
         // composite string. May be made by a mix of quoted text and variables 
         case 'string' :
-          eval('$_buffer[$name] = '.$rule[1].';');
-          if(substr($_buffer[$name],0,1) != '"') $pre = '"';
-          if(substr($_buffer[$name],-1,1) != '"') $post = '"';
-          $_buffer[$name] = $pre.$_buffer[$name].$post;
-          eval('$_buffer[$name] = '.$_buffer[$name].';');
+          eval('$_STDIN[$name] = '.$rule[1].';');
+          if(substr($_STDIN[$name],0,1) != '"') $pre = '"';
+          if(substr($_STDIN[$name],-1,1) != '"') $post = '"';
+          $_STDIN[$name] = $pre.$_STDIN[$name].$post;
+          eval('$_STDIN[$name] = '.$_STDIN[$name].';');
           break;
           
         case 'code' :
           ob_start();
           eval($rule[1].";");
-          $_buffer[$name] = ob_get_contents();
+          $_STDIN[$name] = ob_get_contents();
           ob_end_clean();
           break;
       }
 
       /* breaks if one of the origin gives a result */
-      if($_buffer[$name] !== null) break;
+      if($_STDIN[$name] !== null) break;
     }
 
     /* check strict rules (IT'S A VERY VERY UGLY CODE)*/
-    if (!isset($_buffer[$name])) {
+    if (!isset($_STDIN[$name])) {
       if ($options['required'] == true)
         $bad = "Cannot get required param -> '".$name."'.";
     }
@@ -282,14 +282,14 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
       $bad_text = "Required param type not match (".
           "param : '".$name."', ".
           "required : '".$options['type']."', ".
-          "found : '".gettype($_buffer[$name])."').";
+          "found : '".gettype($_STDIN[$name])."').";
           
-      if (gettype($_buffer[$name]) != $options['type'])
+      if (gettype($_STDIN[$name]) != $options['type'])
 
         /* not alwais a number is passed as it is, but may be passed as string
          * this code verify, in case of a numeric value is required but a
          * string is recognized, if it's really a numberic value */ 
-        if(gettype($_buffer[$name]) == 'string' &&
+        if(gettype($_STDIN[$name]) == 'string' &&
            ($options['type'] == 'float' ||
             $options['type'] == 'bool' ||
             $options['type'] == 'integer')) {
@@ -299,7 +299,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
             case 'float' :
             case 'bool' :
             case 'integer' :
-              if(!is_numeric($_buffer[$name])) $bad = $bad_text;
+              if(!is_numeric($_STDIN[$name])) $bad = $bad_text;
               break;
           }
         }
@@ -314,7 +314,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         'signal' => 'PARAM_CHECK_ERROR', 
         'call'   => array($call['name']),
         'rule'   => $call[0],
-        'param'  => $_buffer);
+        'param'  => $_STDIN);
     }
   }
 

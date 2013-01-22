@@ -12,7 +12,7 @@ $rpc = array(array(
   'type'     => 'array',
   'required' => true,
   'origin'   => array (
-      'variable:$_buffer["groups"]',
+      'variable:$_STDIN["groups"]',
 )),
 
 ),

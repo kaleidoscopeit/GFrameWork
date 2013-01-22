@@ -11,14 +11,14 @@ $rpc = array (array (
   'type'     => 'array',
   'required' => false,
   'origin'   => array (
-    'variable:$_buffer["filter"]',
+    'variable:$_STDIN["filter"]',
 ))
 
 ),
 
 /* rpc function */
  
-function(&$_, $_buffer, &$_output) use (&$self)
+function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* Import authentication files */
   $passwd = file('vars/auth/passwd.php');
@@ -47,16 +47,16 @@ function(&$_, $_buffer, &$_output) use (&$self)
   }     
 
   // Filter results
-  if ($_buffer['filter']){
+  if ($_STDIN['filter']){
    foreach ($ulist as $key => $user) {
-    if (!array_intersect($_buffer['filter'], $user['group']))
+    if (!array_intersect($_STDIN['filter'], $user['group']))
     unset($ulist[$key]);
    }  
   }
 
-  $_output[0]['signal'] = 'AUTH_USERLIST_READY';
-  $_output[0]['call']   = $self['name'];
-  $_output[1] = $ulist;
+  $_STDOUT[0]['signal'] = 'AUTH_USERLIST_READY';
+  $_STDOUT[0]['call']   = $self['name'];
+  $_STDOUT[1] = $ulist;
   return TRUE;      
 });  
 

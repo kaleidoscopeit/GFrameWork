@@ -72,7 +72,7 @@ class base_progressbar
                      
     /* builds code */
     $_->buffer .= '<div id="'.$this->id.
-                  '" wid="0030" type="base:progressbar" ' . $css_style.
+                  '" wid="0030" ' . $css_style.
                   $_->ROOT->format_html_events($this).
                   'ornt="'.$this->orientation.'">'.
                   '<div '.$css_style_bar.'></div>';

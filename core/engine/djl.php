@@ -25,7 +25,7 @@ class _engine_djl {
         die("Script not found.");
     }
 
-    require('config.php');
+    require('etc/config.php');
 
     if (!is_file($this->CALL_SOURCE.'.js'))
       die("Script not found.");

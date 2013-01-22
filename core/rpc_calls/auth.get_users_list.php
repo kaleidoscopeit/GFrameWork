@@ -11,21 +11,21 @@ $rpc = array (array (
   'type'     => 'array',
   'required' => false,
   'origin'   => array (
-    'variable:$_buffer["filter"]',
+    'variable:$_STDIN["filter"]',
 )),
 
 'domain' => array (
   'type'     => 'string',
   'required' => false,
   'origin'   => array (
-    'variable:$_buffer["domain"]',
+    'variable:$_STDIN["domain"]',
 )),
 
 'auth_engine' => array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["auth_engine"]',
+    'variable:$_STDIN["auth_engine"]',
     'variable:$_->settings["auth_engine"]',
 ))
 
@@ -33,14 +33,14 @@ $rpc = array (array (
 
 /* rpc function */
  
-function(&$_, $_buffer, &$_output) use (&$self)
+function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* check authentication  credentials */  
   $_->call(
-    "system.auth.engine.".$_buffer["auth_engine"].".getulist",
-    $_buffer);
+    "system.auth.engine.".$_STDIN["auth_engine"].".getulist",
+    $_STDIN);
 
-  $_output = $_buffer;
+  $_STDOUT = $_STDIN;
   return TRUE;
 });  
 

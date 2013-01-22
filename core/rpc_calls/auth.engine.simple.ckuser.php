@@ -9,14 +9,14 @@ $rpc = array (array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["user"]',
+    'variable:$_STDIN["user"]',
 )),
 
 'pass' => array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["pass"]',
+    'variable:$_STDIN["pass"]',
 )),
 
 'hashing_method' => array (
@@ -31,7 +31,7 @@ $rpc = array (array (
 
 /* rpc function */
  
-function(&$_, $_buffer, &$_output) use (&$self)
+function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* Import authentication files */
   $passwd = file('vars/auth/passwd.php');
@@ -42,19 +42,19 @@ function(&$_, $_buffer, &$_output) use (&$self)
     $record = explode(':', trim ($record));
 
     /* if at least in one record the user name exists checks the password */
-    if ('//'.$_buffer['user'] == $record[0]) {
-      switch($_buffer['hashing_method']) {
+    if ('//'.$_STDIN['user'] == $record[0]) {
+      switch($_STDIN['hashing_method']) {
         case 'md5':
-          if (md5($_buffer['pass']) == $record[2]) $accepted = TRUE;
+          if (md5($_STDIN['pass']) == $record[2]) $accepted = TRUE;
           break;
       }
 
       /* if accepted return the user information */      
       if($accepted) {
-        $_output = array();
-        $_output[0]['signal'] = 'AUTH_CHECKUSER_ACCEPTED';
-        $_output[0]['call']   = $self['name'];
-        $_output[1]  = array(
+        $_STDOUT = array();
+        $_STDOUT[0]['signal'] = 'AUTH_CHECKUSER_ACCEPTED';
+        $_STDOUT[0]['call']   = $self['name'];
+        $_STDOUT[1]  = array(
           'id'    => 	substr($record[0], 2),
           'name'  => $record[1]);
 
@@ -65,16 +65,16 @@ function(&$_, $_buffer, &$_output) use (&$self)
     						$group = substr($group[0],2);
     
     						if (in_array($uid, $users))
-    						  $_output[1]['group'][] = $group;						
+    						  $_STDOUT[1]['group'][] = $group;						
     					}
 
         return TRUE;            
       }
       
       else {
-        $_output[0]['signal'] = 'AUTH_CHECKUSER_WRONGPASS';
-        $_output[0]['call']   = $self['name'];
-        $_output[1]  = array(
+        $_STDOUT[0]['signal'] = 'AUTH_CHECKUSER_WRONGPASS';
+        $_STDOUT[0]['call']   = $self['name'];
+        $_STDOUT[1]  = array(
           'id'    => 	substr($record[0], 2),
           'name'  => $record[1]);
         return FALSE;            
@@ -83,9 +83,9 @@ function(&$_, $_buffer, &$_output) use (&$self)
   }    
 
   /* else gives 'wrong user' error */
-  $_output[0]['signal'] ='AUTH_CHECKUSER_WRONGUSER';
-  $_output[0]['call']   = $self['name'];
-  $_output[1]  = array('id' => $_buffer['user']);
+  $_STDOUT[0]['signal'] ='AUTH_CHECKUSER_WRONGUSER';
+  $_STDOUT[0]['call']   = $self['name'];
+  $_STDOUT[1]  = array('id' => $_STDIN['user']);
   return FALSE;
 });  
 

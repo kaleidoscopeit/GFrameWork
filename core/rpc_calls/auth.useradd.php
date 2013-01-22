@@ -11,7 +11,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-      'variable:$_buffer["uid"]',
+      'variable:$_STDIN["uid"]',
 )),
 
 /* new user password */
@@ -20,7 +20,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-      'variable:$_buffer["password"]',
+      'variable:$_STDIN["password"]',
 )),
 
 /* user name */
@@ -29,7 +29,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => false,
   'origin'   => array (
-      'variable:$_buffer["uname"]',
+      'variable:$_STDIN["uname"]',
 )),
 
 ),

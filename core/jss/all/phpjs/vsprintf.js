@@ -1,0 +1,1 @@
+vsprintf=function(e,t){$_.jsimport('system.phpjs.sprintf');return this.sprintf.apply(this,[e].concat(t))}

@@ -11,7 +11,7 @@ $rpc = array(array(
   'type'     => 'array',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["mail_to"]',
+    'variable:$_STDIN["mail_to"]',
 )),
 
 
@@ -21,7 +21,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["subject"]'
+    'variable:$_STDIN["subject"]'
 )),
 
 
@@ -31,7 +31,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["message"]'
+    'variable:$_STDIN["message"]'
 )),
 
 
@@ -41,8 +41,8 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => false,
   'origin'   => array (
-    'variable:$_buffer["message_html"]',
-    'code:echo(nl2br(htmlentities($_buffer["message"])))'
+    'variable:$_STDIN["message_html"]',
+    'code:echo(nl2br(htmlentities($_STDIN["message"])))'
 )),
 
 
@@ -52,7 +52,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["sender"]',
+    'variable:$_STDIN["sender"]',
     'variable:$_->settings["mail_sender"]'
 )),
 
@@ -63,9 +63,9 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["sender_name"]',
+    'variable:$_STDIN["sender_name"]',
     'variable:$_->settings["mail_sender_name"]',
-    'variable:$_buffer["sender"]'
+    'variable:$_STDIN["sender"]'
 )),
 
 
@@ -75,7 +75,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["smtp_server"]',
+    'variable:$_STDIN["smtp_server"]',
     'variable:$_->settings["mail_smtp_server"]',
 )),
 
@@ -86,7 +86,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => false,
   'origin'   => array (
-    'variable:$_buffer["smtp_user"]',
+    'variable:$_STDIN["smtp_user"]',
     'variable:$_->settings["mail_smtp_user"]'
 )),
 
@@ -97,7 +97,7 @@ $rpc = array(array(
   'type'     => 'string',
   'required' => false,
   'origin'   => array (
-    'variable:$_buffer["smtp_pass"]',
+    'variable:$_STDIN["smtp_pass"]',
     'variable:$_->settings["mail_smtp_pass"]'
 )),
 
@@ -105,7 +105,7 @@ $rpc = array(array(
 
 /* rpc function */
   
-function(&$_, $_buffer, &$_output) use (&$self)
+function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   require_once("../core/3rd/PHPMailer/class.phpmailer.php");
 
@@ -114,34 +114,34 @@ function(&$_, $_buffer, &$_output) use (&$self)
   /* server stuff */
 
   $mail->IsSMTP();
-  $mail->Host       = $_buffer["smtp_server"];
+  $mail->Host       = $_STDIN["smtp_server"];
   $mail->SMTPDebug  = 0;                    // enables SMTP debug information
                                             // 1 = errors and messages
                                             // 2 = messages only
   $mail->SMTPAuth   = true;
 //$mail->Port       = 26;
-  $mail->Username   = $_buffer["smtp_user"];
-  $mail->Password   = $_buffer["smtp_pass"];
+  $mail->Username   = $_STDIN["smtp_user"];
+  $mail->Password   = $_STDIN["smtp_pass"];
 
   
   /* message stuff */
 
-  $mail->SetFrom      ($_buffer["sender"], $_buffer["sender_name"]);
+  $mail->SetFrom      ($_STDIN["sender"], $_STDIN["sender_name"]);
 //$mail->AddReplyTo   ("name@yourdomain.com","First Last");
-  $mail->Subject    = $_buffer["subject"];
+  $mail->Subject    = $_STDIN["subject"];
   
-  $mail->AltBody    = $_buffer["message"];
-  $body             = eregi_replace("[\]",'',$_buffer["message_html"]);
-  $mail->MsgHTML      ($_buffer["message_html"]);
+  $mail->AltBody    = $_STDIN["message"];
+  $body             = eregi_replace("[\]",'',$_STDIN["message_html"]);
+  $mail->MsgHTML      ($_STDIN["message_html"]);
 
-  foreach($_buffer["mail_to"] as $receiver) {
+  foreach($_STDIN["mail_to"] as $receiver) {
     $mail->AddAddress($receiver, $receiver);
   }
 
 //$mail->AddAttachment("images/phpmailer.gif");
 
   if(!$mail->Send()) {
-    $_output['STDERR'] = array(
+    $_STDOUT['STDERR'] = array(
       'signal'    => 'EMAIL_SEND_FAILED',
       'call'      => array($self['name']),
       'info'      => $mail->ErrorInfo);

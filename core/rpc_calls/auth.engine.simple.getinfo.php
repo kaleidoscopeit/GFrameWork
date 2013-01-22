@@ -9,7 +9,7 @@ $rpc = array (array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_buffer["user"]',
+    'variable:$_STDIN["user"]',
 )),
 
 

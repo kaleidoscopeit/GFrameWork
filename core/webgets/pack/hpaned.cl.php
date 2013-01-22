@@ -21,7 +21,7 @@ class pack_hpaned {
     /* builds code */
     $_->buffer .= '<div style="'.$this->style.";".
                   $_->ROOT->boxing($this->boxing).'">'.
-                  '<div type="pack:hpaned" id="'.$this->id.'" '.
+                  '<div wid="0161" id="'.$this->id.'" '.
                   ($this->handle ? 'handle="'.$this->handle.'" ' : '').
                   ($this->hsize ? 'hsize="'.$this->hsize.'" ' : '').
                   '>';

@@ -23,13 +23,24 @@ var $_={
       if(typeof $_.js.reg[w.wid]!='undefined'){
         r=$_.js.reg[w.wid];
         for(a in r.a)w[r.a[a]]=$_.gea(w,r.a[a]);
-        for(f in r.f)w[r.f[f]]=new Function($_.gea(w,r.f[f]));
+        for(f in r.f)w[r.f[f]]=new Function($_.gea(w,r.f[f])||"");
         r.b(w);
-      }       
+      }
     }    
     if(ch.length>0) $_.each(ch,function(v,i){$_.mloop(v,(w.wid?w:p));});
   },
- 
+
+  // get a plain array containing all w's child webgets  
+  getChildWebgets:function(w){
+    var cw=w.childNodes,tmp=[];
+    $_.each(cw,function(v,i){
+      v.wid=$_.gea(v,'wid');
+      if(v.wid) tmp.push(v);
+      tmp=tmp.concat($_.getChildWebgets(v));
+    });
+    return tmp;
+  },
+     
   // space saving wrapper for common functions
   gea:function(n,a){try{var ret=n.getAttribute(a);}catch(e){} return ret},
   cre:function(n){return document.createElement(n);},
@@ -63,18 +74,19 @@ var $_={
     var l=(isNaN(o.length)?$_.count(o):o.length);
     for(var i=0;i<l;i++)f(o[i],i);
   },
- 
+
+  inArray:function(n,h){
+    for(var i=0;i<h.length;i++)if(n==h[i])return i;
+    return -1;
+  },
+   
   // XMLHttpRequest crossbrowser wrapper 
   xhr:function(){
-    try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); }
-    catch (e) {}
-    try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); }
-    catch (e) {}
-    try { return new ActiveXObject("Microsoft.XMLHTTP"); }
-    catch (e) {}
-    try { return new XMLHttpRequest(); }
-    catch (e) {}
-      throw new Error("This browser does not support XMLHttpRequest.");  
+    try {return new ActiveXObject("Msxml2.XMLHTTP.6.0");} catch(e) {}
+    try {return new ActiveXObject("Msxml2.XMLHTTP.3.0");} catch(e) {}
+    try {return new ActiveXObject("Microsoft.XMLHTTP");} catch(e) {}
+    try {return new XMLHttpRequest();} catch(e) {}
+    throw new Error("This browser does not support XMLHttpRequest.");  
   },
  
   // executes a remote call asynchronously, works similar the one at server side
@@ -127,7 +139,7 @@ var $_={
     xhr.open('GET',url,false);
     xhr.setRequestHeader('Content-Type', 'application/text');
     xhr.send(null);
-    try{eval(xhr.responseText);}
+    try{eval(xhr.responseText);} 
     catch(e){
       alert(xhr.responseText);er=1;
       throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText)
@@ -162,17 +174,17 @@ var $_={
 
 
 /* Client code initialization */
-window.addEventListener("load", function(){
-  var s;
+$_.ade(window, "load", function(){
   document.body.id='root';
   $_.mloop(document.body,{childWebgets:[]});
 
-  for(s in $_.lib)$_.lib[s].construct();
+  for(var s in $_.lib)$_.lib[s].construct();
 
   for(s in $_.webgets){
     if($_.js.reg[$_.webgets[s].wid])
       $_.js.reg[$_.webgets[s].wid].fs($_.webgets[s])
   }
 
-  for(s in $_.lib)$_.lib[s].flush();
+//  for(s in $_.lib)$_.lib[s].flush();
+
 }, false);
