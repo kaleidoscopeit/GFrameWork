@@ -11,7 +11,7 @@ $rpc = array(array(
   'type'     => '[variable_type]',
   'required' => [true or false],
   'origin'   => array (
-      'variable:$_buffer["<<<argument_name>>>"]',
+      'variable:$_STDIN["<<<argument_name>>>"]',
       '[origin_type]:[origin_code]',
 )),
 
@@ -19,7 +19,7 @@ $rpc = array(array(
 
 /* rpc function */
   
-function(&$_, $_buffer, &$_output) use (&$self)
+function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
 	/* RPC Code */
 

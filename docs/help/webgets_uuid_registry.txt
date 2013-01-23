@@ -4,6 +4,7 @@ base:image        0020
 base:progressbar  0030
 base:icon         0040
 base:codesnippet  0050
+base:pathchooser  0060
 
 pack:area         0100
 pack:hlayout      0110
@@ -16,6 +17,11 @@ pack:stack        0130
 pack:stackelm     0131
 pack:iframe       0140
 pack:iview        0150
+pack:hpane        0160
+pack:hpaned       0161
+pack:vpane        0170
+pack:vpaned       0171
+pack:modal        0180
 
 form:simple       0200
 form:entry        0210
@@ -32,3 +38,5 @@ form:list         02B0
 
 data:table        0300
 data:tablecell    0301
+data:jtable       0310
+data:jtablecell   0311

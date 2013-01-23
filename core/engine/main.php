@@ -322,6 +322,24 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
  }
 }
 
+function register_attributes(&$webget, $attributes, $grab)
+{
+  $grab = array_merge($grab,
+    array (
+      'id',
+      'ondefine',
+      'onflush',
+      'nopaint',
+      'boxing',
+      'parent'));
+
+  foreach ($grab as $attribute_name) {
+    $webget->$attribute_name = $attributes[$attribute_name];
+    unset($attributes[$attribute_name]);
+  }
+  $webget->attributes = $attributes;
+}
+
 function &array_get_nested(&$arr, $path, $separator = '.') 
 {
   if (!is_array($arr)) return false;

@@ -2,10 +2,19 @@ Planned :
 
  - Localization by using dynamic entities definition files
    (as firefox extensions does)
+ - XML View preprocessor to import entities
  - RPC CALLS parameter inter dependency and enabling triggers
  - RPC CALLS better separation e interaction with STDIN STDOUT STDERR 
  - RPC CALLS better handling database transaction inheritance
 
+23-01-2013
+
+ - New webgets attributes acquisition
+ - Moved various configuration files into /etc and reworked them
+ - Experiments about jtable and jtablecell AJAX'ish table webget
+ - Experimenting various ovrlay mechanism
+ - Various bug fix
+ 
 10-01-2013
 
  - New client side bootstrap called 'mloop' unifies all boot functions. 

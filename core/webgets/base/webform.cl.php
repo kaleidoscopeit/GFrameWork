@@ -330,7 +330,8 @@ class base_webform
    */
    
   function format_html_events ($webget)
-  {    
+  {
+    //    return;
     return 
       (isset($webget->onclick) ?
         'onclick="'.$webget->onclick.'" ' : '').
@@ -361,6 +362,14 @@ class base_webform
   }
   
   
+  function format_html_attributes ($webget)
+  {
+    foreach($webget->attributes as $key => $value)
+      if(is_string($value))
+        $out[] = $key . '="' . $value . '"';
+
+    return implode(' ', (array) @$out);
+  }
   
   /* Makes an array with the browser information 
    *

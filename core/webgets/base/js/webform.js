@@ -71,8 +71,8 @@ var $_={
  
   // TODO :
   each:function(o,f){
-    var l=(isNaN(o.length)?$_.count(o):o.length);
-    for(var i=0;i<l;i++)f(o[i],i);
+    if(o.length!=null)for(var i=0;i<o.length;i++)f(o[i],i);
+    else for(var i in o)f(o[i],i);    
   },
 
   inArray:function(n,h){
