@@ -1,5 +1,5 @@
 <?php
-class pack_modalw {
+class pack_modal {
   
   function __construct(&$_, $attrs)
   {

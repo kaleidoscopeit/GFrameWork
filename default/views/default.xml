@@ -1,7 +1,8 @@
 <?xml version="1.0"  encoding="UTF-8" ?>
 
-<base:webform title="G-Framework Web3.0 Toolkit"
-style="background-image:url('images/body-noise.png');">
+<base:webform
+ title="G-Framework Web3.0 Toolkit"
+ style="background-image:url('images/body-noise.png');">
   <pack:vlayout boxing="800px">
   
     <pack:vlaycell height="70px">
@@ -31,8 +32,10 @@ style="background-image:url('images/body-noise.png');">
             </pack:vlaycell>
             
             <pack:vlaycell style="background-color:#262626;">
-              <data:table id="table" rowheight="30px">
-                <data:tablecell class="menuitem">
+              <data:table id="table" rowheight="30px" send_to_client="true">
+                <data:tablecell 
+                 class="menuitem"
+                 onclick="mainpane.goto(table.result_set[this.index].view);">
                   <base:label
                     field="table:description"
                     halign="center"
@@ -48,7 +51,7 @@ style="background-image:url('images/body-noise.png');">
         <pack:hlaycell>
           <pack:iview 
             id="mainpane"
-            view="codesnippet"
+            view="framework_structure"
             class="iview"
             normal_class="iview_normal"
             in_class="iview_in"

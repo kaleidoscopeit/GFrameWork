@@ -4,7 +4,9 @@ class form_list
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class','field','field_format','labels','values','default',
+      'item_style','item_class'));      
     
     /* flow control server event */
     eval($this->ondefine);
@@ -29,34 +31,33 @@ class form_list
     /* builds syles */
     $wclass    = 'class="w02B0 '.$_->ROOT->boxing($this->boxing).'" ';
                  
-    $css_style = $_->ROOT->style_registry_add($this->style).
-                 $this->class;
+    $css_style = $_->ROOT->style_registry_add($this->style)
+               . $this->class;
 
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
 
-    $item_style = $_->ROOT->style_registry_add($this->item_style).
-                  $this->item_class;
+    $item_style = $_->ROOT->style_registry_add($this->item_style)
+                . $this->item_class;
                   
     if($item_style!="") $item_style = 'class="'.$item_style.'" ';
 
 
     /* builds code */    
-    $_->buffer .= '<div wid="02B0" '.$wclass.' opt'.$item_style.'>'.
-                  '<select name="'.$this->id.'" id="'.$this->id.'" '.
-                  'multiple '.$css_style.                  
-                  ($this->disabled ? 'disabled="true" ' : '').
-                  $_->ROOT->format_html_events($this).
-                  ($this->tip ? 'title="'.$this->tip.'" ' : '').'>';
+    $_->buffer .= '<div wid="02B0" '.$wclass.' opt'.$item_style.'>'
+                . '<select name="'.$this->id.'" id="'.$this->id.'" '
+                . $_->ROOT->format_html_attributes($this).' '
+                . 'multiple '.$css_style                  
+                . $_->ROOT->format_html_events($this).'>';
 
 
     
     if($this->items['values']) {
       foreach ($this->items['values'] as $key => $value) {
-        $_->buffer .= '<option value="'.$value.'" '.$item_style.
-                      ($this->default == $value ? 'selected' : '').'>'.
-                      $this->items['labels'][$key].
-                      '</option>';
+        $_->buffer .= '<option value="'.$value.'" '.$item_style
+                    . ($this->default == $value ? 'selected' : '').'>'
+                    . $this->items['labels'][$key]
+                    . '</option>';
       }        
     }    
         

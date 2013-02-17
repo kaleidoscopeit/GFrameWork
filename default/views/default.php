@@ -5,15 +5,19 @@
 $this->result_set=array(
 	 array('name'=>'base:label',
   	     'description'=>'Framework Structure',
-  	     'view'=>'structure'),
+  	     'view'=>'framework_structure'),
   	     
 	 array('name'=>'base:image',
-	       'description'=>'Item1',
-	       'view'=>'void'),
+	       'description'=>'Installation',
+	       'view'=>'installation'),
 	       
 	 array('name'=>'base:button',
-	       'description'=>'Item2',
-	       'view'=>'void'),
+	       'description'=>'Boxing',
+	       'view'=>'boxing'),
+	       
+	 array('name'=>'base:button',
+	       'description'=>'Codesnippet',
+	       'view'=>'codesnippet'),
 );
 
 //?webget.tablecell.onflush

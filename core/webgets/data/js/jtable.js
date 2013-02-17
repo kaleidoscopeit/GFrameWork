@@ -3,8 +3,9 @@ $_.js.reg['0310']={
 	f:['ready'],
 	b:function(n){
     n.populate = function(rs){
+      n.clear();n.recordset=rs;
       if(rs.length==null & $_.count(rs) == 0)return false;
-      n.clear();
+
       $_.each(rs,function(row,i){
         n.current_record = row;
         $_.each(n.nextSibling.childNodes,function(elm,ii){
@@ -12,7 +13,8 @@ $_.js.reg['0310']={
           n.appendChild(nelm);
           nelm.style.display="block";
           nelm.style.height = n.rowheight;
-
+          nelm.index = i;
+          
           var wbgidx = $_.getChildWebgets(nelm);
           wbgidx.unshift(nelm);
 

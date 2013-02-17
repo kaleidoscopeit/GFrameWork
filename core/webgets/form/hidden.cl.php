@@ -19,7 +19,7 @@ class form_hidden
     if ($this->nopaint) return;
 
     $_->buffer .= '<input name="'.$this->id.'" id="'.$this->id.'" '.
-                  'wid="0220" type="hidden"'.
+                  'wid="0220" type="hidden" '.
                   ($this->value ? 'value="'.$this->value.'" ' : '').'>';
   }
 }

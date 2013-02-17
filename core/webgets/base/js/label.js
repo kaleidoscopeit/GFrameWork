@@ -10,10 +10,10 @@ $_.js.reg['0010']={
     else n.sub=n;
 
 		n.caption=function(c){with(n){
-
 			if(c===undefined)return sub.textContent;
 			sub.textContent=c;
 			onchange();
+			return true;
 		}};
 		
 		n.valign=function(a){with(n){

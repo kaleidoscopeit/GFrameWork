@@ -32,11 +32,11 @@ $rpc = array(array(
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   $message= explode("\n", $_STDIN['message']);
-  
+
   foreach($message as $key=>$value) {
     $message[$key] = "[".date("Y-m-d H:i:s")."] ".
                      $_->CALL_OBJECT.":".
-                     $this->CALL_SOURCE." - ".
+                     $_->CALL_SOURCE." - ".
                      $value."\n";
   }
   

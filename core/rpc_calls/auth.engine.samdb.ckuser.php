@@ -25,7 +25,7 @@ $rpc = array (array (
  
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-  /* build parrword hash */
+  /* build password hash */
   $pass = $_STDIN["pass"];
   $pass=iconv('UTF-8','UTF-16LE',$pass);
   $MD4Hash=bin2hex(mhash(MHASH_MD4,$pass));

@@ -4,7 +4,8 @@ class data_jtable
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class'));
     
     /* flow control server event */
     eval($this->ondefine);
@@ -23,13 +24,12 @@ class data_jtable
                 $_->ROOT->style_registry_add($this->style).
                 $this->class;
                  
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+    if($css_style!="") $css_style = 'class="w0310 '.$css_style.'" ';
 
     /* builds code */
-    $_->buffer .= '<div id="'.$this->id.'" wid="0310" '.
-                  $_->ROOT->format_html_events($this).
-                  $css_style.' rowheight="'.$this->rowheight.
-                  '"></div><div>';
+    $_->buffer .= '<div id="'.$this->id.'" wid="0310" '
+                . $_->ROOT->format_html_attributes($this) . ' ' .
+                  $css_style.'></div><div>';
 
     /* flushes children */
     foreach ((array) @$this->childs as $child)

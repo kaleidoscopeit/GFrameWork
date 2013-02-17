@@ -16,6 +16,7 @@ $_.js.reg['02B0']={
       var out=[],opt=this.options,i;
       for(i in opt) {
         if(opt[i].selected) out.push(opt[i]);}
+      try{oncopy()} catch(e){};
       return out;
     },
 
@@ -36,12 +37,14 @@ $_.js.reg['02B0']={
         out.push(opt.shift())
       }
       this._refresh();
+      try{oncut()} catch(e){};
       return out;
     },
 
     n.paste = function(o){
       while(o[0]) this.add(o.shift());
       this._refresh();
+      try{onpaste()} catch(e){};
     },
 
     n.clear = function(){
@@ -55,10 +58,11 @@ $_.js.reg['02B0']={
       $_.each(v,function(v,i){
         $_.tmp.n.item_push(v[0],(v[1]?v[1]:v[0]))
       })
+      return true;
     },
 
     n.item_push = function(v,l){
-      no=$_.cre('option');
+      var no=$_.cre('option');
       no.className=n.parentNode.optclass;
       n.appendChild(no);
       no.value=v;

@@ -66,13 +66,15 @@ var $_={
  
   // TODO :count an object length
   count:function(o){
-    c=0;for(var i in o)c++;return c;
+    var c=0;for(var i in o)c++;return c;
   },
  
   // TODO :
   each:function(o,f){
+    if(!o||!f)return false;
     if(o.length!=null)for(var i=0;i<o.length;i++)f(o[i],i);
-    else for(var i in o)f(o[i],i);    
+    else for(var i in o)f(o[i],i);
+    return true;
   },
 
   inArray:function(n,h){
@@ -115,7 +117,7 @@ var $_={
     x.send(p);
     try{o=unserialize(x.responseText);}
     catch(e){
-      alert('Parsing Call response failed : '+x.responseText);
+      alert('Parsing Call response failed (' + m + ') : '+x.responseText);
       return false;}
 
     // if response is a string put that in the default subitem '0'
@@ -139,7 +141,7 @@ var $_={
     xhr.open('GET',url,false);
     xhr.setRequestHeader('Content-Type', 'application/text');
     xhr.send(null);
-    try{eval(xhr.responseText);} 
+    try{eval('window.'+xhr.responseText)} 
     catch(e){
       alert(xhr.responseText);er=1;
       throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText)
@@ -172,6 +174,10 @@ var $_={
 
 };
 
+/* convenient shortcut to open or goto a View */
+var openView=function(v){
+   window.location='?views/'+v;
+}
 
 /* Client code initialization */
 $_.ade(window, "load", function(){

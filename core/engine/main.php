@@ -307,7 +307,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         /* finally gives an error in no rules matches */       
         else $bad = $bad_text;
     }
-      
+
     if (isset($bad)) {
       return $_error = array(
         'desc'   => $bad,
@@ -317,7 +317,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         'param'  => $_STDIN);
     }
   }
-
+ 
   return true;
  }
 }
