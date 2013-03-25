@@ -20,12 +20,12 @@ class base_icon
     if ($this->nopaint) return;  
 
     /* builds code */
-    $_->buffer .=  '<div id="'.$this->id.'" wid="0040" '.
-                   'style="'.$this->style.";".
-                   $_->ROOT->boxing
-                   ($this->boxing, $this->size.'px', $this->size.'px').'" '.
-                   'theme="'.$this->theme.'"'.
-                   '/>';
+    $_->buffer[] = '<div id="' . $this->id . '" wid="0040" '
+                 . 'style="' . $this->style . ";"
+                 . $_->ROOT->boxing
+                   ($this->boxing, $this->size.'px', $this->size.'px') . '" '
+                 . 'theme="' . $this->theme . '"'
+                 . '/>';
   }  
 }
 ?>

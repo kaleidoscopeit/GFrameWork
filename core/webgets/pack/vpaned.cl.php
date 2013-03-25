@@ -19,17 +19,17 @@ class pack_vpaned {
     if ($this->nopaint) return;
 
     /* builds code */    
-    $_->buffer .= '<div style="'.$this->style.";".
-                  $_->ROOT->boxing($this->boxing ).'" '.
-                  'wid="0161" id="'.$this->id.'" '.
-                  ($this->handle ? 'handle="'.$this->handle.'" ' : '').
-                  ($this->vsize ? 'vsize="'.$this->vsize.'" ' : '').
-                  '>';
+    $_->buffer[] = '<div style="' . $this->style . ";"
+                 . $_->ROOT->boxing($this->boxing) . '" '
+                 . 'wid="0161" id="' . $this->id . '" '
+                 . ($this->handle ? 'handle="' . $this->handle . '" ' : '')
+                 . ($this->vsize ? 'vsize="' . $this->vsize . '" ' : '')
+                 . '>';
 
     /* flushes children */
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    $_->buffer .= '</div>';
+    $_->buffer[] = '</div>';
   }
   
 }

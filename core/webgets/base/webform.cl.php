@@ -58,7 +58,6 @@ class base_webform
     
     /* static and dynamic webgets specific CSS and JS inclusions */
     foreach ($_->webgets as $webget) {
-      
       $webget_type
         = explode('_', get_class($webget));
       $webget_js
@@ -111,39 +110,42 @@ class base_webform
     $css_includes = array_merge($css_includes, $css_dyn_includes);
     
     foreach($css_includes as $css => $status) $css_includes[$css] 
-      = '<link rel="stylesheet" type="text/css" href="'.$css.'">';
+      = '<link rel="stylesheet" type="text/css" href="'.$css.'" />';
 
-    $css_includes = implode('', $css_includes);
+    //$css_includes = implode('', $css_includes);
     
           
     /* JS finalization */
     foreach((array) @$js_includes as $js => $status) $js_includes[$js]
       = '<script type="text/JavaScript" src="'.$js.'"></script>';
 
-    $js_includes = implode('', $js_includes);
+    //$js_includes = implode('', $js_includes);
 
 
     /**************************************************************************/
     /*                  Writes the code and flushes children                  */
     /**************************************************************************/
 
-    $_->buffer .= 
-      '<!DOCTYPE HTML5><html><head>'.
-      ($this->title ? '<title>'.$this->title.'</title>' : '').
-      '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">'.
-      $css_includes.$js_includes.
-      '<script type="text/JavaScript">'.$this->global_javascript.'</script>'.
-      '<body wid="0000" class="'.$this->class.'" '.
-      ($this->onload ? 'onload="'.$this->onload.'" ' : '').
-      ($this->onunload ? 'onunload="'.$this->onunload.'" ' : '').
-      ($this->onbeforeunload?'onbeforeunload="'.$this->onbeforeunload.'" ':'').
-      ($this->style ? 'style="'.$this->style.'" ' : '').
-      $this->format_html_events($this).'>';
+    $_->buffer[] = '<!DOCTYPE HTML5>';
+    $_->buffer[] = '<html>';
+    $_->buffer[] = '<head>';
+    $_->buffer[] = ($this->title ? '<title>'.$this->title.'</title>' : '');
+    $_->buffer[] = '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">';
+    $_->buffer   = array_merge($_->buffer, $css_includes, $js_includes);
+    $_->buffer[] = '<script type="text/JavaScript">'.$this->global_javascript.'</script>';
+    $_->buffer[] = '<body wid="0000" class="'.$this->class.'" '
+                 . ($this->onload ? 'onload="'.$this->onload.'" ' : '')
+                 . ($this->onunload ? 'onunload="'.$this->onunload.'" ' : '')
+                 . ($this->onbeforeunload?'onbeforeunload="'.$this->onbeforeunload.'" ':'')
+                 . ($this->style ? 'style="'.$this->style.'" ' : '')
+                 . $this->format_html_events($this).'>';
+    
 
     /* flushes children */
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    $_->buffer .= '</body></html>';
+    $_->buffer[] = '</body>';
+    $_->buffer[] = '</html>';
   }
   
 

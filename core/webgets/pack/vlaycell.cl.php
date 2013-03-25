@@ -28,23 +28,24 @@ class pack_vlaycell {
     $css_style                = $_->ROOT->style_registry_add($style).' ';
 
     /* builds code */
-    $_->buffer .= '<div id="'.$this->id.'" wid="0121" '.
-                  'class="w0121 '.$css_style.
-                  ($this->within ? '' : $this->class).'" '.
-                  $_->ROOT->format_html_events($this).
-                  '>';
+    $_->buffer[] = '<div id="'.$this->id.'" wid="0121" '
+                 . 'class="w0121 ' . $css_style
+                 . ($this->within ? '' : $this->class) . '" '
+                 . $_->ROOT->format_html_events($this)
+                 . '>';
 
     if($this->within) 
-      $_->buffer .=  '<div class="w0122 '.$this->class.'" '.
-                     ($this->style ? 'style="'.$this->style.'" ' : '').
-                     '>';
+      $_->buffer[] = '<div class="w0122 ' . $this->class . '" '
+                   . ($this->style ? 'style="'.$this->style.'" ' : '')
+                   . '>';
 
     /* flushes children */
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    if($this->within) $_->buffer .= '</div>';
+    if($this->within)
+      $_->buffer[] = '</div>';
     
-    $_->buffer .='</div>';
+    $_->buffer[] ='</div>';
 
   }
   

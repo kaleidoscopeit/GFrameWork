@@ -14,6 +14,8 @@ class _engine_views {
     $this->webget_enum           = 0;
     $this->webget_path           = '../core/webgets/';
     $this->static['js-includes'] = '';                                             /* resets js inclusion index */    
+    $this->buffer = array('');
+    
   }
   
   /****************************************************************************/
@@ -50,9 +52,6 @@ class _engine_views {
     if ($this->system_error_queue)
       foreach ($this->system_error_queue as $error)
         $this->buffer .= $error;
-
-    /* prints end microtime (for benchmarking purpuose) */
-    //echo 'microtime = '.( microtime (true) - $microtime);
 
     return $this->buffer;
   }
@@ -165,7 +164,9 @@ class _engine_views {
     $library_class = str_replace(':', '_', $library_name);
 
     if (!is_file($this->webget_path.$library_url.'.cl.php'))
-      die ('STOP! The library "'.$library_name.'" doesn\'t exists.');
+      die ('STOP! The library "'.$library_name.'" doesn\'t exists in source' 
+          .' view "'. $this->CALL_SOURCE . '" at line number '
+          . xml_get_current_line_number($parser) . '.');
   
     require_once $this->webget_path.$library_url.'.cl.php';
     

@@ -23,15 +23,21 @@ class form_switch
                  $_->ROOT->style_registry_add($this->style).$this->class.'" ';
                  
     /* builds code */
-    $_->buffer .= '<div id="'.$this->id.'" wid="0290" '.
-                  ($this->disabled ? 'disabled="disabled" ' : '').
-                  $css_style.'>'.
-                  '<input name="'.$this->id.'" type="text" value=""></input>'.
-                  '<span>'.'<span>ON</span>'.'<span>OFF</span>'.'</span>'.
-                  '<div>'.'<button type="button" disabled></button>'.'</div>'.
-                  '<div '.$_->ROOT->format_html_events($this).
-                  ($this->tip ? 'title="'.$this->tip.'" ' : '').
-                  '></div>'.'</div>';
+    $_->buffer[] = '<div id="' . $this->id . '" wid="0290" '
+                 . ($this->disabled ? 'disabled="disabled" ' : '')
+                 . $css_style . '>';
+    $_->buffer[] = '<input name="'.$this->id.'" type="text" value=""></input>';
+    $_->buffer[] = '<span>';
+    $_->buffer[] = '<span>ON</span>';
+    $_->buffer[] = '<span>OFF</span>';
+    $_->buffer[] = '</span>';
+    $_->buffer[] = '<div>';
+    $_->buffer[] = '<button type="button" disabled></button>';
+    $_->buffer[] = '</div>';
+    $_->buffer[] = '<div ' . $_->ROOT->format_html_events($this)
+                 . ($this->tip ? 'title="' . $this->tip . '" ' : '')
+                 . '></div>';
+    $_->buffer[] = '</div>';
   }  
 }
 ?>

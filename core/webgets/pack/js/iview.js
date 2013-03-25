@@ -2,9 +2,9 @@ $_.js.reg['0150']={
   a:['view','tcn','tci','tco','tct'],
   f:['onload'],  
   b:function(n){with(n){
-    n.ifa=childNodes[0];
-    n.ifb=childNodes[1];
-    n.ifc=childNodes[2];
+    n.ifa=children[0];
+    n.ifb=children[1];
+    n.ifc=children[2];
 
     n.ifprev='0';
     n.ifcurr='1';
@@ -29,8 +29,8 @@ $_.js.reg['0150']={
     n.goto=function(v){
       this.history.stack.push(v);
       v='?views/'+v;
-      $_.ade(n.childNodes[n.ifnext], 'load', this.onload);
-      n.childNodes[n.ifnext].src=v;
+      $_.ade(n.children[n.ifnext], 'load', this.onload);
+      n.children[n.ifnext].src=v;
       n.action='next';
     }
 
@@ -43,16 +43,16 @@ $_.js.reg['0150']={
     }
     
     n.show=function(i,o){
-      $_.ade(n.childNodes[ifcurr], 'webkitTransitionEnd', n.trans_end);
-      $_.ade(n.childNodes[ifcurr], 'oTransitionEnd', n.trans_end);
-      $_.ade(n.childNodes[ifcurr], 'transitionend', n.trans_end);
+      $_.ade(n.children[ifcurr], 'webkitTransitionEnd', n.trans_end);
+      $_.ade(n.children[ifcurr], 'oTransitionEnd', n.trans_end);
+      $_.ade(n.children[ifcurr], 'transitionend', n.trans_end);
 
       if(tcn && tci && tco){
         if(n.action=='next'){
-          n.childNodes[ifnext].style.left=n.childNodes[ifnext].exleft;
-          n.childNodes[ifnext].className=tcn;
-          n.childNodes[ifcurr].className=tci+' '+tcn;
-          n.childNodes[ifprev].className=tco+' '+tcn;
+          n.children[ifnext].style.left=n.children[ifnext].exleft;
+          n.children[ifnext].className=tcn;
+          n.children[ifcurr].className=tci+' '+tcn;
+          n.children[ifprev].className=tco+' '+tcn;
         }
       }
 
@@ -62,15 +62,15 @@ $_.js.reg['0150']={
       n.ifnext=prev;
 
 
-      n.childNodes[ifcurr].id='curr';
-      n.childNodes[ifprev].id='prev';
-      n.childNodes[ifnext].id='next';
+      n.children[ifcurr].id='curr';
+      n.children[ifprev].id='prev';
+      n.children[ifnext].id='next';
       
       //i.style.display='block';
     }
     
     n.trans_end=function(e){      
-      if(n.childNodes[ifcurr]!=e.target){
+      if(n.children[ifcurr]!=e.target){
         e.target.exleft=e.target.style.left;
         e.target.style.left='-100%';
       }

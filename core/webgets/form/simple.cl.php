@@ -18,15 +18,15 @@ class form_simple
     /* no paint switch */    
     if ($this->nopaint) return;
     
-    $_->buffer .= '<form method="post" id="'.$this->id.'" wid="0200" '.
-                  'name="'.$this->id.'" enctype="multipart/form-data" '.
-                  ($this->action ? 'action="'.$this->action.'" ' : '').
-                  ($this->onsubmit ? 'onsubmit="'.$this->onsubmit.'" ' : '').
-                  '>';
+    $_->buffer[] = '<form method="post" id="'.$this->id.'" wid="0200" '
+                 . 'name="'.$this->id.'" enctype="multipart/form-data" '
+                 . ($this->action ? 'action="'.$this->action.'" ' : '')
+                 . ($this->onsubmit ? 'onsubmit="'.$this->onsubmit.'" ' : '')
+                 . '>';
     
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    $_->buffer .= '</form>';
+    $_->buffer[] = '</form>';
   }
 }
 ?>

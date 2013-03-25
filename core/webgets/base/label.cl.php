@@ -67,22 +67,33 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
         
-        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
-                      $_->ROOT->format_html_events($this).$cfields.'>'.
-                      '<span class="w0011" style="vertical-align:'.
-                      $this->valign.'"><span>'.
-                      $caption.'</span></span></div>';
+        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" ' . $css_style
+                     . $_->ROOT->format_html_events($this) . $cfields . '>';
+
+        $_->buffer[] = '<span class="w0011" style="vertical-align:'
+                     . $this->valign.'">';
+                     
+        $_->buffer[] = '<span>';
+        $_->buffer[] = $caption;
+        $_->buffer[] = '</span>';
+        $_->buffer[] = '</span>';
+        $_->buffer[] = '</div>';
+        
         break;
 
 
       case 10 :             
 
         if($css_style!="") $css_style = 'class="w0010 w0011 '.$css_style.'" ';
+
+        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" ' . $css_style
+                     . $_->ROOT->format_html_events($this).$cfields.'>';
         
-        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
-                      $_->ROOT->format_html_events($this).$cfields.'>'.
-                      '<span style="vertical-align:'.$this->valign.'">'.
-                      $caption.'</span></div>';
+        $_->buffer[] = '<span style="vertical-align:' . $this->valign . '">';
+        $_->buffer[] = $caption;
+        $_->buffer[] = '</span>';
+        
+        $_->buffer[] = '</div>';
 
         break;
 
@@ -91,9 +102,9 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
                             
-        $_->buffer .= '<div id="'.$this->id.'" wid="0010" '.$css_style.
-                      $_->ROOT->format_html_events($this).$cfields.'>'.
-                      $caption.'</div>';
+        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" ' . $css_style
+                     . $_->ROOT->format_html_events($this) . $cfields . '>'
+                     . $caption . '</div>';
 
         break;
     }

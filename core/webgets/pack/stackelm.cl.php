@@ -19,19 +19,19 @@ class pack_stackelm {
     if ($this->nopaint) return;
 
     /* builds code */    
-    $_->buffer .= '<div wbg style="'.
-                  $this->style.($this->preset ? '' : 'display:none;').
-                  '" wid="0131" id="'.$this->id.'" '.
-                  ($this->onshow ? 'onshow="'.$this->onshow.'" ' : '').
-                  '>';
+    $_->buffer[] = '<div wbg style="'
+                 . $this->style . ($this->preset ? '' : 'display:none;')
+                 . '" wid="0131" id="' . $this->id . '" '
+                 . ($this->onshow ? 'onshow="'.$this->onshow.'" ' : '')
+                 . '>';
 
     /* flushes children */
     if (!$this->childs)
-      $_->buffer .= "Stack element number ".$this->index;
+      $_->buffer[] = "Stack element number " . $this->index;
     else
       foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    $_->buffer .= '</div>';
+    $_->buffer[] = '</div>';
   }  
 }
 ?>

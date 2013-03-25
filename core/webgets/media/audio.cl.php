@@ -18,9 +18,9 @@ class media_audio
     /* no paint switch */    
     if ($this->nopaint) return;
 
-    $_->buffer .= '<audio id="'.$this->id.'" '.
-                  ($this->src ? 'src="'.$this->src.'" ' : '').
-                  '></audio>';
+    $_->buffer[] = '<audio id="' . $this->id . '" '
+                 . ($this->src ? 'src="' . $this->src . '" ' : '')
+                 . '></audio>';
   }  
 }
 ?>

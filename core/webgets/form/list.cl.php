@@ -44,20 +44,20 @@ class form_list
 
 
     /* builds code */    
-    $_->buffer .= '<div wid="02B0" '.$wclass.' opt'.$item_style.'>'
-                . '<select name="'.$this->id.'" id="'.$this->id.'" '
-                . $_->ROOT->format_html_attributes($this).' '
-                . 'multiple '.$css_style                  
-                . $_->ROOT->format_html_events($this).'>';
+    $_->buffer[] = '<div wid="02B0" ' . $wclass . ' opt' . $item_style . '>'
+                 . '<select name="' . $this->id . '" id="' . $this->id . '" '
+                 . $_->ROOT->format_html_attributes($this).' '
+                 . 'multiple ' . $css_style                  
+                 . $_->ROOT->format_html_events($this) . '>';
 
 
     
     if($this->items['values']) {
       foreach ($this->items['values'] as $key => $value) {
-        $_->buffer .= '<option value="'.$value.'" '.$item_style
-                    . ($this->default == $value ? 'selected' : '').'>'
-                    . $this->items['labels'][$key]
-                    . '</option>';
+        $_->buffer[] = '<option value="' . $value . '" ' . $item_style
+                     . ($this->default == $value ? 'selected' : '') . '>';
+        $_->buffer[] = $this->items['labels'][$key];
+        $_->buffer[] = '</option>';
       }        
     }    
         

@@ -27,15 +27,18 @@ class data_jtable
     if($css_style!="") $css_style = 'class="w0310 '.$css_style.'" ';
 
     /* builds code */
-    $_->buffer .= '<div id="'.$this->id.'" wid="0310" '
-                . $_->ROOT->format_html_attributes($this) . ' ' .
-                  $css_style.'></div><div>';
+    $_->buffer[] = '<div id="'.$this->id.'" wid="0310" '
+                 . $_->ROOT->format_html_attributes($this) . ' '
+                 . $css_style.'>'
+                 . '</div>';
+    
+    $_->buffer[] = '<div>';
 
     /* flushes children */
     foreach ((array) @$this->childs as $child)
       if (get_class($child) == 'data_jtablecell')$child->__flush($_);
         
-    $_->buffer .= '</div>';
+    $_->buffer[] = '</div>';
   }  
 
 }

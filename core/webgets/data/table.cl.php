@@ -55,11 +55,11 @@ class data_table
                  $this->class.'" ';
 
     /* builds code */
-    $_->buffer .=  '<div id="'.$this->id.'" wid="0300" '.$css_style.
-                   ($this->send_to_client ? 'result_set="'.
-                   clean_xml(json_encode($this->result_set)).'" ':'').
-                   $_->ROOT->format_html_events($this).
-                   '>';
+    $_->buffer[] = '<div id="' . $this->id . '" wid="0300" ' . $css_style
+                 . ($this->send_to_client ? 'result_set="'
+                 . clean_xml(json_encode($this->result_set)).'" ':'')
+                 . $_->ROOT->format_html_events($this)
+                 . '>';
 
     /* Starts rows/columns iterator */
     while ($this->page_pointer < $this->page_records) {
@@ -85,7 +85,7 @@ class data_table
       }
     }
   
-    $_->buffer .= '</div>';
+    $_->buffer[] = '</div>';
   }  
 }
 ?>

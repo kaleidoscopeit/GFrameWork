@@ -55,17 +55,19 @@ class pack_vlayout
     }
 
     /* builds code */
-    if(!$this->naked) $_->buffer .= '<div id="'.$this->id.'" wid="0120" '.
-                                    'style="min-height:'.$fixed_height.'px" '.
-                                    $css_style.
-                                    $_->ROOT->format_html_events($this).
-                                    '>';
-                                    
+    if(!$this->naked)
+      $_->buffer[] = '<div id="'.$this->id.'" wid="0120" '
+                   . 'style="min-height:'.$fixed_height.'px" '
+                   . $css_style
+                   . $_->ROOT->format_html_events($this)
+                   . '>';
+
     /* flushes children */    
     foreach ((array) @$this->childs as  $child)
       if (get_class($child)=='pack_vlaycell') $child->__flush($_);
       
-    if(!$this->naked) $_->buffer .= '</div>';
+    if(!$this->naked)
+      $_->buffer[] = '</div>';
   }  
   
 }

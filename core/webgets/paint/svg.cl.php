@@ -15,13 +15,14 @@ class paint_svg {
 		if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
 
-		$_->buffer .=	'<svg id="'.$this->id.'" '.$css_style.
-				 			$_->ROOT->format_html_events($this, array('mouse')).
-				 			'><ellipse cx="0" cy="100%" rx="100%" ry="100%" />';
+		$_->buffer[] = '<svg id="' . $this->id . '" ' . $css_style
+				 			   . $_->ROOT->format_html_events($this, array('mouse'))
+				 			   . '>';
+		$_->buffer[] = '<ellipse cx="0" cy="100%" rx="100%" ry="100%" />';
 
 		//foreach ((array) @$this->childs as  $child) $child->__flush(&$_);
 
-		$_->buffer .= '</svg>';
+		$_->buffer[] = '</svg>';
 	}	
 }
 ?>

@@ -56,10 +56,10 @@ class _
      // require_once '../core/engine/xmlbuilder.php';
       
     }
- 
+
     switch ($this->CALL_OBJECT) { 
       case 'views' :
-        require_once '../core/engine/views.php';
+        require_once __DIR__ . '/views.php';
 if (!$_->call('system.auth.check',$_buf))
 $this->CALL_SOURCE = $this->settings['auth_login_page'];
         _engine_views::init();
@@ -67,7 +67,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         break;
 
       case 'reports' :
-        require_once '../core/engine/reports.php';
+        require_once __DIR__ . '/reports.php';
 if (!$_->call('system.auth.check',$_buf))
 $this->CALL_SOURCE = $this->settings['auth_login_page'];
         return _engine_reports::build();
@@ -82,7 +82,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         break;
         
       case 'lib' :
-        require $this->library_path.'../core/engine/djl.php';
+        require __DIR__ . '/djl.php';
         return  _engine_djl::get();
         break;
     }

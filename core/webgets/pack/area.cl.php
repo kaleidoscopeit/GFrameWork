@@ -26,14 +26,14 @@ class pack_area
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
     /* builds code */
-    $_->buffer .= '<div id="'.$this->id.'" wid="0100" '.
-                  $_->ROOT->format_html_events($this).
-                  $css_style.'> ';
+    $_->buffer[] = '<div id="' . $this->id . '" wid="0100" '
+                 . $_->ROOT->format_html_events($this)
+                 . $css_style . '> ';
 
     /* flushes children */
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    $_->buffer .= '</div>';
+    $_->buffer[] = '</div>';
   }  
 
 }

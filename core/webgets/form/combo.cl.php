@@ -31,24 +31,26 @@ class form_combo {
     $css_style       = $_->ROOT->style_registry_add($this->style).$this->class;
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
     
-    $_->buffer .= '<div wid="02A0" '.$w_class.'>'.
-                  '<select name="'.$this->id.'" id="'.
-                  $this->id.'" '.$css_style.
-                  ($this->size ? 'size="'.$this->size.'" ' : '').
-                  ($this->disabled ? 'disabled="true" ' : '').
-                  $_->ROOT->format_html_events($this, array('all' )).
-                  ($this->tip ? 'title="'.$this->tip.'" ' : '').
-                  '>';
+    $_->buffer[] = '<div wid="02A0" ' . $w_class . '>';
+    $_->buffer[] = '<select name="' . $this->id . '" id="'
+                 . $this->id . '" ' . $css_style
+                 . ($this->size ? 'size="'.$this->size.'" ' : '')
+                 . ($this->disabled ? 'disabled="true" ' : '')
+                 . $_->ROOT->format_html_events($this, array('all' ))
+                 . ($this->tip ? 'title="'.$this->tip.'" ' : '')
+                 . '>';
         
     if ($this->items['values']) {
       foreach ($this->items['values'] as $key => $value) {
-        $_->buffer .= '<option value="'.$value.'"'.
-                      ($this->default == $value ? 'selected' : '').'>'.
-                      $this->items['labels'][$key].'</option>';
+        $_->buffer[] = '<option value="' . $value . '"'
+                     . ($this->default == $value ? ' selected' : '') . '>';
+        $_->buffer[] = $this->items['labels'][$key];
+        $_->buffer[] = '</option>';
       }        
     }    
         
-    $_->buffer .= '</select></div>';
+    $_->buffer[] = '</select>';
+    $_->buffer[] = '</div>';
   }  
 
   function items_insert( $value, $label = -1, $index = null )

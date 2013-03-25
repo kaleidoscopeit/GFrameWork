@@ -35,13 +35,14 @@ class data_tablecell
                   $this->class.'" ';
     
     /* builds code */
-    $_->buffer  .=  '<div id="'.$this->id.'" parent="'.$this->parent->id.
-                    '" wid="0301" index="'.$this->index.'" '.$css_style.
-                    $_->ROOT->format_html_events($this).'>';
+    $_->buffer[] = '<div id="' . $this->id . '" parent="' . $this->parent->id
+                 . '" wid="0301" index="' . $this->index . '" ' . $css_style
+                 . $_->ROOT->format_html_events($this)
+                 . '>';
   
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
   
-    $_->buffer .= '</div>';  
+    $_->buffer[] = '</div>';  
   }
    
    

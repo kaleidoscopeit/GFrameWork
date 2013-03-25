@@ -21,16 +21,16 @@ class form_password {
     $css_style = $_->ROOT->style_registry_add($this->style).$this->class;
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
     
-    $_->buffer .= '<div wid="0240" wbg '.$wclass.'>'.
-                  '<input name="'.$this->id.'" id="'.$this->id.'" '.
-                  'type="password"'.$css_style.
-                  ($this->disabled ? 'disabled ' : '').
-                  ($this->readonly ? 'readonly ' : '').
-                  ($this->tip ? 'title="'.$this->tip.'" ' : '').
-                  ($this->value ? 'value="'.$this->value.'" ' : '').
-                  ($this->tabindex ? 'tabindex="'.$this->tabindex.'" ' : '').
-                  $_->ROOT->format_html_events($this).'>'.
-                  '</div>';
+    $_->buffer[] = '<div wid="0240" wbg ' . $wclass . '>';
+    $_->buffer[] = '<input name="' . $this->id . '" id="' . $this->id . '" '
+                 . 'type="password" ' . $css_style
+                 . ($this->disabled ? ' disabled ' : '')
+                 . ($this->readonly ? ' readonly ' : '')
+                 . ($this->tip ? ' title="'.$this->tip.'" ' : '')
+                 . ($this->value ? ' value="'.$this->value.'" ' : '')
+                 . ($this->tabindex ? ' tabindex="'.$this->tabindex.'" ' : '')
+                 . $_->ROOT->format_html_events($this) . '>';
+    $_->buffer[] = '</div>';
   }
 }
 ?>

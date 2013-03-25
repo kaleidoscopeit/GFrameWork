@@ -35,10 +35,12 @@ class pack_iframe {
                       $this->class.'" ';
 
     /* builds code */
-    $_->buffer .= '<div wid="0140" '.$css_style.'>'.
-                  '<iframe id="'.$this->id.'" src="'.$this->src.'" '.
-                  $onload.$_->ROOT->format_html_events($this).'></iframe>'.
-                  '</div>'; 
+    $_->buffer[] = '<div wid="0140" ' . $css_style . '>';
+    $_->buffer[] = '<iframe id="' . $this->id
+                 . '" src="' . $this->src . '" '
+                 . $onload . $_->ROOT->format_html_events($this)
+                 . '></iframe>';
+    $_->buffer[] = '</div>'; 
   }
   
 }

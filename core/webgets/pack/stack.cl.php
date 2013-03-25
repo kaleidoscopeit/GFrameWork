@@ -27,9 +27,9 @@ class pack_stack {
 		if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 		
     /* builds code */
-		$_->buffer .=	'<div wid="0130" wbg id="'.$this->id.'" '.$css_style.
-								  ($this->mode ? 'mode="'.$this->mode.'" ':'mode="loop" ').
-								  'preset="'.$preset.'" >';
+		$_->buffer[] =	'<div wid="0130" wbg id="' . $this->id . '" ' . $css_style
+								 . ($this->mode ? 'mode="' . $this->mode . '" ':'mode="loop" ')
+								 . 'preset="' . $preset . '" >';
 
 
     /* flushes children */
@@ -45,7 +45,7 @@ class pack_stack {
       }
     }
 
-		$_->buffer .= '</div>';
+		$_->buffer[] = '</div>';
 	}
 }
 ?>

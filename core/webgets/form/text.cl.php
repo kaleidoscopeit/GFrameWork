@@ -25,13 +25,15 @@ class form_text
                         $this->class.'" ';
 
     /* builds code */
-    $_->buffer .= '<div wid="0230" '.$wclass.'>'.
-                  '<textarea name="'.$this->id.'" id="'.$this->id.'" '.
-                  $css_style.$_->ROOT->format_html_events($this).
-                  ($this->disabled ? 'disabled="true" ' : '').                  
-                  ($this->tip ? 'title="'.$this->tip.'" ' : '').
-                  '>'.$this->value.'</textarea>'.
-                  '</div>';
+    $_->buffer[] = '<div wid="0230" ' . $wclass . '>';
+    $_->buffer[] = '<textarea name="' . $this->id . '" id="' . $this->id . '" '
+                 . $css_style . $_->ROOT->format_html_events($this)
+                 . ($this->disabled ? 'disabled="true" ' : '')                  
+                 . ($this->tip ? 'title="'.$this->tip.'" ' : '')
+                 . '>';
+    $_->buffer[] = $this->value;
+    $_->buffer[] = '</textarea>';
+    $_->buffer[] = '</div>';
   }
 }
 ?>

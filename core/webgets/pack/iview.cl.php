@@ -37,18 +37,18 @@ class pack_iview
 
 
     /* builds code */
-    $_->buffer .= '<div wid="0150" id="'.$this->id.'" '.$css_style.
-                  ($this->view ? 'view="'.$this->view.'" ' : '').
-                  ($this->onload ? 'onload="'.$this->onload.'" ' : '').
-                  ($this->normal_class?'tcn="'.$this->normal_class.'" ' : '').
-                  ($this->in_class ? 'tci="'.$this->in_class.'" ' : '').
-                  ($this->out_class ? 'tco="'.$this->out_class.'" ' : '').
-                  ($this->trans_class ? 'tct="'.$this->trans_class.'" ' : '').
-                  $_->ROOT->format_html_events($this).'>'.
-                  '<iframe></iframe>'.
-                  '<iframe></iframe>'.
-                  '<iframe></iframe>'.
-                  '</div>'; 
+    $_->buffer[] = '<div wid="0150" id="' . $this->id . '" ' . $css_style
+                 . ($this->view ? 'view="'.$this->view.'" ' : '')
+                 . ($this->onload ? 'onload="'.$this->onload.'" ' : '')
+                 . ($this->normal_class?'tcn="'.$this->normal_class.'" ' : '')
+                 . ($this->in_class ? 'tci="'.$this->in_class.'" ' : '')
+                 . ($this->out_class ? 'tco="'.$this->out_class.'" ' : '')
+                 . ($this->trans_class ? 'tct="'.$this->trans_class.'" ' : '')
+                 . $_->ROOT->format_html_events($this).'>';
+    $_->buffer[] = '<iframe></iframe>';
+    $_->buffer[] = '<iframe></iframe>';
+    $_->buffer[] = '<iframe></iframe>';
+    $_->buffer[] = '</div>'; 
   } 
 }
 ?>

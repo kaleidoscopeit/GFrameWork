@@ -25,24 +25,24 @@ class form_button {
                  $this->class.'" ';
                  
     /* builds code */		    
-    $_->buffer .= '<button name="'.$this->id.'" id="'.$this->id.'" wid="0250" '.
-                  $_->ROOT->format_html_events($this).
-                  $css_style.
-                  ($this->tip ? 'title="'.$this->tip.'" ' : '').                
-                  ($this->type ? 'type="'.$this->type.'" ' : 'type="button" ').
-                  ($this->disabled ? 'disabled="disabled" ' : '').
-                  '>';
+    $_->buffer[] = '<button name="' . $this->id . '" id="' . $this->id
+                 . '" wid="0250" ' . $_->ROOT->format_html_events($this)
+                 . $css_style
+                 . ($this->tip ? ' title="'.$this->tip.'" ' : '')  
+                 . ($this->type ? ' type="'.$this->type.'" ' : ' type="button" ')
+                 . ($this->disabled ? ' disabled="disabled" ' : '')
+                 . '>';
 
     /* flushes children */
     if ($this->childs) {
-      $_->buffer .= '<div wid="0251">';
+      $_->buffer[] = '<div wid="0251">';
       foreach ($this->childs as  $child) $child->__flush($_);
-      $_->buffer .= '</div>';        
+      $_->buffer[] = '</div>';        
     } else {
-      $_->buffer .= $this->value;
+      $_->buffer[] = $this->value;
     }
     
-    $_->buffer .= '</button>';
+    $_->buffer[] = '</button>';
   }  
 }
 ?>

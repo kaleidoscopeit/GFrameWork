@@ -71,15 +71,15 @@ class base_progressbar
                      $this->class.'" ';
                      
     /* builds code */
-    $_->buffer .= '<div id="'.$this->id.
-                  '" wid="0030" ' . $css_style.
-                  $_->ROOT->format_html_events($this).
-                  'ornt="'.$this->orientation.'">'.
-                  '<div '.$css_style_bar.'></div>';
+    $_->buffer[] = '<div id="' . $this->id
+                 . '" wid="0030" ' . $css_style
+                 . $_->ROOT->format_html_events($this)
+                 . 'ornt="'.$this->orientation.'">';
+    $_->buffer[] =  '<div ' . $css_style_bar . '></div>';
               
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    $_->buffer .= '</div>';
+    $_->buffer[] = '</div>';
   }  
 }
 ?>

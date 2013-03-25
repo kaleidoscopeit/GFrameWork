@@ -70,9 +70,12 @@ class base_codesnippet
         break;
     }
     /* builds code */
-    $_->buffer .=  '<div id="'.$this->id.'" wid="0050" '.$css_style.
-                   $_->ROOT->format_html_events($this).
-                   '> '.$this->code.'</div>';
+    $_->buffer[] = '<div id="' . $this->id . '" wid="0050" ' . $css_style
+                 . $_->ROOT->format_html_events($this)
+                 . '> ';
+    
+    $_->buffer[] = $this->code;
+    $_->buffer[] = '</div>';
   }  
 
 }
