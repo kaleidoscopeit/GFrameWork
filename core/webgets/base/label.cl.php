@@ -4,7 +4,8 @@ class base_label
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+    'style','class','field','field_format','caption','default','valign','halign'));
     
     /* flow control server event */
     eval($this->ondefine);
@@ -25,7 +26,8 @@ class base_label
 
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
-        
+
+        /* if no record on server resultset send fields definition to client */
         if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
           
         $field[$key] = &array_get_nested
@@ -67,8 +69,12 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
         
-        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" ' . $css_style
-                     . $_->ROOT->format_html_events($this) . $cfields . '>';
+        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" '
+                     . $css_style
+                     . $_->ROOT->format_html_events($this)
+                     . $_->ROOT->format_html_attributes($this)
+                     . $cfields
+                     . '>';
 
         $_->buffer[] = '<span class="w0011" style="vertical-align:'
                      . $this->valign.'">';
@@ -86,8 +92,12 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 w0011 '.$css_style.'" ';
 
-        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" ' . $css_style
-                     . $_->ROOT->format_html_events($this).$cfields.'>';
+        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" '
+                     . $css_style
+                     . $_->ROOT->format_html_events($this)
+                     . $_->ROOT->format_html_attributes($this)
+                     . $cfields
+                     . '>';
         
         $_->buffer[] = '<span style="vertical-align:' . $this->valign . '">';
         $_->buffer[] = $caption;
@@ -102,8 +112,12 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
                             
-        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" ' . $css_style
-                     . $_->ROOT->format_html_events($this) . $cfields . '>'
+        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" '
+                     . $css_style
+                     . $_->ROOT->format_html_events($this)
+                     . $_->ROOT->format_html_attributes($this)
+                     . $cfields
+                     . '>'
                      . $caption . '</div>';
 
         break;

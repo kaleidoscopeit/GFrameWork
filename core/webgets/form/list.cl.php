@@ -61,7 +61,8 @@ class form_list
       }        
     }    
         
-    $_->buffer .= '</select></div>';
+    $_->buffer[] = '</select>';
+    $_->buffer[] = '</div>';
   }  
 
 

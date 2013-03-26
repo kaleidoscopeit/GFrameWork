@@ -32,7 +32,7 @@ $_.js.reg['0310']={
         })
       });
     };
-    
+
     n.clear = function(){
       while(n.childNodes.length!=0)n.removeChild(n.firstChild);
     }
@@ -40,5 +40,17 @@ $_.js.reg['0310']={
 	},
 	fs:function(n){
 		n.ready();
+	},
+	
+	getfields:function(f){
+		if(f == null) return false;
+		var field=f.split(','),fs=[];
+		$_.each(field,function(f,i){
+			f=f.split(':');
+			eval('var row='+f[0]+'.current_record');
+			fs.push(row[f[1]]);
+		});
+		
+		return fs;
 	}
 };

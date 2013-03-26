@@ -1,6 +1,6 @@
 $_.js.reg['0010']={
-	a:['field','field_format'],
-	f:['onchange'],
+	a:['field','field_format','eval_field','eval_field_command'],
+	f:['onchange', 'ready'],
 	b:function(n){with(n){
 	  var f=n.firstChild,ff=n.firstChild.firstChild;
 	  if(!ff)ff={nodeName:null};
@@ -25,16 +25,15 @@ $_.js.reg['0010']={
 		}};
 		
 		n.refresh=function(){
-		  var field=n.field.split(','),fs=[];
-		  $_.each(field,function(f,i){
-		    f=f.split(':');
-		    eval('var row='+f[0]+'.current_record');
-		    fs.push(row[f[1]]);
-		  });
-
-      $_.jsimport('system.phpjs.vsprintf');
-      n.caption(vsprintf(n.field_format,fs));
+			$_.jsimport('system.phpjs.vsprintf');
+			if(fs = $_.js.reg['0310'].getfields(n.eval_field))
+				eval(vsprintf(n.eval_field_command,fs));
+			
+			if(fs = $_.js.reg['0310'].getfields(n.field))
+				n.caption(vsprintf(n.field_format,fs));
 		}
 	}},
-	fs:function(n){}
+	fs:function(n){
+		n.ready();
+	}
 };

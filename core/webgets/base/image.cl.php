@@ -27,6 +27,10 @@ class base_image
 
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
+
+        /* if no record on server resultset send fields definition to client */
+        if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
+        
         $field[$key] = &array_get_nested
                        ($_->webgets[$param[0]]->current_record, $param[1]);           
       }
@@ -35,7 +39,13 @@ class base_image
     }
     
     else $src = $this->src;
-      
+
+    /* enable client field definition */
+    if($cfields) $cfields = 'field="' . implode(',', $cfields) .
+    '" field_format="' . $field_format . '" ';
+    
+    else $cfields = "";
+    
     /* checks if the size of the image was given. If not, resets at the 
        natural image dimensions */
     if($this->boxing != null || $this->boxing != 'false') {
@@ -60,6 +70,7 @@ class base_image
     $_->buffer[] = '<img id="' . $this->id . '" wid="0020" src="' . $src . '" '
                  . $css_style . $_->ROOT->format_html_attributes($this) . ' '
                  . ($this->tip ? 'title="'.$this->tip.'"' : ' ')
+                 . $cfields
                  . '/>';
   }  
 }
