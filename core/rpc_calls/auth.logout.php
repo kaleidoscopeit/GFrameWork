@@ -11,7 +11,7 @@ $rpc = array(array(
   
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-	unset($_->static['auth']);
+	unset($_->static);
 	return TRUE;
 });
 ?>

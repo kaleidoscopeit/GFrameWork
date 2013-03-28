@@ -2,9 +2,12 @@ $_.js.reg['0150']={
   a:['view','tcn','tci','tco','tct'],
   f:['onload'],  
   b:function(n){with(n){
-    n.ifa=children[0];
-    n.ifb=children[1];
-    n.ifc=children[2];
+    n.ifa=$_.cre('iframe');
+    n.ifb=$_.cre('iframe');
+    n.ifc=$_.cre('iframe');
+    n.appendChild(ifa);
+    n.appendChild(ifb);
+    n.appendChild(ifc);
 
     n.ifprev='0';
     n.ifcurr='1';

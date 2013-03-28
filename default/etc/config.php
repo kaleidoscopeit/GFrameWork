@@ -3,13 +3,19 @@ require 'etc/secpol.php';
 
 $this->settings = array(
 
-
+  /* gfwk stuff */
+  
+  'app-uuid'          => '33815ed0-0d33-4fac-8721-55dccb86f424',
+  'gfwkconf_admin'    => 'administrator',
+  'debug'             => false,
+  'formatted_output'  => true,  
+  
   /* authentication stuff */
   
   'auth_engine'       => 'samdb',
 //'auth_hashing_method' => 'md5',
   'auth_admin_group'  => 'administrators',
-  'auth_login_page'   => 'login',
+  'auth_login_page'   => false, //'login',
   'auth_logout_page'  => 'logout',
   'auth_denied_page'  => 'denied',
   'auth_login_event'  => 
@@ -55,12 +61,7 @@ $this->settings = array(
   'mail_sender_name'  => 'G-Framework Toolkit v2.0',
   
       
-  /* gfwk stuff */
-  
-  'gfwkconf_admin'    => 'administrator',
-  'debug'             => true,
-  'enable_hierarchy'  => true,
-  
+
   //'calls' => array('system.locale' => array('lc_path') => array('locale/');  
 
 

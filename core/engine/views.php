@@ -11,6 +11,7 @@ class _engine_views {
   function init()
   {
     /* initialization */
+
     $this->webget_enum           = 0;
     $this->webget_path           = '../core/webgets/';
     $this->static['js-includes'] = '';                                             /* resets js inclusion index */    
@@ -28,8 +29,11 @@ class _engine_views {
   {
     /* loopback to the buck */
     $_ = $this;
-    
+
     /* Check if the view exists */
+    if (is_file('views/'.$source_url.'/_this.xml'))
+      $source_url .='/_this';
+
     if(!is_file('views/'.$source_url.".xml"))
        die("View not found!");
 
@@ -104,7 +108,7 @@ class _engine_views {
     if (!is_file('views/'.$source_url.'.php')) return;
     $file = @file_get_contents('views/'.$source_url.'.php');
 
-    /* strips comments if debug-mode is disabled */    
+    /* strips comments if debug-mode is disabled */
     if ($this->settings['debug'] == false)
       foreach (token_get_all($file) as $token) {
         $find = strpos($token[1],'//?global').

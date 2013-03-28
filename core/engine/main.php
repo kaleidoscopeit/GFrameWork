@@ -4,6 +4,10 @@ class _
    
   function __construct()
   {
+    /* imports the project configuration file and 
+       the configuration database engine */
+    require "etc/config.php";
+    
     /* get the path of called object if not previously declared
        (appens when the view is called in a nested execution) */
     $source = array_keys($_GET);
@@ -11,15 +15,16 @@ class _
 
     /* redirect to the default page if the path of called object is malformed */
     if (strpos ($source, '../') >- 1 OR $source == "")   
-      header("location: ?views/default");  
+      header("location: ?views");  
 
     /* extract the type of object called ( must be the first part ) */
     $source = explode('/', $source);
 
     $this->CALL_OBJECT = array_shift($source);
-    $this->CALL_SOURCE = implode('/', $source);
+    $this->CALL_TARGET = array_pop($source);
+    $this->CALL_SOURCE = implode('/', $source) . '/' . $this->CALL_TARGET;
     $this->CALL_UUID   = hash('crc32',$this->CALL_SOURCE);
-
+   
     /* debug calls */
     $message=array('message'=>'call debug');
     $this->call('system.utils.write_debug',$message);
@@ -37,16 +42,11 @@ class _
     $_=$this;
 
     /* try to set the session longer and start it */
-    ini_set('session.gc_maxlifetime', 60*60*8);                
     session_start();  
 
     /* imports GIDE static data from browser session */
-    $this->static = &$_SESSION['__gidestatic__'];
-    
-    /* imports the project configuration file and 
-       the configuration database engine */
-    require "etc/config.php";                                    
-
+    $this->static = &$_SESSION[$this->settings['app-uuid']];
+//print_r($this->static);
     /* Authentication checkpoint */
 //    if (!$_->call('system.auth.check',$_buf))
 //      $this->CALL_SOURCE = $this->settings['auth_login_page'];
@@ -62,10 +62,12 @@ class _
         require_once __DIR__ . '/views.php';
 if (!$_->call('system.auth.check',$_buf))
 $this->CALL_SOURCE = $this->settings['auth_login_page'];
+
         _engine_views::init();
         return _engine_views::build($this->CALL_SOURCE);
         break;
 
+       
       case 'reports' :
         require_once __DIR__ . '/reports.php';
 if (!$_->call('system.auth.check',$_buf))
@@ -85,10 +87,18 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         require __DIR__ . '/djl.php';
         return  _engine_djl::get();
         break;
+
+      case 'css' :
+        require_once __DIR__ . '/css.php';
+if (!$_->call('system.auth.check',$_buf))
+$this->CALL_SOURCE = $this->settings['auth_login_page'];
+        _engine_css::init();
+        return _engine_css::build($this->CALL_SOURCE);
+        break;
     }
     
     /* dump G-FRAMEWORK static data to browser session */                        
-    $_SESSION['__gidestatic__'] = $this->static;
+    $_SESSION[$this->settings['app-uuid']] = $this->static;
   }
 
 
@@ -383,4 +393,8 @@ function clean_xml ($strin)
   return $strout;
 }
 
+function get_webgets($w){
+  $id = '_' . $w->id;
+  $$id =& $w;
+}
 ?>

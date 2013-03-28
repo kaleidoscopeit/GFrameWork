@@ -1,7 +1,17 @@
 <?php
 session_start ();	 
 header('Content-type: text/Javascript');
-$static = &$_SESSION['__gidestatic__'];
+die;
+include "../../../engine/main.php";
+
+ini_set('display_errors',1); 
+// error_reporting(E_ALL);
+
+$_       = new _();
+$buffer  = $_->main(); 
+$debug   = $_->settings['formatted_output'];
+
+$static = &$_SESSION[$this->settings['app-uuid']];
 //include '../../../engine/main.php';	
 
 ?>

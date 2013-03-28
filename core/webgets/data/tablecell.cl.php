@@ -20,6 +20,9 @@ class data_tablecell
 
   function __flush(&$_)
   {
+    /* import defined webgets */
+    foreach($_->webgets as $k=>$w){$id = '_' . $w->id;$$id =& $_->webgets[$k];};
+    
     /* flow control server event */
     eval($this->onflush);
   

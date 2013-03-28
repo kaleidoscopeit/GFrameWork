@@ -72,6 +72,7 @@ class base_webform
       if(is_file($webget_js.'.php'))
         $js_includes[$webget_js.'.php?'.$_->CALL_UUID] = true;        
 
+      
       /* includes STATIC css files by specific client engine */
       if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css'))
         $css_includes[$webget_css.'.'. $_->static['client']['engine'].'.css'] 
@@ -81,15 +82,16 @@ class base_webform
       else if(is_file($webget_css.'.css')) $css_includes[$webget_css.'.css'] 
         = true;
 
+      
       /* includes DYNAMIC css files by specific client engine */
-      if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css.php'))
+/*      if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css.php'))
         $css_dyn_includes[$webget_css.'.'.$_->static['client']['engine'].
-          '.css.php?'.$_->CALL_UUID] = true;
+          '.css.php?'.$_->CALL_UUID] = true;*/
         
       /* or defualt one */
-      else if(is_file($webget_css.'.css.php'))
-        $css_dyn_includes[$webget_css.'.css.php?'.$_->CALL_UUID] = true;
-
+/*      else if(is_file($webget_css.'.css.php'))
+        $css_dyn_includes[$webget_css.'.css.php?'.$_->CALL_UUID] = true;*/
+        $css_dyn_includes = array('?css/'.$_->CALL_SOURCE. '&'.$_->CALL_UUID => true);
     }
 
     /* project global CSS */
@@ -102,9 +104,9 @@ class base_webform
         if(is_file('css/'.$css.'.css')) $css_includes['css/'.$css.'.css'] = 1;
     }
 
-    /* CSS stylesheet of this view */
-    if(is_file('views/'.$_->CALL_SOURCE.'.css'))
-      $css_includes['views/'.$_->CALL_SOURCE.'.css'] = 1;
+    /* static CSS file of this view */
+    if(is_file('views/'.$_->CALL_SOURCE.'/_this.css'))
+      $css_includes['views/'.$_->CALL_SOURCE.'/_this.css'] = 1;
 
     /* CSS finalization */
     $css_includes = array_merge($css_includes, $css_dyn_includes);
