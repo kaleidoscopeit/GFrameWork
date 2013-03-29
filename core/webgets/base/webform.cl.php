@@ -91,7 +91,6 @@ class base_webform
       /* or defualt one */
 /*      else if(is_file($webget_css.'.css.php'))
         $css_dyn_includes[$webget_css.'.css.php?'.$_->CALL_UUID] = true;*/
-        $css_dyn_includes = array('?css/'.$_->CALL_SOURCE. '&'.$_->CALL_UUID => true);
     }
 
     /* project global CSS */
@@ -108,8 +107,10 @@ class base_webform
     if(is_file('views/'.$_->CALL_SOURCE.'/_this.css'))
       $css_includes['views/'.$_->CALL_SOURCE.'/_this.css'] = 1;
 
-    /* CSS finalization */
-    $css_includes = array_merge($css_includes, $css_dyn_includes);
+    $_->static[$_->CALL_UUID]['css_files'] = $css_includes;
+
+    $css_includes = array();
+    $css_includes['?css/'.$_->CALL_SOURCE. '&'.$_->CALL_UUID] = true;
     
     foreach($css_includes as $css => $status) $css_includes[$css] 
       = '<link rel="stylesheet" type="text/css" href="'.$css.'" />';

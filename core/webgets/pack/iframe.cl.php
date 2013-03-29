@@ -39,7 +39,7 @@ class pack_iframe {
     $_->buffer[] = '<iframe id="' . $this->id
                  . '" src="' . $this->src . '" '
                  . $onload . $_->ROOT->format_html_events($this)
-                 . '></iframe>';
+                 . ' wid="0"></iframe>';
     $_->buffer[] = '</div>'; 
   }
   

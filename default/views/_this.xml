@@ -1,71 +1,115 @@
 <?xml version="1.0"  encoding="UTF-8" ?>
 
 <base:webform
- title="G-Framework Web3.0 Toolkit"
- style="background-image:url('images/body-noise.png');">
-  <pack:vlayout boxing="800px">
+	title="G-Framework Web3.0 Toolkit"
+	style="background-image:url('images/body-noise.png');"
+	css="dialog captions">
+	<pack:vlayout boxing="800px">
   
-    <pack:vlaycell height="70px">
-      <pack:hlayout>
+		<pack:vlaycell height="70px">
+			<pack:hlayout>
       
-        <pack:hlaycell width="454px">
-          <base:image src="images/logo.png" />
-        </pack:hlaycell>
+				<pack:hlaycell width="454px">
+					<base:image src="images/logo.png" />
+				</pack:hlaycell>
         
-        <pack:hlaycell>
-        </pack:hlaycell>
-      </pack:hlayout>
-    </pack:vlaycell>
+				<pack:hlaycell />
+
+			</pack:hlayout>
+		</pack:vlaycell>
     
-    <pack:vlaycell class="radius10" style="background-color:white;">
-      <pack:hlayout>
+		<pack:vlaycell class="radius10" style="background-color:white;">
+			<pack:hlayout>
       
-        <pack:hlaycell width="200px">
-         <pack:vlayout >
+				<pack:hlaycell width="200px">
+					<pack:vlayout >
          
-            <pack:vlaycell height="50px" style="background-color:#6A6A6A;">
-              <base:label
-                caption="Reference table"
-                halign="center"
-                valign="middle"
-                class="text-shadowed font20 italic"/>
-            </pack:vlaycell>
+						<pack:vlaycell height="50px" style="background-color:#6A6A6A;">
+							<base:label
+								caption="Reference table"
+								halign="center"
+								valign="middle"
+								class="text-shadowed font20 italic"/>
+						</pack:vlaycell>
             
-            <pack:vlaycell style="background-color:#262626;">
-              <data:table id="table" rowheight="30px" send_to_client="true">
-                <data:tablecell 
-                 class="menuitem"
-                 onclick="mainpane.goto(table.result_set[this.index].view);">
-                  <base:label
-                    field="table:description"
-                    halign="center"
-                    valign="middle"
-                    class="menu-text"/>
-                </data:tablecell>
-              </data:table>
-            </pack:vlaycell>
+						<pack:vlaycell style="background-color:#262626;">
+							<data:table id="table" rowheight="30px" send_to_client="true">
+								<data:tablecell 
+									class="menuitem"
+									onclick="mainpane.goto(table.result_set[this.index].view);">
+									<base:label
+										field="table:description"
+										halign="center"
+										valign="middle"
+										class="menu-text"/>
+								</data:tablecell>
+							</data:table>
+						</pack:vlaycell>
             
-          </pack:vlayout>      
-        </pack:hlaycell>
+					</pack:vlayout>      
+				</pack:hlaycell>
         
-        <pack:hlaycell>
-          <pack:iview 
-            id="mainpane"
-            view="framework_structure"
-            class="iview"
-            normal_class="iview_normal"
-            in_class="iview_in"
-            out_class="iview_out"
-            trans_class="iview_transition"/>
-        </pack:hlaycell>
+				<pack:hlaycell>
+					<pack:iview 
+						id="mainpane"
+						view="framework_structure"
+						class="iview"
+						normal_class="iview_normal"
+						in_class="iview_in"
+						out_class="iview_out"
+						trans_class="iview_transition"/>
+				</pack:hlaycell>
         
-      </pack:hlayout>                  
-    </pack:vlaycell>
+			</pack:hlayout>                  
+		</pack:vlaycell>
     
-  </pack:vlayout>
-  <base:image
-    src="images/text-xml.png"
-    boxing=",,right,top,-4px,4px"
-    class="fade"
-    tip="view source"/>
+		<pack:vlaycell height="10p" />
+	</pack:vlayout>
+	<base:image
+		src="images/text-xml.png"
+		boxing=",,right,top,-4px,4px"
+		class="fade"
+		tip="view source"
+		onclick="$_.removeClass(view_source, 'diag_hidden');" />
+	<!--
+		********************************************************************************
+		** VIEW CODE DIALOG
+		********************************************************************************
+		-->
+
+	<pack:area
+		id="view_source"
+		class="diag_visible diag_hidden" 
+		onclick="$_.addClass(this, 'diag_hidden');">
+       
+		<pack:area
+			class="round-box"
+			style="background:rgba(0,0,0,0.3);"/>
+      
+		<pack:area
+			class="mebox"
+			boxing="600px,80%"
+			onclick="event.stopPropagation();">
+			<pack:vlayout boxing="584px">
+       
+				<pack:vlaycell height="5px"/>
+        
+				<pack:vlaycell height="20px">
+					<base:label
+						class="caption-title"
+						boxing="150px,,left,,10px"
+						caption="View Source :" />
+				</pack:vlaycell>
+
+				<pack:vlaycell height="5px"/>
+
+				<pack:vlaycell class="caption-item round-box">
+					<pack:iframe src="?views/view_source" />
+				</pack:vlaycell> 
+
+				<pack:vlaycell height="5px"/>
+
+			</pack:vlayout>
+		</pack:area>
+	</pack:area>
 </base:webform>

@@ -14,7 +14,9 @@ var $_={
     w.childWebgets=[];
     if(w.name) id=w.name;
     else if(typeof w.id == "string") id = w.id
-    if(id)eval('if(!window.'+id+')window.'+id+'=w;');
+
+    //if(id)eval('if(!window.'+id+')window.'+id+'=w;');
+    if(id)eval('if(window.'+id+' != w) window.'+id+'=w;');
     if(w.wid) {
       p.childWebgets.push(w);
       w.parentWebget=p;      

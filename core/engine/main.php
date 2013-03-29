@@ -18,7 +18,7 @@ class _
       header("location: ?views");  
 
     /* extract the type of object called ( must be the first part ) */
-    $source = explode('/', $source);
+    $source = explode('/', rtrim($source,"/"));
 
     $this->CALL_OBJECT = array_shift($source);
     $this->CALL_TARGET = array_pop($source);

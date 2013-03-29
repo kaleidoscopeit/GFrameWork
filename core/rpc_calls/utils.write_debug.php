@@ -31,7 +31,7 @@ $rpc = array(array(
   
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-  if(!$this->settings['debug']) return TRUE;
+  if(!$_->settings['debug']) return TRUE;
   $message= explode("\n", $_STDIN['message']);
 
   foreach($message as $key=>$value) {

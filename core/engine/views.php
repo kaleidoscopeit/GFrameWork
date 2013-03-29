@@ -31,8 +31,7 @@ class _engine_views {
     $_ = $this;
 
     /* Check if the view exists */
-    if (is_file('views/'.$source_url.'/_this.xml'))
-      $source_url .='/_this';
+    $source_url .='/_this';
 
     if(!is_file('views/'.$source_url.".xml"))
        die("View not found!");

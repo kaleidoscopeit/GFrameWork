@@ -1,0 +1,69 @@
+.caption-title
+{
+	font: bold 16px sans,arial;
+   color: transparent;
+	text-shadow: 1.5px -.5px #525252, 2.5px 0.5px white; 
+}
+.caption-item
+{
+	background-color:white;
+	border-radius:5px;
+	border-width:1px 1px 1px 1px;
+	border-color:grey;
+	border-style:solid;
+}
+
+.caption-item-bottom
+{
+	background-color:white;
+	border-bottom-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-width:0px 1px 1px 1px;
+	border-color:grey;
+	border-style:solid;
+}
+
+.caption-item-top
+{
+	background-color:white;
+	border-top-right-radius:5px;
+	border-top-left-radius:5px;
+	border-width:1px 1px 1px 1px;
+	border-color:grey;
+	border-style:solid;
+}
+
+.caption-item-middle
+{
+	background-color:white;
+	border-width:0px 1px 1px 1px;
+	border-color:grey;
+	border-style:solid;
+}
+
+.caption-item-input
+{
+	font: 16px sans,arial;
+	color: #525252;
+	border-width:0px;
+
+	border-radius:15px;
+	-webkit-border-radius:15px;
+	-o-border-radius:15px;
+	
+	background-color: transparent;
+	-moz-transition: all 0.2s ease-in-out 0s;
+	-webkit-transition: all 0.2s ease-in-out 0s;
+	-o-transition: all 0.2s ease-in-out 0s;	
+	padding-left:10px;
+}
+
+.caption-item-input:focus
+{
+	background-color: #DCE9F9;
+}
+
+.caption-item-label
+{
+	font: bold 16px sans,arial;
+}
