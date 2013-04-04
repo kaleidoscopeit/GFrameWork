@@ -8,7 +8,8 @@ class base_overlay
 
     /* dirty interaction with the XML parsing loop */
     $_->current_webget = &$this;
-    $_->extend_root($this->src);
+    $source_url = $this->src . '/_this';
+    $_->extend_root($source_url);
     $_->current_webget = &$this->parent;
     
     /* flow control server event */

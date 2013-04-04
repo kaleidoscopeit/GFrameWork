@@ -4,7 +4,8 @@ class data_tablecell
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class', 'show_if'));
 
     // Set default values
     $t              = array();
@@ -20,9 +21,6 @@ class data_tablecell
 
   function __flush(&$_)
   {
-    /* import defined webgets */
-    foreach($_->webgets as $k=>$w){$id = '_' . $w->id;$$id =& $_->webgets[$k];};
-    
     /* flow control server event */
     eval($this->onflush);
   
@@ -38,9 +36,10 @@ class data_tablecell
                   $this->class.'" ';
     
     /* builds code */
-    $_->buffer[] = '<div id="' . $this->id . '" parent="' . $this->parent->id
+    $_->buffer[] = '<div parent="' . $this->parent->id
                  . '" wid="0301" index="' . $this->index . '" ' . $css_style
                  . $_->ROOT->format_html_events($this)
+                 . $_->ROOT->format_html_attributes($this)
                  . '>';
   
     foreach ((array) @$this->childs as  $child) $child->__flush($_);

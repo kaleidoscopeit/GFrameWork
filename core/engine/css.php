@@ -40,6 +40,7 @@ class _engine_css {
     // Checking if the client is validating his cache and if it is current.
     if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) 
         && (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $ftimes))
+      //continue;
       header('Last-Modified: '.gmdate('D, d M Y H:i:s', $ftimes).' GMT', true, 304);
          
     else

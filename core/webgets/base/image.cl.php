@@ -61,13 +61,13 @@ class base_image
     }
 
     /* builds syles */
-    $css_style = $_->ROOT->boxing($this->boxing, $width, $height).
-                 $_->ROOT->style_registry_add($this->style).$this->class;
+    $css_style = $_->ROOT->boxing($this->boxing, $width, $height)
+               . $_->ROOT->style_registry_add($this->style).$this->class;
 
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
     /* builds code */    
-    $_->buffer[] = '<img id="' . $this->id . '" wid="0020" src="' . $src . '" '
+    $_->buffer[] = '<img wid="0020" src="' . $src . '" '
                  . $css_style . $_->ROOT->format_html_attributes($this) . ' '
                  . ($this->tip ? 'title="'.$this->tip.'"' : ' ')
                  . $cfields

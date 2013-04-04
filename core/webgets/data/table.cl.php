@@ -4,7 +4,8 @@ class data_table
   function __construct (&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class','max_records','result_set','rowheight','data','send_to_client'));
     
     /* Set default values */
     $default                   = array();
@@ -55,10 +56,11 @@ class data_table
                  $this->class.'" ';
 
     /* builds code */
-    $_->buffer[] = '<div id="' . $this->id . '" wid="0300" ' . $css_style
+    $_->buffer[] = '<div wid="0300" ' . $css_style
                  . ($this->send_to_client ? 'result_set="'
                  . clean_xml(json_encode($this->result_set)).'" ':'')
                  . $_->ROOT->format_html_events($this)
+                 . $_->ROOT->format_html_attributes($this)
                  . '>';
 
     /* Starts rows/columns iterator */

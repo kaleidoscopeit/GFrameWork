@@ -10,7 +10,7 @@ class fpdf_document
  		$_->ROOT = $this;
  		
  		/* setup fpdf libray */
-		require($_->webget_path.'/fpdf/engine/fpdf.php');
+		require($_->CORE_PATH.'/3rd/FPDF/fpdf.php');
 		$this->fpdf=new FPDF();
 		
 		/* declare default styles */

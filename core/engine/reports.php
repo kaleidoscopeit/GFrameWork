@@ -42,7 +42,7 @@ class _engine_reports {
     eval($_->codes['global']['php']['']); 
 
     /* starts the cascading execution */  
-    $this->webgets['root']->__flush($this);
+    $_->ROOT->__flush($this);
 
     /* Appends the code for displaying the system errors; This code has been
        designed to give the possibility to hide messages */

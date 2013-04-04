@@ -105,10 +105,10 @@ class base_progressbar
                    . $this->class.'" ';
      
     /* builds code */
-    $_->buffer[] = '<div id="' . $this->id . '" wid="0030" ' . $css_style
+    $_->buffer[] = '<div wid="0030" ' . $css_style
                  . $_->ROOT->format_html_events($this)
                  . $_->ROOT->format_html_attributes($this)
-                 . 'ornt="' . $this->orientation . '" '
+                 . ' ornt="' . $this->orientation . '" '
                  . $cfields
                  . '>';
     

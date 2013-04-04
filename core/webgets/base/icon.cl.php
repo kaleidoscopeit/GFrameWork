@@ -6,7 +6,10 @@ class base_icon
   {
     /* imports properties */
     foreach ($attrs as $key=>$value) $this->$key=$value;
-
+    /* imports properties */
+    register_attributes($this, $attrs, array(
+      'style','class'));
+    
     /* flow control server event */
     eval($this->ondefine);
    }
@@ -20,10 +23,10 @@ class base_icon
     if ($this->nopaint) return;  
 
     /* builds code */
-    $_->buffer[] = '<div id="' . $this->id . '" wid="0040" '
-                 . 'style="' . $this->style . ";"
+    $_->buffer[] = '<div wid="0040" style="' . $this->style . ";"
                  . $_->ROOT->boxing
                    ($this->boxing, $this->size.'px', $this->size.'px') . '" '
+                 . $_->ROOT->format_html_attributes($this) 
                  . 'theme="' . $this->theme . '"'
                  . '/>';
   }  

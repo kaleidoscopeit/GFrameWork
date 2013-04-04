@@ -6,7 +6,7 @@ var $_={
   js:{reg:[]},
   tmp:{},
   webgets:[],
-
+  
   /* main loop */
   mloop:function(w,p){
     var ch=w.childNodes,id,ln,r,a,f;
@@ -20,7 +20,7 @@ var $_={
     if(w.wid) {
       p.childWebgets.push(w);
       w.parentWebget=p;      
-      this.webgets.push(w)
+      this.webgets.push(w);
       
       if(typeof $_.js.reg[w.wid]!='undefined'){
         r=$_.js.reg[w.wid];
@@ -43,7 +43,7 @@ var $_={
     return tmp;
   },
      
-  // space saving wrapper for common functions
+  // space saving wrappers for common functions
   gea:function(n,a){try{var ret=n.getAttribute(a);}catch(e){} return ret},
   cre:function(n){return document.createElement(n);},
   gei:function(n){return document.getElementById(n);},
@@ -179,6 +179,13 @@ var $_={
 /* convenient shortcut to open or goto a View */
 var openView=function(v){
    window.location='?views/'+v;
+}
+
+/* return a webget by name */
+var _w=function(w){
+	for(var i=0;i<$_.webgets.length;i++)
+		if($_.webgets[i].id == w)
+			return $_.webgets[i];
 }
 
 /* Client code initialization */

@@ -6,7 +6,7 @@ class data_jtable
     /* imports properties */
     register_attributes($this, $attrs, array(
       'style','class'));
-    
+
     /* flow control server event */
     eval($this->ondefine);
   }
@@ -27,7 +27,7 @@ class data_jtable
     if($css_style!="") $css_style = 'class="w0310 '.$css_style.'" ';
 
     /* builds code */
-    $_->buffer[] = '<div id="'.$this->id.'" wid="0310" '
+    $_->buffer[] = '<div wid="0310" '
                  . $_->ROOT->format_html_attributes($this) . ' '
                  . $css_style.'>'
                  . '</div>';

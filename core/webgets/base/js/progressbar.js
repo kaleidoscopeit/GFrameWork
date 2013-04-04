@@ -41,7 +41,7 @@ $_.js.reg['0030'] = {
 	},
 	fs : function(n) {
 		with (n) {
-			n.bar = firstChild;
+			n.bar = children[0];
 		}
 	}
 };

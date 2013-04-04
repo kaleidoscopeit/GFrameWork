@@ -61,9 +61,9 @@ class base_webform
       $webget_type
         = explode('_', get_class($webget));
       $webget_js
-        = $_->webget_path.$webget_type[0].'/js/'.$webget_type[1].'.js';
+        = $_->WEBGETS_PATH.$webget_type[0].'/js/'.$webget_type[1].'.js';
       $webget_css
-        = $_->webget_path.$webget_type[0].'/css/'.$webget_type[1];
+        = $_->WEBGETS_PATH.$webget_type[0].'/css/'.$webget_type[1];
         
       /* includes static js files */
       if(is_file($webget_js)) $js_includes[$webget_js] = true;
@@ -369,11 +369,12 @@ class base_webform
   
   function format_html_attributes ($webget)
   {
+    unset($webget->attributes['wid']);
     foreach($webget->attributes as $key => $value)
       if(is_string($value))
         $out[] = $key . '="' . $value . '"';
 
-    return implode(' ', (array) @$out);
+    return implode(' ', (array) @$out)." ";
   }
   
   /* Makes an array with the browser information 

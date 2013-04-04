@@ -8,7 +8,7 @@ $_.js.reg['0310']={
 
       $_.each(rs,function(row,i){
         n.current_record = row;
-        $_.each(n.nextSibling.childNodes,function(elm,ii){
+        $_.each(n.nextElementSibling.children,function(elm,ii){
           var nelm=elm.cloneNode(true);          
           n.appendChild(nelm);
           nelm.style.display="block";
@@ -34,7 +34,7 @@ $_.js.reg['0310']={
     };
 
     n.clear = function(){
-      while(n.childNodes.length!=0)n.removeChild(n.firstChild);
+      while(n.children.length!=0)n.removeChild(n.childre[0]);
     }
  
 	},

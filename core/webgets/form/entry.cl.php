@@ -53,8 +53,7 @@ class form_entry {
 
     /* builds code */    
     $_->buffer[] = '<div ' . $w_class . '>';
-    $_->buffer[] = '<input id="' . $this->id
-                 . '" name="' . $this->id . '" wid="0210" '
+    $_->buffer[] = '<input name="' . $this->id . '" wid="0210" '
                  . $_->ROOT->format_html_attributes($this) . ' '
                  . 'type="text" ' . $css_style . $cfields
                  . ($this->disabled ? ' disabled ' : '')

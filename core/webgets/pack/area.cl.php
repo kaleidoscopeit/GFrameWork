@@ -4,7 +4,8 @@ class pack_area
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class'));
     
     /* flow control server event */
     eval($this->ondefine);
@@ -19,15 +20,16 @@ class pack_area
     if ($this->nopaint) return;
 
     /* builds syles */
-   $css_style = $_->ROOT->boxing($this->boxing).
-                $_->ROOT->style_registry_add($this->style).
-                $this->class;
+    $css_style = $_->ROOT->boxing($this->boxing)
+               . $_->ROOT->style_registry_add($this->style)
+               . $this->class;
                  
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
     /* builds code */
-    $_->buffer[] = '<div id="' . $this->id . '" wid="0100" '
+    $_->buffer[] = '<div wid="0100" '
                  . $_->ROOT->format_html_events($this)
+                 . $_->ROOT->format_html_attributes($this)
                  . $css_style . '> ';
 
     /* flushes children */

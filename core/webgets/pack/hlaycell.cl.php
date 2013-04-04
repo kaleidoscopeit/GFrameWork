@@ -4,7 +4,8 @@ class pack_hlaycell {
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class','width'));
     
     /* flow control server event */
     eval($this->ondefine);
@@ -28,10 +29,11 @@ class pack_hlaycell {
     $css_style                = $_->ROOT->style_registry_add($style).' ';
 
     /* builds code */
-    $_->buffer[] = '<div id="' . $this->id . '" wid="0111" '
+    $_->buffer[] = '<div wid="0111" '
                  . 'class="w0111 ' . $css_style
                  . ($this->within ? '' : $this->class) . '" '
                  . $_->ROOT->format_html_events($this)
+                 . $_->ROOT->format_html_attributes($this)
                  . '>';
 
     if($this->within) 

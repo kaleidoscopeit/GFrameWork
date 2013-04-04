@@ -13,7 +13,6 @@ class _engine_views {
     /* initialization */
 
     $this->webget_enum           = 0;
-    $this->webget_path           = '../core/webgets/';
     $this->static['js-includes'] = '';                                             /* resets js inclusion index */    
     $this->buffer = array('');
     
@@ -163,37 +162,25 @@ class _engine_views {
   
   function startelm($parser, $library_name, $library_attribs)
   {
-    $library_url   = str_replace(':', '/', $library_name);
     $library_class = str_replace(':', '_', $library_name);
-
-    if (!is_file($this->webget_path.$library_url.'.cl.php'))
-      die ('STOP! The library "'.$library_name.'" doesn\'t exists in source' 
-          .' view "'. $this->CALL_SOURCE . '" at line number '
-          . xml_get_current_line_number($parser) . '.');
-  
-    require_once $this->webget_path.$library_url.'.cl.php';
+    $this->parser = $parser;
     
     /* If no already registred, set this first webegt as root webget */
     if (!$this->ROOT) $library_attribs['id'] = 'root';
 
-    /* Request to register the explicit webget id in the global 
-       javascipt context */    
-    // (deprecated in favour of javascript mloop auto hierarcy 05-11-2012)
-/*    if ($library_attribs['id'] && $this->ROOT)
-      $this->ROOT->visible_webgets[] = $library_attribs['id'];*/   
-  
     /* If not explicitly requested assigns an automatic id 
        (for internal coherence) */
-    if (!$library_attribs['id']) $library_attribs['id'] =
+    if (!$library_attribs['id']) $cwid =
       'wbg'.$this->webget_enum++;
-  
+    else $cwid = $library_attribs['id'];
+
     // Checks if there's another webget with the same is already registred
-    if ($this->webgets[$library_attribs['id']])
-      die ("STOP! Duplicated webget id : '".$library_attribs['id']."'");
+    if ($this->webgets[$cwid])
+      die ("STOP! Duplicated webget id : '".$cwid."'");
   
     /* attach the external property to the webget by ID if is not already
        defined in the XML file */
-    if ($webget_props = $this->codes['webget'][$library_attribs['id']])
+    if ($webget_props = $this->codes['webget'][$cwid])
       foreach ($webget_props as $property => $value)
         if (!$library_attribs[$property])
           $library_attribs[$property] = trim($value);
@@ -205,29 +192,21 @@ class _engine_views {
         if (!$library_attribs[$property])
           $library_attribs[$property] = trim($value);
           
-  
     // sets the parent of the new class
     if ($this->current_webget)
       $library_attribs['parent'] = &$this->current_webget;
-    
+
     // define the webget and add it to te webgets array
-    $this->webgets[$library_attribs["id"]] =
+    $this->webgets[$cwid] =
       new $library_class($this, $library_attribs);
   
     // link the new webget to its parent as a child of it
     if ($this->current_webget)
-      $this->current_webget->childs[$library_attribs['id']] = 
-        &$this->webgets[$library_attribs['id']];
+      $this->current_webget->childs[] = 
+        &$this->webgets[$cwid];
   
     // sets the new webget as current webget
-    $this->current_webget = &$this->webgets[$library_attribs['id']];
-
-    // append the new webget to the hierarcy stack 
-    // (deprecated in favour of javascript mloop auto hierarcy 05-11-2012)
-/*    $this->hierarchy_stack[] = $library_attribs["id"];
-    eval('$this->hierarchy[\'' .
-         implode("']['", $this->hierarchy_stack).
-         "'] = array();");*/
+    $this->current_webget = &$this->webgets[$cwid];
   }
 
 
@@ -240,10 +219,20 @@ class _engine_views {
     // go back to the parent webget
     if ($this->current_webget->parent)
       $this->current_webget = &$this->current_webget->parent;
-  
-    // remove the current webget from the hierarcy stack
-    // (deprecated in favour of javascript mloop auto hierarcy 05-11-2012)
-    //array_pop($this->hierarchy_stack);
   }
+}
+
+function __autoload($class_name)
+{
+  global $_;
+
+  $library_url   = str_replace('_', '/', $class_name);
+  
+  if (!is_file($_->WEBGETS_PATH.$library_url.'.cl.php'))
+    die ('STOP! The library "' . $class_name . '" doesn\'t exists in source'
+        .' view "' . $_->CALL_SOURCE . '" at line number '        
+        . xml_get_current_line_number($_->parser) . '.');
+        
+  require $_->WEBGETS_PATH.$library_url.'.cl.php';
 }
 ?>

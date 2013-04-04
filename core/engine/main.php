@@ -20,11 +20,15 @@ class _
     /* extract the type of object called ( must be the first part ) */
     $source = explode('/', rtrim($source,"/"));
 
-    $this->CALL_OBJECT = array_shift($source);
-    $this->CALL_TARGET = array_pop($source);
-    $this->CALL_SOURCE = implode('/', $source) . '/' . $this->CALL_TARGET;
-    $this->CALL_UUID   = hash('crc32',$this->CALL_SOURCE);
-   
+    /* global names */
+    $this->CALL_OBJECT  = array_shift($source);
+    $this->CALL_TARGET  = array_pop($source);
+    $this->CALL_SOURCE  = implode('/', $source) . '/' . $this->CALL_TARGET;
+    $this->CALL_UUID    = hash('crc32',$this->CALL_SOURCE);
+
+    $this->CORE_PATH    = '../core';
+    $this->WEBGETS_PATH = $this->CORE_PATH . '/webgets/';
+    
     /* debug calls */
     $message=array('message'=>'call debug');
     $this->call('system.utils.write_debug',$message);
@@ -35,9 +39,6 @@ class _
      sub funcitions depending by the called object */
   function main()
   {
-    // prints start microtime (for benchmarking purpuose)
-    //$microtime = microtime (true);                          
-
     /* private loopback to the default name of the gide class */
     $_=$this;
 
@@ -160,16 +161,10 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
       die("RPC not found : '".$rpc_name."'");
 
     /* imports RPC code */
+    require $rpc_path;
 
-
-//    print_r($this->rpcs);
-  //  echo "////////////";
-  //  if (!isset($this->rpcs[$rpc_name])) {
-      require $rpc_path;
-
-      $this->rpcs[$rpc_name]         = $rpc;
-      $this->rpcs[$rpc_name]['name'] = $rpc_name;
-   // } 
+    $this->rpcs[$rpc_name]         = $rpc;
+    $this->rpcs[$rpc_name]['name'] = $rpc_name;
 
     $self      = $this->rpcs[$rpc_name];
     $function  = $this->rpcs[$rpc_name][1];    
@@ -184,8 +179,6 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
  
     /* call the RPC */
     $rpc_status = $function($this, $_STDIN, $rpc_response);
-
-//    echo $rpc_name. '    '.$rpc_status."\n";
     
     /* FAILURE BEHAVIOUR */
 
@@ -212,7 +205,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
       $label = array_search('label',$options);
       $output_buffer[$options[$label+1]] = $rpc_response;
     }
-    
+
     /* put results in a labeled array with the class name as label */      
     if (in_array('path',$options))
       $output_buffer[$rpc_name] = $rpc_response;
@@ -336,7 +329,6 @@ function register_attributes(&$webget, $attributes, $grab)
 {
   $grab = array_merge($grab,
     array (
-      'id',
       'ondefine',
       'onflush',
       'nopaint',
@@ -347,6 +339,7 @@ function register_attributes(&$webget, $attributes, $grab)
     $webget->$attribute_name = $attributes[$attribute_name];
     unset($attributes[$attribute_name]);
   }
+  $webget->id = $attributes['id'];
   $webget->attributes = $attributes;
 }
 
@@ -393,8 +386,14 @@ function clean_xml ($strin)
   return $strout;
 }
 
-function get_webgets($w){
-  $id = '_' . $w->id;
-  $$id =& $w;
+function _w($w)
+{
+  global $_;
+  return $_->webgets[$w];
+}
+
+function _call($a, $b, $c){
+  global $_;
+  return $_->call($a, $b, $c);
 }
 ?>

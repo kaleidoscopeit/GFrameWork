@@ -2,14 +2,14 @@ $_.js.reg['0130']={
   a:['preset','mode'],
   f:['onclick'],
   b:function(n){with(n){
-    n.c=childNodes;
+    n.c=children;
     n.cl=c.length;
     n.first=function(){n.show(0)}
-    n.last=function(){n.show(n.childNodes.length-1)}    
+    n.last=function(){n.show(n.children.length-1)}    
     n.next=function(si,e){
       e=e||'default';
       si=n.selectedIndex;
-      if(si+1<n.childNodes.length)si++;
+      if(si+1<n.children.length)si++;
       else{
         switch(n.mode){
           case'once':break;
@@ -26,7 +26,7 @@ $_.js.reg['0130']={
       else{
         switch(n.mode){
           case'once':break;
-          default:case'loop':si=n.childNodes.length-1;
+          default:case'loop':si=n.children.length-1;
         } 
       }
       n.show(si,e);

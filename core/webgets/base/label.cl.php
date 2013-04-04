@@ -5,7 +5,7 @@ class base_label
   {
     /* imports properties */
     register_attributes($this, $attrs, array(
-    'style','class','field','field_format','caption','default','valign','halign'));
+      'style','class','field','field_format','caption','default','valign','halign'));
     
     /* flow control server event */
     eval($this->ondefine);
@@ -69,7 +69,7 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
         
-        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" '
+        $_->buffer[] = '<div wid="0010" '
                      . $css_style
                      . $_->ROOT->format_html_events($this)
                      . $_->ROOT->format_html_attributes($this)
@@ -92,7 +92,7 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 w0011 '.$css_style.'" ';
 
-        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" '
+        $_->buffer[] = '<div wid="0010" '
                      . $css_style
                      . $_->ROOT->format_html_events($this)
                      . $_->ROOT->format_html_attributes($this)
@@ -112,7 +112,7 @@ class base_label
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
                             
-        $_->buffer[] = '<div id="' . $this->id . '" wid="0010" '
+        $_->buffer[] = '<div wid="0010" '
                      . $css_style
                      . $_->ROOT->format_html_events($this)
                      . $_->ROOT->format_html_attributes($this)
