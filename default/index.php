@@ -7,6 +7,7 @@ include "../core/engine/main.php";
 
 ini_set('display_errors',1); 
 // error_reporting(E_ALL);
+error_reporting(!E_NOTICE);
 
 $tab     = -1;
 $_       = new _();

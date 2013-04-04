@@ -109,9 +109,9 @@ class _engine_views {
     /* strips comments if debug-mode is disabled */
     if ($this->settings['debug'] == false)
       foreach (token_get_all($file) as $token) {
-        $find = strpos($token[1],'//?global').
-                strpos($token[1],'//?webget').
-                strpos($token[1],'//?class');
+         @$find = strpos($token[1],'//?global')
+              . strpos($token[1],'//?webget')
+              . strpos($token[1],'//?class');
         if ($token[0] != T_COMMENT || $find != '') continue;
         $file = str_replace($token[1], '', $file);
       }
@@ -130,7 +130,7 @@ class _engine_views {
       
       if ($find != '') {
         if (isset($code))
-          $this->codes
+          @ $this->codes
             [$code['type']]
             [$code['target']]
             [$code['event']] = $code['data'];
@@ -143,7 +143,7 @@ class _engine_views {
           'target' => implode('.', $row));
       } 
       
-      else $code['data'] .= 
+      else  @$code['data'] .= 
         ($this->settings['debug'] == true ? $row."\n" : trim($row).' ');
     }
 
@@ -166,7 +166,7 @@ class _engine_views {
     $this->parser = $parser;
     
     /* If no already registred, set this first webegt as root webget */
-    if (!$this->ROOT) $library_attribs['id'] = 'root';
+    if (!isset($this->ROOT)) $library_attribs['id'] = 'root';
 
     /* If not explicitly requested assigns an automatic id 
        (for internal coherence) */
@@ -174,10 +174,6 @@ class _engine_views {
       'wbg'.$this->webget_enum++;
     else $cwid = $library_attribs['id'];
 
-    // Checks if there's another webget with the same is already registred
-    if ($this->webgets[$cwid])
-      die ("STOP! Duplicated webget id : '".$cwid."'");
-  
     /* attach the external property to the webget by ID if is not already
        defined in the XML file */
     if ($webget_props = $this->codes['webget'][$cwid])
