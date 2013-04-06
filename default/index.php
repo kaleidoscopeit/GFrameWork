@@ -6,8 +6,9 @@
 include "../core/engine/main.php";
 
 ini_set('display_errors',1); 
-// error_reporting(E_ALL);
-error_reporting(!E_NOTICE);
+//error_reporting(E_ALL);
+//error_reporting(!E_NOTICE);
+ob_start("ob_gzhandler");
 
 $tab     = -1;
 $_       = new _();

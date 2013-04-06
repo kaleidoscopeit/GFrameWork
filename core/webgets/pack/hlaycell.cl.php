@@ -22,11 +22,11 @@ class pack_hlaycell {
     if ($this->nopaint) return;
 
     /* builds syles */
-    $style                    = 'width:'.$this->width.';';
-    if($this->within) $style .= 'padding-right:'.$this->within.
-                                'px;margin-right:-'.$this->within.'px;';
+    $style                    = 'width:' . $this->width.';';
+    if($this->within) $style .= 'padding-right:' . $this->within
+                              . 'px;margin-right:-' . $this->within . 'px;';
     else              $style .= $this->style;
-    $css_style                = $_->ROOT->style_registry_add($style).' ';
+    $css_style                = $_->ROOT->style_registry_add($style) . ' ';
 
     /* builds code */
     $_->buffer[] = '<div wid="0111" '

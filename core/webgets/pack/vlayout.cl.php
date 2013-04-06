@@ -5,7 +5,8 @@ class pack_vlayout
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class', 'naked'));
     
     /* flow control server event */
     eval($this->ondefine);
@@ -56,10 +57,11 @@ class pack_vlayout
 
     /* builds code */
     if(!$this->naked)
-      $_->buffer[] = '<div id="'.$this->id.'" wid="0120" '
+      $_->buffer[] = '<div wid="0120" '
                    . 'style="min-height:'.$fixed_height.'px" '
                    . $css_style
                    . $_->ROOT->format_html_events($this)
+                   . $_->ROOT->format_html_attributes($this)
                    . '>';
 
     /* flushes children */    

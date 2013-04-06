@@ -1,5 +1,5 @@
 <?php
-class base_webform
+class base_htmlview
 {
   /* Contruct the ROOT webget and provides a number of variables 
    * for the 'webgets define phase' 
@@ -33,7 +33,7 @@ class base_webform
     $_->ROOT                            = $this; 
 
     /* style registry prefix */
-    $_->static[$_->CALL_UUID]['css']['prefix'] = 'sr';
+    $_->static[$_->CALL_UUID]['css']['prefix'] = ($this->id ? $this->id:'sr');
 
     /* flow control server event */
     eval($this->ondefine);
@@ -63,14 +63,16 @@ class base_webform
         = $_->WEBGETS_PATH.$webget_type[0].'/js/'.$webget_type[1].'.js';
       $webget_css
         = $_->WEBGETS_PATH.$webget_type[0].'/css/'.$webget_type[1];
-        
-      /* includes static js files */
-      if(is_file($webget_js)) $js_includes[$webget_js] = true;
-      
-      /* includes dynamic js files */
-      if(is_file($webget_js.'.php'))
-        $js_includes[$webget_js.'.php?'.$_->CALL_UUID] = true;        
 
+
+      if($_->CALL_OBJECT!='subview'){       
+        /* includes static js files */
+        if(is_file($webget_js)) $js_includes[$webget_js] = true;
+        
+        /* includes dynamic js files */
+        if(is_file($webget_js.'.php'))
+          $js_includes[$webget_js.'.php?'.$_->CALL_UUID] = true;        
+      }
       
       /* includes STATIC css files by specific client engine */
       if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css'))
@@ -111,43 +113,62 @@ class base_webform
     $css_includes = array();
     $css_includes['?css/'.$_->CALL_SOURCE. '&'.$_->CALL_UUID] = true;
     
-    foreach($css_includes as $css => $status) $css_includes[$css] 
-      = '<link rel="stylesheet" type="text/css" href="'.$css.'" />';
-
-    //$css_includes = implode('', $css_includes);
-    
-          
-    /* JS finalization */
-    foreach((array) @$js_includes as $js => $status) $js_includes[$js]
-      = '<script type="text/JavaScript" src="'.$js.'"></script>';
-
-    //$js_includes = implode('', $js_includes);
-
-
     /**************************************************************************/
     /*                  Writes the code and flushes children                  */
     /**************************************************************************/
 
-    $_->buffer[] = '<!DOCTYPE HTML5>';
-    $_->buffer[] = '<html>';
-    $_->buffer[] = '<head>';
-    $_->buffer[] = ($this->title ? '<title>'.$this->title.'</title>' : '');
-    $_->buffer[] = '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">';
-    $_->buffer   = array_merge($_->buffer, $css_includes, $js_includes);
-    $_->buffer[] = '<script type="text/JavaScript">'.$this->global_javascript.'</script>';
-    $_->buffer[] = '<body wid="0000" class="'.$this->class.'" '
-                 . ($this->onload ? 'onload="'.$this->onload.'" ' : '')
-                 . ($this->onunload ? 'onunload="'.$this->onunload.'" ' : '')
-                 . ($this->onbeforeunload?'onbeforeunload="'.$this->onbeforeunload.'" ':'')
-                 . ($this->style ? 'style="'.$this->style.'" ' : '')
-                 . $this->format_html_events($this).'>';
-    
+    switch($_->CALL_OBJECT){
+      case 'view' :
+      case 'views' :
+        $_->buffer[] = '<!DOCTYPE HTML5>';
+        $_->buffer[] = '<html>';
+        $_->buffer[] = '<head>';
+        $_->buffer[] = ($this->title ? '<title>'.$this->title.'</title>' : '');
+        $_->buffer[] = '<meta http-equiv="Content-Type" '
+                     . 'content="text/html;charset=UTF-8">';
+        
+        foreach($css_includes as $css => $status) 
+          $_->buffer[] = '<link rel="stylesheet" type="text/css" href="'
+                       . $css.'" />';
+                       
+        foreach((array) @$js_includes as $js => $status)
+          $_->buffer[] = '<script type="text/JavaScript" src="'
+                       . $js . '"></script>';
 
+        $_->buffer[] = '<script type="text/JavaScript">'
+                     . $this->global_javascript . '</script>';
+        $_->buffer[] = '<body wid="0000" class="'.$this->class.'" '
+                     . ($this->onload ? 'onload="'.$this->onload.'" ' : '')
+                     . ($this->onunload ? 'onunload="'.$this->onunload.'" ' : '')
+                     . ($this->onbeforeunload?'onbeforeunload="'.$this->onbeforeunload.'" ':'')
+                     . ($this->style ? 'style="'.$this->style.'" ' : '')
+                     . $this->format_html_events($this).'>';
+ 
+        $bottom_code = array('</body>', '</html>');
+
+        break;
+
+      case 'subview' :
+           $_->buffer[] = "<!--\n" 
+                        . implode("\n", array_keys((array)$css_includes))
+                        . "\n\n"
+                        . implode("\n", array_keys((array)$js_includes))
+                        . "\n-->";
+
+        $_->buffer[] = '<div wid="0071" '
+                     . $this->format_html_events($this).'>';
+
+        $bottom_code = array('</div>');
+        
+        break;
+    }
+ 
+ 
     /* flushes children */
     foreach ((array) @$this->childs as  $child) $child->__flush($_);
 
-    $_->buffer[] = '</body>';
-    $_->buffer[] = '</html>';
+    $_->buffer = array_merge($_->buffer, $bottom_code);
+
   }
   
 

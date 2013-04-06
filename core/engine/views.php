@@ -53,7 +53,7 @@ class _engine_views {
     /* eventually appends system errors HTML code (needs improovements) */
     if ($this->system_error_queue)
       foreach ($this->system_error_queue as $error)
-        $this->buffer .= $error;
+        $this->buffer[] = $error;
 
     return $this->buffer;
   }

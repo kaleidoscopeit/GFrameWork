@@ -4,7 +4,8 @@ class pack_vlaycell {
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class','height'));
     
     /* flow control server event */
     eval($this->ondefine);
@@ -21,17 +22,18 @@ class pack_vlaycell {
     if ($this->nopaint) return;
 
     /* builds syles */
-    $style                    = 'height:'.$this->height.';';
-    if($this->within) $style .= 'padding-bottom:'.$this->within.
-                                'px;margin-bottom:-'.$this->within.'px;';
+    $style                    = 'height:' . $this->height . ';';
+    if($this->within) $style .= 'padding-bottom:' . $this->within
+                              . 'px;margin-bottom:-' . $this->within . 'px;';
     else              $style .= $this->style;    
     $css_style                = $_->ROOT->style_registry_add($style).' ';
 
     /* builds code */
-    $_->buffer[] = '<div id="'.$this->id.'" wid="0121" '
+    $_->buffer[] = '<div wid="0121" '
                  . 'class="w0121 ' . $css_style
                  . ($this->within ? '' : $this->class) . '" '
                  . $_->ROOT->format_html_events($this)
+                 . $_->ROOT->format_html_attributes($this)
                  . '>';
 
     if($this->within) 

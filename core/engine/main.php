@@ -60,6 +60,8 @@ class _
 
     switch ($this->CALL_OBJECT) { 
       case 'views' :
+      case 'view' :
+      case 'subview' :
         require_once __DIR__ . '/views.php';
 if (!$_->call('system.auth.check',$_buf))
 $this->CALL_SOURCE = $this->settings['auth_login_page'];
@@ -68,7 +70,6 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         return _engine_views::build($this->CALL_SOURCE);
         break;
 
-       
       case 'reports' :
         require_once __DIR__ . '/reports.php';
 if (!$_->call('system.auth.check',$_buf))

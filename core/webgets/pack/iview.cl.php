@@ -45,9 +45,7 @@ class pack_iview
                  . ($this->out_class ? 'tco="'.$this->out_class.'" ' : '')
                  . ($this->trans_class ? 'tct="'.$this->trans_class.'" ' : '')
                  . $_->ROOT->format_html_events($this).'>';
-    //$_->buffer[] = '<iframe></iframe>';
-    //$_->buffer[] = '<iframe></iframe>';
-    //$_->buffer[] = '<iframe></iframe>';
+
     $_->buffer[] = '</div>'; 
   } 
 }

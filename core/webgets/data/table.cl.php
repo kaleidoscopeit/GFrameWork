@@ -5,7 +5,7 @@ class data_table
   {
     /* imports properties */
     register_attributes($this, $attrs, array(
-      'style','class','max_records','result_set','rowheight','data','send_to_client'));
+      'style','class','max_records','result_set','rowheight','data','send_to_client','columns','rows'));
     
     /* Set default values */
     $default                   = array();

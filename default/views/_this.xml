@@ -77,14 +77,7 @@
 					-->
 	        
 				<pack:hlaycell>
-					<pack:iview 
-						id="mainpane"
-						view="framework_structure"
-						class="iview"
-						normal_class="iview_normal"
-						in_class="iview_in"
-						out_class="iview_out"
-						trans_class="iview_transition"/>
+					<base:subview id="mainpane" view="framework_structure" />
 				</pack:hlaycell>
         
 			</pack:hlayout>                  
@@ -141,7 +134,8 @@
 				<pack:vlaycell height="5px"/>
 
 				<pack:vlaycell class="caption-item round-box">
-					<pack:iframe src="?views/view_source" />
+				  <base:subview view="view_source" />
+					<!-- <pack:iframe src="?views/view_source" /> -->
 				</pack:vlaycell> 
 
 				<pack:vlaycell height="5px"/>
