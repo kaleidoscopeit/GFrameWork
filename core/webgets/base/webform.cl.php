@@ -36,7 +36,7 @@ class base_webform
     $_->static[$_->CALL_UUID]['css']['prefix'] = 'sr';
 
     /* flow control server event */
-    eval($this->ondefine);
+    eval(@$this->ondefine);
   }
 
 
@@ -179,13 +179,13 @@ class base_webform
     $boxing = explode(',', $boxing) ;
     
     /* sets default values */
-    $hsize    = ($boxing[0] == "" ? $hsize   : $boxing[0]);
-    $vsize    = ($boxing[1] == "" ? $vsize   : $boxing[1]);
-    $halign   = ($boxing[2] == "" ? $halign  : $boxing[2]);
-    $valign   = ($boxing[3] == "" ? $valign  : $boxing[3]);
-    $hoffset  = ($boxing[4] == "" ? $hoffset : $boxing[4]);
-    $voffset  = ($boxing[5] == "" ? $voffset : $boxing[5]);
-    $refer    = ($boxing[6] == "" ? $refer   : $boxing[6]);
+    $hsize    = (@$boxing[0] == "" ? $hsize   : $boxing[0]);
+    $vsize    = (@$boxing[1] == "" ? $vsize   : $boxing[1]);
+    $halign   = (@$boxing[2] == "" ? $halign  : $boxing[2]);
+    $valign   = (@$boxing[3] == "" ? $valign  : $boxing[3]);
+    $hoffset  = (@$boxing[4] == "" ? $hoffset : $boxing[4]);
+    $voffset  = (@$boxing[5] == "" ? $voffset : $boxing[5]);
+    $refer    = (@$boxing[6] == "" ? $refer   : $boxing[6]);
     
     /* sets to zero the internal variables */
     $lpc = $lpx = $tpc = $tpx = $wpc = $wpx = $hpc = $hpx = 0;

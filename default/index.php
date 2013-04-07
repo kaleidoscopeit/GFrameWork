@@ -7,14 +7,25 @@ include "../core/engine/main.php";
 
 ini_set('display_errors',1); 
 //error_reporting(E_ALL);
-//error_reporting(!E_NOTICE);
+error_reporting(!E_NOTICE);
 ob_start("ob_gzhandler");
 
+/* get the path of called object if not previously declared
+   (appens when the view is called in a nested execution) */
+$source = array_keys($_GET);
+$source = array_shift($source);           
+
+/* redirect to the default page if the path of called object is malformed */
+if (strpos ($source, '../') >- 1 OR $source == "")   
+  header("location: ?views/default");
+  
 $tab     = -1;
-$_       = new _();
+$_       = new _($source);
 $buffer  = $_->main(); 
 $debug   = $_->settings['formatted_output'];
+
  
+       
 if (is_array($buffer))
   if ($debug)
     foreach ($buffer AS $key=>$value){

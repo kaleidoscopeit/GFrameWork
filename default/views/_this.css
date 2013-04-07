@@ -1,0 +1,13 @@
+.ttstack {
+	-webkit-transition : all 220ms ease-in-out;
+}
+
+.ttstack_in {
+	left : -50px;
+	opacity: 0;
+}
+
+.ttstack_out {
+	left : 50px;
+	opacity: 0;
+}

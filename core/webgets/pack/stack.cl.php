@@ -4,7 +4,8 @@ class pack_stack {
 	function __construct(&$_, $attrs)
 	{
     /* imports properties */
-		foreach ($attrs as $key=>$value) $this->$key=$value;
+    register_attributes($this, $attrs, array(
+      'style','class'));
 		
     /* flow control server event */
     eval($this->ondefine);
@@ -21,15 +22,17 @@ class pack_stack {
 		$preset = ($this->preset ? $this->preset : 0);
 
     /* builds syles */
-		$css_style       = $_->ROOT->boxing($this->boxing).
-		                   $_->ROOT->style_registry_add($this->style).
-		                   $this->class;
-		if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+		$css_style = $_->ROOT->boxing($this->boxing)
+							 . $_->ROOT->style_registry_add($this->style)
+							 . $this->class;
+							 
+		if($css_style!="") $css_style = 'class="w0130 ' . $css_style . '" ';
 		
     /* builds code */
-		$_->buffer[] =	'<div wid="0130" wbg id="' . $this->id . '" ' . $css_style
-								 . ($this->mode ? 'mode="' . $this->mode . '" ':'mode="loop" ')
-								 . 'preset="' . $preset . '" >';
+		$_->buffer[] = '<div wid="0130" '
+                 . $_->ROOT->format_html_events($this)
+                 . $_->ROOT->format_html_attributes($this)
+                 . $css_style . '> ';
 
 
     /* flushes children */
