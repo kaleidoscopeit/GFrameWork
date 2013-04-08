@@ -17,7 +17,7 @@ $source = array_shift($source);
 
 /* redirect to the default page if the path of called object is malformed */
 if (strpos ($source, '../') >- 1 OR $source == "")   
-  header("location: ?views/default");
+  header("location: ?views");
   
 $tab     = -1;
 $_       = new _($source);

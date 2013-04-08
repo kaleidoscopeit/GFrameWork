@@ -32,12 +32,14 @@ class _engine_css {
 		switch($this->CALL_TARGET){
 			case 'webgets' :
 				$css_files = array();
-				array_map(function($package) use (&$css_files){						
-					return @array_map(function($file) use ($package, &$css_files){
+				$_ = $this;
+				array_map(function($package) use (&$css_files, $_){	
+					if($package == '.' || $package == '..') return;	
+					return array_map(function($file) use ($package, &$css_files, $_){
 						if($file == '.' || $file == '..') return; 
-						$css_file = $this->WEBGETS_PATH . $package . '/css/' . $file;
+						$css_file = $_->WEBGETS_PATH . $package . '/css/' . $file;
 						$css_files[$css_file] = filemtime($css_file);					
-					}, scandir($this->WEBGETS_PATH . $package . '/css'));
+					}, scandir($_->WEBGETS_PATH . $package . '/css'));
 			 	}, scandir($this->WEBGETS_PATH));
 			 	
 
