@@ -1,9 +1,11 @@
 $_.js.reg['0130']={
-  a:['preset','mode'],
-  f:['onclick'],
+  a:['preset','mode','class_in', 'class_normal', 'class_out'],
+  f:[],
   b:function(n){with(n){
     n.c=children;
     n.cl=c.length;
+
+    for(var x=0;x<cl;x++){$_.addClass(c[x], n.class_normal);}
     n.first=function(){n.show(0)}
     n.last=function(){n.show(n.children.length-1)}    
     n.next=function(si,e){
@@ -32,17 +34,21 @@ $_.js.reg['0130']={
       n.show(si,e);
     }
     
-    n.show=function(i,s,x,c,f){with(n){
-      s=s||'default'
+    n.show=function(i,x,c,f){with(n){
       i=i>-1?i:0;
-      n.trans_type=s;
-      n.trans_count=0;
+      if(n.selid){
+      	if(n.selid<i)$_.addClass(c[n.selid], n.class_out);
+      	if(n.selid>i)$_.addClass(c[n.selid], n.class_in);
+      }
+
+			$_.removeClass(c[i], n.class_in);
+			$_.removeClass(c[i], n.class_out);
 
       // sets selected as the current shown panel, else exits if the panel doesn't exists
       if(i<cl){
         n.prev_selected=n.selected;
         n.selected=c[i];
-        n.selectedIndex=i;
+        n.selid=i;
       }
       else return(1);
 
@@ -59,7 +65,7 @@ $_.js.reg['0130']={
         if(c[x]!=selected){
         //  c[x].style.width="0px";
         //  c[x].style.height="0px";
-          c[x].style.display="none";
+          //c[x].style.display="none";
         }
       }
       

@@ -2,28 +2,20 @@
 class _
 {
    
-  function __construct()
+  function __construct($source)
   {
     /* imports the project configuration file and 
        the configuration database engine */
     require "etc/config.php";
     
-    /* get the path of called object if not previously declared
-       (appens when the view is called in a nested execution) */
-    $source = array_keys($_GET);
-    $source = array_shift($source);           
-
-    /* redirect to the default page if the path of called object is malformed */
-    if (strpos ($source, '../') >- 1 OR $source == "")   
-      header("location: ?views");  
-
     /* extract the type of object called ( must be the first part ) */
     $source = explode('/', rtrim($source,"/"));
 
     /* global names */
     $this->CALL_OBJECT  = array_shift($source);
     $this->CALL_TARGET  = array_pop($source);
-    $this->CALL_SOURCE  = implode('/', $source) . '/' . $this->CALL_TARGET;
+		$source[] 					= $this->CALL_TARGET;
+    $this->CALL_SOURCE  = implode('/', $source);
     $this->CALL_UUID    = hash('crc32',$this->CALL_SOURCE);
 
     $this->CORE_PATH    = '../core';
@@ -97,6 +89,9 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         _engine_css::init();
         return _engine_css::build($this->CALL_SOURCE);
         break;
+
+				default :
+					die ('UNKNOWN_OBJECT');
     }
     
     /* dump G-FRAMEWORK static data to browser session */                        
@@ -336,12 +331,14 @@ function register_attributes(&$webget, $attributes, $grab)
       'boxing',
       'parent'));
 
-  foreach ($grab as $attribute_name) {
-    $webget->$attribute_name = $attributes[$attribute_name];
-    unset($attributes[$attribute_name]);
-  }
-  $webget->id = $attributes['id'];
-  $webget->attributes = $attributes;
+ 	foreach ($grab as $attribute_name) {
+ 		@$webget->$attribute_name = $attributes[$attribute_name];
+   	unset($attributes[$attribute_name]);
+ 	}
+ 	@$webget->id = $attributes['id'];
+ 	$webget->attributes = $attributes;
+
+  
 }
 
 function &array_get_nested(&$arr, $path, $separator = '.') 

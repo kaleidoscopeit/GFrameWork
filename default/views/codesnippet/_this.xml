@@ -9,7 +9,7 @@
 		boxing=",,right,top,-4px,4px"
 		class="fade"
 		tip="view source"
-		onclick="$_.removeClass(view_source, 'diag_hidden');" />
+		onclick="subv_cont.goto('view_source&amp;source=codesnippet');$_.removeClass(view_source, 'diag_hidden');" />
   <base:codesnippet
     id="sample_code"
     hilight="xml" 

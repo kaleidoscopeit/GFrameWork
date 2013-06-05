@@ -166,30 +166,30 @@ class _engine_views {
     $this->parser = $parser;
     
     /* If no already registred, set this first webegt as root webget */
-    if (!isset($this->ROOT)) $library_attribs['id'] = 'root';
+    if (!isset($this->ROOT) && !isset($library_attribs['id'])) $library_attribs['id'] = 'root';
 
     /* If not explicitly requested assigns an automatic id 
        (for internal coherence) */
-    if (!$library_attribs['id']) $cwid =
+    if (!isset($library_attribs['id'])) $cwid =
       'wbg'.$this->webget_enum++;
     else $cwid = $library_attribs['id'];
 
     /* attach the external property to the webget by ID if is not already
        defined in the XML file */
-    if ($webget_props = $this->codes['webget'][$cwid])
+    if ($webget_props = @$this->codes['webget'][$cwid])
       foreach ($webget_props as $property => $value)
-        if (!$library_attribs[$property])
+        if (!isset($library_attribs[$property]))
           $library_attribs[$property] = trim($value);
 
     /* attach the external property to the webget by CLASS if is not already
        defined in the XML file */
-    if ($webget_props = $this->codes['class'][$library_name])
+    if ($webget_props = @$this->codes['class'][$library_name])
       foreach ($webget_props as $property => $value)
-        if (!$library_attribs[$property])
+        if (!isset($library_attribs[$property]))
           $library_attribs[$property] = trim($value);
           
     // sets the parent of the new class
-    if ($this->current_webget)
+    if (isset($this->current_webget))
       $library_attribs['parent'] = &$this->current_webget;
 
     // define the webget and add it to te webgets array
@@ -197,7 +197,7 @@ class _engine_views {
       new $library_class($this, $library_attribs);
   
     // link the new webget to its parent as a child of it
-    if ($this->current_webget)
+    if (isset($this->current_webget))
       $this->current_webget->childs[] = 
         &$this->webgets[$cwid];
   

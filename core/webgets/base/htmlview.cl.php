@@ -75,13 +75,13 @@ class base_htmlview
       }
       
       /* includes STATIC css files by specific client engine */
-      if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css'))
+/*      if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css'))
         $css_includes[$webget_css.'.'. $_->static['client']['engine'].'.css'] 
-          = true;
+          = true;*/
         
       /* or defualt one */
-      else if(is_file($webget_css.'.css')) $css_includes[$webget_css.'.css'] 
-        = true;
+/*      else if(is_file($webget_css.'.css')) $css_includes[$webget_css.'.css'] 
+        = true;*/
 
       
       /* includes DYNAMIC css files by specific client engine */
@@ -111,8 +111,9 @@ class base_htmlview
     $_->static[$_->CALL_UUID]['css']['files'] = $css_includes;
 
     $css_includes = array();
-    $css_includes['?css/'.$_->CALL_SOURCE. '&'.$_->CALL_UUID] = true;
-    
+    $css_includes['?css/webgets'] = true;
+    $css_includes['?css/view' . '&' . $_->CALL_UUID] = true;
+
     /**************************************************************************/
     /*                  Writes the code and flushes children                  */
     /**************************************************************************/

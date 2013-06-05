@@ -21,7 +21,7 @@ class pack_stackelm {
     /* builds code */    
     $_->buffer[] = '<div wbg style="'
                  . $this->style . ($this->preset ? '' : 'display:none;')
-                 . '" wid="0131" id="' . $this->id . '" '
+                 . '" wid="0131" '
                  . ($this->onshow ? 'onshow="'.$this->onshow.'" ' : '')
                  . '>';
 
