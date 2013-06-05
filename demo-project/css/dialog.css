@@ -1,0 +1,25 @@
+.mebox
+{
+	background-color:#ebebeb;
+	box-shadow: 1px 1px 5px #000000;
+	border:1px solid gray;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.diag_visible {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+.diag_hidden {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: visibility 0s 0.2s, opacity 0.2s;
+  -moz-transition: visibility 0s 0.2s, opacity 0.2s;
+  -o-transition: visibility 0s 0.2s, opacity 0.2s;
+  transition: visibility 0s 0.2s, opacity 0.2s;
+}
