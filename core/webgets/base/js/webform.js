@@ -203,3 +203,20 @@ $_.ade(window, "load", function(){
 //  for(s in $_.lib)$_.lib[s].flush();
 
 }, false);
+
+// Extract "GET" parameters from a JS include querystring
+var getParams =function() {
+  // Find all script tags
+  var URL = document.URL;
+  var pa = URL.split("?").pop().split("&");
+  // Look through them trying to find ourselves
+  var p = {};
+  for(var j=0; j<pa.length; j++) {
+    var kv = pa[j].split("=");
+    p[kv[0]] = kv[1];
+  }
+  return p;
+  
+  // No scripts match
+  return {};
+}
