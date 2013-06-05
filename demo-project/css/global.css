@@ -1,0 +1,90 @@
+.radius5
+{
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.radius10
+{
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+}
+
+.fade
+{
+  opacity: 0.3;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+
+.fade:hover
+{
+  opacity: 1;
+}
+
+.text-shadowed
+{
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+  color:white;
+  font-family: sans;
+}
+
+.menu-text
+{
+  color:#999999;
+  font-family: sans;
+  font-size: 10px;
+}
+
+.font10
+{
+  font-size: 20px;
+}
+
+.font20
+{
+  font-size: 20px;
+}
+
+.italic
+{
+  font-style:italic;
+}
+
+.menuitem
+{
+  background: linear-gradient(to bottom, #292929 0px, #252525 100%)
+    repeat scroll 0 0 #272727;
+  border-bottom: 1px solid #1B1B1B;
+  border-top: 1px solid #323232;
+}
+
+.menuitem:hover
+{
+  background: none repeat scroll 0 0 #1C1C1C;
+}
+
+.iview_normal {
+	opacity:1;
+	-moz-transition: opacity 0.2s ease-in-out 0s;
+	-webkit-transition: opacity 0.2s ease-in-out 0s; 
+}
+
+.iview_out {
+	opacity:0;
+}
+
+.iview_in {
+	opacity:0;
+}
+
+
+.iview {
+	visibility:visible;
+	opacity:1;
+}

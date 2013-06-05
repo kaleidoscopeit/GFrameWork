@@ -18,13 +18,16 @@ class form_button {
     /* no paint switch */    
     if ($this->nopaint) return;
 
-    /* builds syles */
-    $css_style = 'class="w0250 '.
-                 $_->ROOT->boxing($this->boxing).
-                 $_->ROOT->style_registry_add($style).
-                 $this->class.'" ';
-                 
-    /* builds code */		    
+    /* builds syles */    
+    $w_class          = 'class="w0250 '.$_->ROOT->boxing($this->boxing).'" ';
+    $css_style        = $_->ROOT->style_registry_add($this->style).
+                        $this->class;
+                              
+    if($css_style!="")  $css_style = 'class="'.$css_style.'" ';
+    
+
+    /* builds code */	
+    $_->buffer[] = '<div ' . $w_class . '>';	    
     $_->buffer[] = '<button name="' . $this->id . '" id="' . $this->id
                  . '" wid="0250" ' . $_->ROOT->format_html_events($this)
                  . $css_style
@@ -35,7 +38,7 @@ class form_button {
 
     /* flushes children */
     if ($this->childs) {
-      $_->buffer[] = '<div wid="0251">';
+      $_->buffer[] = '<div>';
       foreach ($this->childs as  $child) $child->__flush($_);
       $_->buffer[] = '</div>';        
     } else {
@@ -43,6 +46,7 @@ class form_button {
     }
     
     $_->buffer[] = '</button>';
+    $_->buffer[] = '</div>';
   }  
 }
 ?>
