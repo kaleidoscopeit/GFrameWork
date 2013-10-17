@@ -4,52 +4,61 @@ var $_={
   env:{},
   lib:{},
   js:{reg:[]},
-  tmp:{},
+  tmp:{jsbinds:[]},
   webgets:[],
   
   /* main loop */
-  mloop:function(w,p){
+  _wInit:function(w,p){
     var ch=w.childNodes,id,ln,r,a,f;
-    w.wid=$_.gea(w,'wid');
+    w.wid=this.gea(w,'wid');
     w.childWebgets=[];
     if(w.name) id=w.name;
-    else if(typeof w.id == "string") id = w.id
+    else if(typeof w.id == "string") id = w.id;
 
-    //if(id)eval('if(!window.'+id+')window.'+id+'=w;');
-    if(id)eval('if(window.'+id+' != w) window.'+id+'=w;');
+    //if(id)if(window[id] != w)window[id] = w;
+    if(id)eval("if(typeof window."+id+" == 'undefined') window."+id+"=w;");
     if(w.wid) {
       p.childWebgets.push(w);
       w.parentWebget=p;      
       this.webgets.push(w);
-      
-      if(typeof $_.js.reg[w.wid]!='undefined'){
-        r=$_.js.reg[w.wid];
-        for(a in r.a)w[r.a[a]]=$_.gea(w,r.a[a]);
-        for(f in r.f)w[r.f[f]]=new Function($_.gea(w,r.f[f])||"");
-        r.b(w);
-      }
+      this._wAttachJs(w);
     }    
-    if(ch.length>0) $_.each(ch,function(v,i){$_.mloop(v,(w.wid?w:p));});
+    if(ch.length>0) this.each(ch,function(v,i){$$._wInit(v,(w.wid?w:p));});
   },
 
   // get a plain array containing all w's child webgets  
-  getChildWebgets:function(w){
+  getPlainWebgets:function(w){
     var cw=w.childNodes,tmp=[];
-    $_.each(cw,function(v,i){
-      v.wid=$_.gea(v,'wid');
-      if(v.wid) tmp.push(v);
-      tmp=tmp.concat($_.getChildWebgets(v));
+    w.wid=this.gea(w,'wid');
+    if(w.wid) tmp.push(w);
+    this.each(cw,function(v,i){
+      tmp=tmp.concat($$.getPlainWebgets(v));
     });
     return tmp;
   },
-     
+
+  _wAttachJs:function(w){
+    if(typeof this.js.reg[w.wid]=='undefined')return false; 
+    var r=this.js.reg[w.wid],a,f;
+
+    for(a in r.a)w[r.a[a]]=w.getAttribute(r.a[a]);
+  
+    for(f in r.f){
+      f=r.f[f];
+      if(typeof(f) != 'function') w[f] = Event(f);
+      this.bindEvent(w, f, Function(w.getAttribute(f) || ''));
+    }
+    r.b(w);
+    return true;
+  },
+  
   // space saving wrappers for common functions
-  gea:function(n,a){try{var ret=n.getAttribute(a);}catch(e){} return ret},
+  gea:function(n,a){try{var ret=n.getAttribute(a);}catch(e){} return ret;},
   cre:function(n){return document.createElement(n);},
   gei:function(n){return document.getElementById(n);},
 
   // crossbrowser add event handler
-  ade:function(obj,eve,hdl){
+  bindEvent:function(obj,eve,hdl){
     if(obj.attachEvent)obj.attachEvent("on"+eve,hdl);
     else obj.addEventListener(eve,hdl,false);
   },
@@ -131,25 +140,30 @@ var $_={
     /* merges responses values */
     for(p in o[1])b[p]=o[1][p];
 
+    if(o[0] === null) {
+      this.jsimport('system.phpjs.var_export');
+      var_export(b,true);
+    }
+
     // returns the call status
     return o[0];
   },
 
   // hotplug javascript code loader, l:library q:enqueue 
   jsimport:function(l){
-    if(!$_.tmp.jsimport)$_.tmp.jsimport=new Array;
-    if($_.tmp.jsimport[l])return true;
+    if(!$$.tmp.jsimport)$$.tmp.jsimport=new Array;
+    if($$.tmp.jsimport[l])return true;
     var xhr=this.xhr(),url='?lib/'+l.replace(/\./g,'/'),er;
     xhr.open('GET',url,false);
     xhr.setRequestHeader('Content-Type', 'application/text');
     xhr.send(null);
-    try{eval('window.'+xhr.responseText)} 
+    try{eval('window.'+xhr.responseText);} 
     catch(e){
       alert(xhr.responseText);er=1;
-      throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText)
+      throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText);
     }
-    if(!er){this.tmp.jsimport[l]=1;return true}
-    else{return false} 
+    if(!er){this.tmp.jsimport[l]=1;return true;}
+    else{return false;} 
   },
  
   toggleClass:function(w,c,l,ll){
@@ -172,34 +186,84 @@ var $_={
     ll=l.indexOf(c);
     if(ll>-1)l.splice(ll,1);
     w.className=l.join(' ');
-  }
+  },
 
+  /* enqueue a bind */
+  bind:function(t,f){
+    t=t.split(".");
+    t=[t.shift(),t.pop(),t.join('.')];    
+    this.tmp.jsbinds.push({ot:t[0],on:t[2],oa:t[1].replace('on',''),hd:f});
+  },
+
+  /* attach all binds */
+  flushBinds:function(){with($$){
+    for(var i in tmp.jsbinds){
+      var i=tmp.jsbinds[i],
+      obj=gei(i.on);
+  
+      switch(i.ot){
+        case 'webget' :
+  
+          if(typeof(i.hd) == 'function') {
+            if(typeof(obj[i.oa]) != 'function') obj[i.oa] = Event(i.oa);
+            ade(obj, i.oa, i.hd);
+          }
+          
+          else
+            gei(i.on).setAttribute(i.oa, i.hd);
+          break;
+      }
+    }
+  }}
 };
+
+var $$=$_;
 
 /* convenient shortcut to open or goto a View */
 var openView=function(v){
    window.location='?views/'+v;
-}
+};
 
 /* return a webget by name */
-var _w=function(w){
-	for(var i=0;i<$_.webgets.length;i++)
-		if($_.webgets[i].id == w)
-			return $_.webgets[i];
-}
+var _w=function(w){with($$){
+	for(var i=0;i<webgets.length;i++)
+		if(webgets[i].id == w)
+			return webgets[i];
+			
+	return false;
+}};
 
 /* Client code initialization */
-$_.ade(window, "load", function(){
+$$.bindEvent(window, "load", function(){with($$){
   document.body.id='root';
-  $_.mloop(document.body,{childWebgets:[]});
-
-  for(var s in $_.lib)$_.lib[s].construct();
-
-  for(s in $_.webgets){
-    if($_.js.reg[$_.webgets[s].wid])
-      $_.js.reg[$_.webgets[s].wid].fs($_.webgets[s])
+  flushBinds();  
+  _wInit(document.body,{childWebgets:[]});
+  for(var s in lib)lib[s].construct();
+  for(s in webgets){
+    if(js.reg[webgets[s].wid])
+      js.reg[webgets[s].wid].fs(webgets[s]);
   }
+}});
 
-//  for(s in $_.lib)$_.lib[s].flush();
+// Extract "GET" parameters from a JS include query string
+var getParams =function() {
+  // Find all script tags
+  var URL = document.URL;
+  var pa = URL.split("?").pop().split("&");
+  // Look through them trying to find ourselves
+  var p = {};
+  for(var j=0; j<pa.length; j++) {
+    var kv = pa[j].split("=");
+    p[kv[0]] = kv[1];
+  }
+  return p;
+  
+  // No scripts match
+  return {};
+};
 
-}, false);
+
+
+// backports //
+
+$$.ade = $$.bindEvent;

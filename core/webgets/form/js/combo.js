@@ -1,45 +1,66 @@
-$_.js.reg['02A1']={
-	a:[],
-	f:[],
-	b:function(n){with(n){
-		n.items_insert=function(v,l,p){
-			var no=n.options;var nl=n.length;var se=no.selectedIndex;
-			p=p?p:nl+'';
-			if(p.search(/ac/i)>-1)p=se>-1?se:nl;
-			else if(p.search(/bc/i)>-1)p=se>-1?se+1:nl;
-			p=p<0?eval(nl+1+p):p;
-			if(p<0)p=0;if(p>nl)p=nl;
-			for(var x=nl;x>p;x--){no[x]=new Option(no[x-1].text,no[x-1].value)}
-			no[p]=new Option(v,(l||l==0?l:v));
-			if(se>=p)se++;if(se>-1)no[se].selected=true;
-			return 0;
-		},
-		
-		n.items_remove=function(i){with(this){			
-			if(n.length==0)return 0;													// no items -> returns false
-			
-			if(!i&&i!=0){																	// no param gived -> deletes current item
-				n.options[n.options.selectedIndex]=null;
-				return 1;
-			}
-			
-			if(isNaN(i))																	// i is a string -> try to delete those who have the same value
-				for(x=0;x<n.options.length;x++){
-					if(i==n.options[x].value){
-						n.options[x]=null;
-						return 1;
-					}
-				}
+$_.js.reg['02A1'] = {
+  a : [],
+  f : [],
+  b : function(n) {
+    with (n) {
+      n.items_insert = function(v, l, p) {
+        var no = n.options;
+        var nl = n.length;
+        var se = no.selectedIndex;
+        p = p ? p : nl + '';
+        if (p.search(/ac/i) > -1)
+          p = se > -1 ? se : nl;
+        else if (p.search(/bc/i) > -1)
+          p = se > -1 ? se + 1 : nl;
+        p = p < 0 ? eval(nl + 1 + p) : p;
+        if (p < 0)
+          p = 0;
+        if (p > nl)
+          p = nl;
+        for (var x = nl; x > p; x--) {
+          no[x] = new Option(no[x - 1].text, no[x - 1].value);
+        }
+        no[p] = new Option(v, (l || l == 0 ? l : v));
+        if (se >= p)
+          se++;
+        if (se > -1)
+          no[se].selected = true;
+        return 0;
+      }, n.items_remove = function(i) {
+        with (this) {
+          if (n.length == 0)
+            return 0;
+          // no items -> returns false
 
-			if(n.length>i || n.length<0) return 0;								// if there's not index match -> returns false
-			return 0;																		// returns false
-		}},
+          if (!i && i != 0) {// no param gived -> deletes current item
+            n.options[n.options.selectedIndex] = null;
+            return 1;
+          }
 
-		// Reset to the original stack		
-		n.items_empty=function(){
-			for(var i=n.options.length;i>=0;i--){n.options[i]=null}
-		}
-	}},
-	fs:function(n){
-	}
-};
+          if (isNaN(i))// i is a string -> try to delete those who have the same value
+            for ( x = 0; x < n.options.length; x++) {
+              if (i == n.options[x].value) {
+                n.options[x] = null;
+                return 1;
+              }
+            }
+
+          if (n.length > i || n.length < 0)
+            return 0;
+          // if there's not index match -> returns false
+          return 0;
+          // returns false
+        }
+      },
+
+      // Reset to the original stack
+      n.items_empty = function() {
+        for (var i = n.options.length; i >= 0; i--) {
+          n.options[i] = null;
+        }
+      };
+    }
+  },
+  fs : function(n) {
+  }
+}; 

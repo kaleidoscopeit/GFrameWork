@@ -26,9 +26,6 @@ class fpdf_document
     /* set styles */
 		$this->update_styles();
 		$this->fpdf->SetMargins(0,0);
-
-    /* flow control server event */
-    eval($this->ondefine);
  	}
  
   	

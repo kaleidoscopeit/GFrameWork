@@ -1,45 +1,38 @@
 <?php
-class pack_iframe {
-  
-  function __construct(&$_, $attrs)
-  {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+class pack_iframe
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'enableparent'
+  );
     
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  function __define(&$_)
+  {
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-    
-    $onload = $this->onload;
-    
     /* Enable a reference to te parent View in the contained iframe View
        NOTE : parentView became available only after the onload event in 
        the contained document */       
     if($this->enableparent)
-      $onload = 'this.contentWindow.parentView=window;'.$onload;
-    
-    if($onload)
-      $onload = 'onload="'.$onload.'" ';
+      $this->attributes['onload'] = 'this.contentWindow.parentView=window;'
+                                  . (isset($this->attributes['onload']) 
+                                    ? $this->attributes['onload'] : '');
 
     /* builds syles */
-    $style         =  $_->ROOT->boxing($this->boxing).$this->style;
-    $css_style     =  'class="w0140 '.$_->ROOT->style_registry_add($style).
-                      $this->class.'" ';
+    $css_style = 'class="w0140 '
+               . $_->ROOT->boxing($this->boxing)
+               . $_->ROOT->style_registry_add($this->style)
+               . $this->class . '" ';
+    
 
     /* builds code */
     $_->buffer[] = '<div wid="0140" ' . $css_style . '>';
-    $_->buffer[] = '<iframe id="' . $this->id
-                 . '" src="' . $this->src . '" '
-                 . $onload . $_->ROOT->format_html_events($this)
-                 . ' wid="0"></iframe>';
+    $_->buffer[] = '<iframe '
+                 . $_->ROOT->format_html_attributes($this)
+                 . '></iframe>';
     $_->buffer[] = '</div>'; 
   }
   

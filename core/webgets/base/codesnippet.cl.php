@@ -1,23 +1,23 @@
 <?php
 class base_codesnippet
 {
-	function __construct(&$_, $attrs)
+  public $req_attribs = array(
+    'style',
+    'class',
+    'field',
+    'field_format',
+    'hilight',
+    'code',
+    'valign',
+    'halign'
+  );
+	function __define(&$_)
 	{
-		/* imports properties */
-		foreach ($attrs as $key=>$value) $this->$key=$value;
 
-		/* flow control server event */
-		eval($this->ondefine);
 	}
 
 	function __flush(&$_)
 	{
-		/* flow control server event */
-		eval($this->onflush);
-
-		/* no paint switch */    
-		if ($this->nopaint) return;
-
 		/* builds syles */
 		$css_style = 'class="w0050 '
 							 . $_->ROOT->boxing($this->boxing)
@@ -71,9 +71,10 @@ class base_codesnippet
 		}
 	
 		/* builds code */
-		$_->buffer[] = '<div id="' . $this->id. '" wid="0050" ' . $css_style
-								. $_->ROOT->format_html_events($this)
-								. '> ';
+		$_->buffer[] = '<div wid="0050" '
+		             . $css_style
+								 . $_->ROOT->format_html_attributes($this)
+								 . '> ';
 
 		$_->buffer[] = $this->code;
 		$_->buffer[] = '</div>';

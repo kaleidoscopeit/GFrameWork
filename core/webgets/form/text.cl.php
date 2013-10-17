@@ -1,38 +1,39 @@
 <?php
 class form_text
-{  
-  function __construct(&$_, $attrs)
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'field',
+    'field_format',
+    'value'
+  );
+  
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-    
-    /* flow control server event */
-    eval($this->ondefine);
+    if(isset($this->attributes['id']))
+      $this->attributes['name'] = $this->attributes['id'];
    }
   
   function __flush(&$_ )
   {
-    /* flow control server event */
-    eval($this->onflush);
+    /* builds syles */    
+    $w_class   = 'class="w0230 '
+               . $_->ROOT->boxing($this->boxing)
+               . '" ';
+               
+    $css_style = $_->ROOT->style_registry_add('resize: none;' . $this->style)
+               . $this->class;
 
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
-    /* builds syles */
-    $wclass           = 'class="w0230 '.$_->ROOT->boxing($this->boxing).'" ';
-    $css_style        = 'class="'.$_->ROOT->style_registry_add
-                        ('resize: none;'.$this->style).
-                        $this->class.'" ';
+    if($css_style!="") $css_style = 'class="' . $css_style . '" ';
 
     /* builds code */
-    $_->buffer[] = '<div wid="0230" ' . $wclass . '>';
-    $_->buffer[] = '<textarea name="' . $this->id . '" id="' . $this->id . '" '
-                 . $css_style . $_->ROOT->format_html_events($this)
-                 . ($this->disabled ? 'disabled="true" ' : '')                  
-                 . ($this->tip ? 'title="'.$this->tip.'" ' : '')
-                 . '>';
-    $_->buffer[] = $this->value;
-    $_->buffer[] = '</textarea>';
+    $_->buffer[] = '<div wid="0230" ' . $w_class . '>';
+    $_->buffer[] = '<textarea '
+                 . $_->ROOT->format_html_attributes($this)
+                 . $css_style . '>'
+                 . $this->value
+                 . '</textarea>';
     $_->buffer[] = '</div>';
   }
 }

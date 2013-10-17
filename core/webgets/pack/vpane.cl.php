@@ -1,32 +1,24 @@
 <?php
-class pack_vpane {
+class pack_vpane
+{
+  public $req_attribs = array(
+    'minsize',
+    'maxsize',
+    'locked'
+  );
   
-  function __construct(&$_, $attrs)
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
     /* builds code */
-    $_->buffer[] = '<div wid="160" id="' . $this->id
-                 . '" style="' . $this->style . '" '
-                 . ($this->minsize ? 'misz="' . $this->minsize . '" ' : '')
-                 . ($this->maxsize ? 'masz="' . $this->maxsize . '" ' : '')
-                 . ($this->locked ?  'lkd="'  . $this->locked . '" '  : '')
+    $_->buffer[] = '<div wid="0170" '
+                 . $_->ROOT->format_html_attributes($this)
                  . '>';
 
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
   }

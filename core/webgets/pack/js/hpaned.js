@@ -1,4 +1,4 @@
-$_.js.reg['0161']={
+$$.js.reg['0161']={
 	a:['handle','hsize'],
 	f:['onclick'],
 	b:function(n){with(n){
@@ -7,17 +7,17 @@ $_.js.reg['0161']={
 		// do panning
 		// sof+x-spt : start-offset+actual mouse position-start mouse position
 		n.pn=function(e,x){with(n){
-			x=$_.eve(e).clientX;
+			x=$$.eve(e).clientX;
 			us(sof+x-spt);
-			$_.lib.pack_hpaned.rs();
+			$$.lib.pack_hpaned.rs();
 		}};pn.n=n;
 
 		// cancel document attacced panning event
 		n.dr=function(){
 			cla.removeChild(n.sh1);
 			clb.removeChild(n.sh2);
-			$_.dde(document,"mousemove",n.pn);
-			$_.dde(document,"mouseup",function(){});
+			$$.dde(document,"mousemove",n.pn);
+			$$.dde(document,"mouseup",function(){});
 		};
 				
 		// updates the relative position of the handle vs containter width
@@ -30,22 +30,22 @@ $_.js.reg['0161']={
 		// cumulative sizes update (for code saving)
 		n.us=function(ofs,nw){with(n){
 			nw=n.scrollWidth-hdl.offsetWidth;
-			cla.masz=cla.masz||nw;
-			clb.masz=clb.masz||nw;
-			cla.rng=(cla.misz>ofs)+(ofs>cla.masz);
-			clb.rng=(clb.misz>ofs-hdl.offsetWidth)+(ofs-hdl.offsetWidth>clb.masz);
+			cla.maxsize=cla.maxsize||nw;
+			clb.maxsize=clb.maxsize||nw;
+			cla.rng=(cla.minsize>ofs)+(ofs>cla.maxsize);
+			clb.rng=(clb.minsize>ofs-hdl.offsetWidth)+(ofs-hdl.offsetWidth>clb.maxsize);
 			if(cla.rng!="1"){
 				cla.style.width=ofs+"px";
 				hdl.style.left=ofs+"px";
 				clb.style.width=offsetWidth-ofs-hdl.offsetWidth+"px";
 			}
-		}}
+		}};
 		
-		$_.ade(window,"resize", function(){$_.lib.pack_hpaned.rs()});
+		$$.ade(window,"resize", function(){$$.lib.pack_hpaned.rs();});
 		
 	}},
 	fs:function(n){with(n){
-			n.hdl=$_.cre('div');
+			n.hdl=$$.cre('div');
 			n.cla=childNodes[0];
 			n.clb=childNodes[1];
 
@@ -59,18 +59,20 @@ $_.js.reg['0161']={
 			// spt : absolute cursor start point
 			// sof : initial handle offset
 			hdl.onmousedown=function(e){
-				n.spt=$_.eve(e).clientX;
+				n.spt=$$.eve(e).clientX;
 				n.sof=cla.offsetWidth;
-				$_.ade(document,"mousemove", n.pn);
-				$_.ade(document, "mouseup", n.dr);
+				$$.ade(document,"mousemove", n.pn);
+				$$.ade(document, "mouseup", n.dr);
 				// 'shields' for panes : prevents pan probem where there's an iframe inside panes
-				n.sh1=$_.cre('div');
-				n.sh2=$_.cre('div');
-				n.sh1.style.cssText=n.sh2.style.cssText="position:absolute;left:0px;top0px;width:100%;height:100%;"
+				n.sh1=$$.cre('div');
+				n.sh2=$$.cre('div');
+				n.sh1.style.cssText=
+				  n.sh2.style.cssText=
+				    "position:absolute;left:0px;top0px;width:100%;height:100%;";
 				cla.appendChild(n.sh1);
 				clb.appendChild(n.sh2);
 				return false;
-			}
+			};
 
 			insertBefore(hdl,clb);			
 			n.w=scrollWidth;
@@ -78,5 +80,5 @@ $_.js.reg['0161']={
 	}},
 
  	// broadcast function : call resize function of each hpaned webgets
-  rs:function(c,s){c=this.c;for(s in c)c[s].rs()}  
+  rs:function(c,s){c=this.c;for(s in c)c[s].rs();}  
 };

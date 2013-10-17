@@ -4,10 +4,7 @@ class fpdf_chapter
 	function __construct (&$_, $attrs)
 	{
     /* imports properties */
-		foreach ($attrs as $key=>$value) $this->$key=$value;		
-
-    /* flow control server event */
-    eval($this->ondefine);
+		foreach ($attrs as $key=>$value) $this->$key=$value;
 	}
 	
 	function __flush (&$_)	

@@ -3,7 +3,7 @@ class _
 {
    
   function __construct($source)
-  {
+  {    
     /* imports the project configuration file and 
        the configuration database engine */
     require "etc/config.php";
@@ -53,12 +53,14 @@ class _
     switch ($this->CALL_OBJECT) { 
       case 'views' :
       case 'view' :
-      case 'subview' :
+      case 'subview' : 
+      
         require_once __DIR__ . '/views.php';
 if (!$_->call('system.auth.check',$_buf))
 $this->CALL_SOURCE = $this->settings['auth_login_page'];
 
         _engine_views::init();
+        
         return _engine_views::build($this->CALL_SOURCE);
         break;
 
@@ -90,6 +92,23 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         return _engine_css::build($this->CALL_SOURCE);
         break;
 
+      case 'js' :
+        require_once __DIR__ . '/js.php';
+if (!$_->call('system.auth.check',$_buf))
+$this->CALL_SOURCE = $this->settings['auth_login_page'];
+        _engine_js::init();
+        return _engine_js::build($this->CALL_SOURCE);
+        break;
+        
+
+      case 'compile' :
+        require_once __DIR__ . '/compile.php';
+if (!$_->call('system.auth.check',$_buf))
+$this->CALL_SOURCE = $this->settings['auth_login_page'];
+        _engine_compile::init();
+        return _engine_compile::build($this->CALL_SOURCE);
+        break;
+        
 				default :
 					die ('UNKNOWN_OBJECT');
     }
@@ -109,7 +128,10 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
   {
     $exGET    = $_GET;             /* Store previous GET values */
     parse_str   ($source, $_GET);  /* Create a new _GET array from the source */
-    $subview  = new _();           /* Creates a new subview */
+    $source   = array_keys($_GET);
+    $source   = array_shift($source); 
+
+    $subview  = new _($source);    /* Creates a new subview */
     $_buffer  = $subview->main();  /* Start the subview */
     $_GET     = $exGET;            /* Restore previous _GET array */
     return      $_buffer; 
@@ -223,52 +245,55 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
 
 
 
- function _call_param_check(&$_STDIN, $call)
- {
-   global $_;
+  function _call_param_check(&$_STDIN, $call)
+  {
+    global $_;
 
-  foreach ($call[0] as $name => $options) {
+    foreach ($call[0] as $name => $options) {
 
-    /* try to fetch the source value depending by 'origin' rules */
-    foreach ($options['origin'] as $rule) {
-      $rule = explode(':', $rule);
+      /* try to fetch the source value depending by 'origin' rules */
+      foreach ($options['origin'] as $rule) {
+        $rule = explode(':', $rule);
 
-      switch ($rule[0]) {
-         // Single variable assignement
-        case 'variable' :
-          eval('if(isset('.$rule[1].'))$_STDIN[$name] = '.$rule[1].';');
-          break;
+        switch ($rule[0]) {
+           /* Single variable assignement */
+          case 'variable' :
+            eval('if(isset('.$rule[1].'))$_STDIN[$name] = '.$rule[1].';');
+            break;
+            
+          case 'call' :
+          //echo $rule[1];
+            $rule[1] = explode(';', $rule[1]);
+            $call = $rule[1][0];
+            if(isset($rule[1][1])) {
+              $args = explode(',', $rule[1][1]);
+              foreach($args as $argv){
+                $argv = explode('=', $argv);
+                $_STDIN[$name][$argv[0]] = $argv[1];
+              }
+            }
+            $this->call($call, $_STDIN[$name]);
+            break;
           
-        case 'call' :
-          $rule[1] = explode(';', $rule[1]);
-          $call = $rule[1][0];
-          $args = explode(',', $rule[1][1]);
-          foreach($args as $argv){
-            $argv = explode('=', $argv);
-            $_STDIN[$name][$argv[0]] = $argv[1];
-          }
-          $this->call($call, $_STDIN[$name]);
-          break;
-        
-        // composite string. May be made by a mix of quoted text and variables 
-        case 'string' :
-          eval('$_STDIN[$name] = '.$rule[1].';');
-          if(substr($_STDIN[$name],0,1) != '"') $pre = '"';
-          if(substr($_STDIN[$name],-1,1) != '"') $post = '"';
-          $_STDIN[$name] = $pre.$_STDIN[$name].$post;
-          eval('$_STDIN[$name] = '.$_STDIN[$name].';');
-          break;
-          
-        case 'code' :
-          ob_start();
-          eval($rule[1].";");
-          $_STDIN[$name] = ob_get_contents();
-          ob_end_clean();
-          break;
-      }
-
-      /* breaks if one of the origin gives a result */
-      if($_STDIN[$name] !== null) break;
+          /* composite string. May be made by a mix of quoted text and variables */ 
+          case 'string' :
+            eval('$_STDIN[$name] = '.$rule[1].';');
+            if(substr($_STDIN[$name],0,1) != '"') $pre = '"';
+            if(substr($_STDIN[$name],-1,1) != '"') $post = '"';
+            $_STDIN[$name] = $pre.$_STDIN[$name].$post;
+            eval('$_STDIN[$name] = '.$_STDIN[$name].';');
+            break;
+            
+          case 'code' :
+            ob_start();
+            eval($rule[1].";");
+            $_STDIN[$name] = ob_get_contents();
+            ob_end_clean();
+            break;
+        }
+  
+        /* breaks if one of the origin gives a result */
+        if(isset($_STDIN[$name])) break;
     }
 
     /* check strict rules (IT'S A VERY VERY UGLY CODE)*/
@@ -318,7 +343,7 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
   }
  
   return true;
- }
+  }
 }
 
 function register_attributes(&$webget, $attributes, $grab)
@@ -332,18 +357,18 @@ function register_attributes(&$webget, $attributes, $grab)
       'parent'));
 
  	foreach ($grab as $attribute_name) {
- 		@$webget->$attribute_name = $attributes[$attribute_name];
-   	unset($attributes[$attribute_name]);
+ 	  if(isset($attributes[$attribute_name])){
+ 		 @$webget->$attribute_name = $attributes[$attribute_name];
+   	  unset($attributes[$attribute_name]);
+   	}
  	}
  	@$webget->id = $attributes['id'];
- 	$webget->attributes = $attributes;
-
-  
+ 	$webget->attributes = $attributes;  
 }
 
 function &array_get_nested(&$arr, $path, $separator = '.') 
 {
-  if (!is_array($arr)) return false;
+  if(isset($arr)) if (!is_array($arr)) return false;
 
   $cursor = &$arr;
   $keys   = explode($separator, $path);
@@ -351,15 +376,15 @@ function &array_get_nested(&$arr, $path, $separator = '.')
   foreach ($keys as $key) {
     if (isset($cursor[$key]))
       $cursor = &$cursor[$key];
-    else
+    else 
+    
       return false;
   }
 
   return $cursor;
-}
+}  
   
-  
-  
+
 function clean_xml ($strin)
 {
   $strout = null;
@@ -390,7 +415,7 @@ function _w($w)
   return $_->webgets[$w];
 }
 
-function _call($a, $b, $c){
+function _call($a, &$b, $c = NULL){
   global $_;
   return $_->call($a, $b, $c);
 }

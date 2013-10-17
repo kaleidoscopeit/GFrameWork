@@ -1,36 +1,37 @@
 <?php
-class pack_modal {
-  
-  function __construct(&$_, $attrs)
+/*
+ * attributes :
+ *
+ * root   : ???? 
+ */
+ 
+class pack_modal
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'id'
+  );
+    
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;    
-
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
+    /* builds syles */
+    $this->attributes['class'] = 'gbsz ' 
+      . $_->ROOT->boxing($this->boxing)
+      . $_->ROOT->style_registry_add('overflow:auto;' . $this->style)
+      . $this->class . '" ';
+               
     /* builds code */
     $_->buffer[] = '<div class="modalwa" wid="0180" id="' . $this->id . '">';
     $_->buffer[] = '<div class="modalwb gwha" '
                  . 'onclick="this.parentNode.hide()"></div>';
-    $_->buffer[] = '<div style="overflow:auto;' . $this->style . ";"
-                 . $_->webgets['root']->boxing( $this->boxing ) . ';" '
-                 . $_->webgets['root']->format_html_events($this, Array('mouse'))
-                 . 'class = "gbsz ' . $this->class . '" '
-                 . ($this->root ? 'root="'.$this->root.'" ' : '')
-                 . '>';
+    $_->buffer[] = '<div ' . $_->ROOT->format_html_attributes($this) . '>';
 
-    /* flushes children */
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
     $_->buffer[] = '</div>';

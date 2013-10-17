@@ -50,7 +50,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   return FALSE;
 });
-?>
+
 
 
 	// Exit codes :
@@ -61,7 +61,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 
 	// ===================================================================================================
 		
-	function passwd ( $uid , $password , $skip_check = false , $old_password = null ) {
+/*	function passwd ( $uid , $password , $skip_check = false , $old_password = null ) {
 		global $_;
 		
 		// Loads the authentication file
@@ -109,4 +109,5 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 		fclose($fp);
 		
 		return false;
-	}	
+	}	*/
+?>

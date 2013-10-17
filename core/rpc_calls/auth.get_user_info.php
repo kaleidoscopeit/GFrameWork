@@ -5,7 +5,7 @@
 
 $rpc = array (array (
 
-/* user id */
+/* searched user id */
 
 'user' => array (
   'type'     => 'string',

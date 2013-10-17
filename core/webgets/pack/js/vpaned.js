@@ -30,10 +30,10 @@ $_.js.reg['0171']={
 		// cumulative sizes update (for code saving)
 		n.us=function(ofs,nw){with(n){
 			nw=n.scrollHeight-hdl.offsetHeight;
-			cla.masz=cla.masz||nw;
-			clb.masz=clb.masz||nw;
-			cla.rng=(cla.misz>ofs)+(ofs>cla.masz);
-			clb.rng=(clb.misz>ofs-hdl.offsetHeight)+(ofs-hdl.offsetHeight>clb.masz);
+			cla.maxsize=cla.maxsize||nw;
+			clb.maxsize=clb.maxsize||nw;
+			cla.rng=(cla.minsize>ofs)+(ofs>cla.maxsize);
+			clb.rng=(clb.minsize>ofs-hdl.offsetHeight)+(ofs-hdl.offsetHeight>clb.maxsize);
 			if(cla.rng!="1"){
 				cla.style.height=ofs+"px";
 				hdl.style.top=ofs+"px";

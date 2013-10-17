@@ -10,12 +10,18 @@
 
 class base_progressbar
 {
-  function __construct(&$_, $attrs)
+  public $req_attribs = array(
+    'style',
+    'class',
+    'field',
+    'field_format',
+    'progress',
+    'bar_style',
+    'orientation'
+  );
+  
+  function __define(&$_)
   {
-    /* imports properties */
-    register_attributes($this, $attrs, array(
-      'style','class','field','field_format','progress','bar_style','orientation'));
-
     /* sets the default values */
     $default                  = array();
     $default['orientation'][] = "LR";
@@ -24,19 +30,10 @@ class base_progressbar
     foreach ($default as $key => $value)
       foreach ($value as $local)
       if ($local != null && !$this->$key) $this->$key=$local;
-     
-    /* flow control server event */
-    eval($this->ondefine);
   }
 
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */
-    if ($this->nopaint) return;
-
     /* set progress depending by the presence of 'field' property */
     if($this->field){
       $field        = explode(',', $this->field);
@@ -94,19 +91,19 @@ class base_progressbar
     
    
     if (!strpos($bar_style,'background-color'))
-      $bar_style = 'background-color:lightgreen;'.$bar_style;
+      $bar_style = ''.$bar_style;
 
     /* builds syles */
     $css_style_bar = ($bar_style!="" ? 'class="'
                    . $_->ROOT->style_registry_add($bar_style).'" ' : '');
      
-    $css_style     = 'class="w0030 ' . $_->ROOT->boxing($this->boxing)
+    $css_style     = 'class="w0030 '
+                   . $_->ROOT->boxing($this->boxing)
                    . $_->ROOT->style_registry_add($this->style)
                    . $this->class.'" ';
      
     /* builds code */
     $_->buffer[] = '<div wid="0030" ' . $css_style
-                 . $_->ROOT->format_html_events($this)
                  . $_->ROOT->format_html_attributes($this)
                  . ' ornt="' . $this->orientation . '" '
                  . $cfields
@@ -114,7 +111,7 @@ class base_progressbar
     
     $_->buffer[] =  '<div ' . $css_style_bar . '></div>';
 
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
   }

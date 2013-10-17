@@ -13,7 +13,7 @@ $_.js.reg['0150']={
     n.ifcurr='1';
     n.ifnext='2';
 
-    n.history={stack:[]}
+    n.history={stack:[]};
     
     if(tcn && tci && tco){
       $_.toggleClass(ifa,tcn);
@@ -35,7 +35,7 @@ $_.js.reg['0150']={
       $_.ade(n.children[n.ifnext], 'load', this.onload);
       n.children[n.ifnext].src=v;
       n.action='next';
-    }
+    };
 
     n.back=function(){
       with(this.history){
@@ -43,7 +43,7 @@ $_.js.reg['0150']={
         v=stack.pop();
       }
       this.goto(v);
-    }
+    };
     
     n.show=function(i,o){
       $_.ade(n.children[ifcurr], 'webkitTransitionEnd', n.trans_end);
@@ -70,14 +70,15 @@ $_.js.reg['0150']={
       n.children[ifnext].id='next';
       
       //i.style.display='block';
-    }
+      return true;
+    };
     
     n.trans_end=function(e){      
       if(n.children[ifcurr]!=e.target){
         e.target.exleft=e.target.style.left;
         e.target.style.left='-100%';
       }
-    }
+    };
 
   }},
   fs:function(n){  

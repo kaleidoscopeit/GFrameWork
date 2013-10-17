@@ -21,10 +21,11 @@ $rpc = array(array(
   
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-	if (count($_->static['auth']['user']['group']) > 0 and
-	    count($_buf['groups']) > 0)
-		$_out = array_intersect($_->static['auth']['user']['group'],
-		                        $_buf['groups']);
+  if (count($_->static['auth']['user']['group']) > 0
+	   and count($_STDIN['groups']) > 0)
+    $_STDOUT = array_intersect(
+                $_->static['auth']['user']['group'],
+		            $_STDIN['groups']);
 
 	return TRUE;
 });

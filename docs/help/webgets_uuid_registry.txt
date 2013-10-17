@@ -40,3 +40,7 @@ data:table        0300
 data:tablecell    0301
 data:jtable       0310
 data:jtablecell   0311
+
+schedule:datepicker 0400
+schedule:calendar   0410
+schedule:gantt      0420

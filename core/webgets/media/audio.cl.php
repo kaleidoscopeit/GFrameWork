@@ -1,25 +1,17 @@
 <?php
 class media_audio
 {
-  function __construct(&$_, $attrs)
+  public $req_attribs = array(
+  );
+  
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-    
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  }
   
   function __flush(&$_ )
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
-    $_->buffer[] = '<audio id="' . $this->id . '" '
-                 . ($this->src ? 'src="' . $this->src . '" ' : '')
+    $_->buffer[] = '<audio  '
+                 . $_->ROOT->format_html_attributes($this)
                  . '></audio>';
   }  
 }

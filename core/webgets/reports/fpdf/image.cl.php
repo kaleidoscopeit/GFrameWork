@@ -11,9 +11,6 @@ class fpdf_image {
     $this->top      = $this->geometry[1];
     $this->width    = $this->geometry[2];
     $this->height   = $this->geometry[3];
-
-    /* flow control server event */
-    eval($this->ondefine);
 	}
 	
 	function __flush(&$_)	

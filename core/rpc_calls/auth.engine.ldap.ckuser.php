@@ -114,35 +114,38 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 	$uid    = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);      
 	$uname  = ldap_get_values($cnx, $entry, $_STDIN['uname_field']);
 	$groups = ldap_get_values($cnx, $entry, "memberof");
+
 	unset($groups['count']);
 
       $_STDOUT[1]  = array(
         'id'    => $uid[0],
         'name'  => $uname[0]);  
 
-      $_STDOUT[0]['signal'] = 'AUTH_CHECKUSER_ACCEPTED';
-      $_STDOUT[0]['call']   = $self['name'];
+      $_STDOUT['STDERR']['signal'] = 'AUTH_CHECKUSER_ACCEPTED';
+      $_STDOUT['STDERR']['call']   = array($self['name']);
 
       array_walk($groups, function(&$value, $key){
-        $value = explode('=',explode(',', $value)[0])[1];
+        $value = explode(',', $value);
+        $value = explode('=',$value[0]);
+        $value = $value[1];
       });
-              
+
       $_STDOUT[1]['group'] = $groups;        
 
       return TRUE;
       break;            
 
     case 'false' :      
-      $_STDOUT[0]['signal'] = 'AUTH_CHECKUSER_WRONGPASS';
-      $_STDOUT[0]['call']   = $self['name'];
-      return FALSE;            
+      $_STDOUT['STDERR']['signal'] = 'AUTH_CHECKUSER_WRONGPASS';
+      $_STDOUT['STDERR']['call']   = array($self['name']);
+     
       break;
 
     case 'error' :
       /* else gives 'wrong user' error */
-      $_STDOUT[0]['signal'] ='AUTH_CHECKUSER_WRONGUSER';
-      $_STDOUT[0]['call']   = $self['name'];
-      $_STDOUT[1]  = array('id' => $_STDIN['user']);
+      $_STDOUT['STDERR']['signal'] = 'AUTH_CHECKUSER_WRONGUSER';
+      $_STDOUT['STDERR']['call']   = array($self['name']);
+      $_STDOUT[0]  = array('id' => $_STDIN['user']);
       return FALSE;
   }
 });  

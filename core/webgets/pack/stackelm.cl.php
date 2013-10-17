@@ -1,35 +1,45 @@
 <?php
-class pack_stackelm {
+/*
+ * attributes :
+ *
+ * onshow   : happens when this element will be shown 
+ */
+ 
+class pack_stackelm
+{ 
+  public $req_attribs = array(
+    'style',
+    'class',
+    'preset'
+  );
   
-  function __construct (&$_, $attrs)
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-    
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  }
+
+  function __preflush(&$_)
+  {
+    $this->index = $parent->count;
+    if($parent->preset != $this->index) $this->style .= 'display:none;';
+    $parent->count++;
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */
-    if ($this->nopaint) return;
-
+    /* builds syles */
+    $this->attributes['class'] = $_->ROOT->style_registry_add($this->style)
+                               . $this->class . '" ';
+      
     /* builds code */    
-    $_->buffer[] = '<div wbg style="'
-                 . $this->style . ($this->preset ? '' : 'display:none;')
-                 . '" wid="0131" '
-                 . ($this->onshow ? 'onshow="'.$this->onshow.'" ' : '')
-                 . '>';
+    $_->buffer[] = '<div wid="0131" '
+                 . $_->ROOT->format_html_attributes($this)
+                 . '> ';
 
     /* flushes children */
-    if (!$this->childs)
+    if (!isset($this->childs))
       $_->buffer[] = "Stack element number " . $this->index;
     else
-      foreach ((array) @$this->childs as  $child) $child->__flush($_);
+      gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
   }  

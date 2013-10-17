@@ -34,9 +34,6 @@ class base_webform
 
     /* style registry prefix */
     $_->static[$_->CALL_UUID]['css']['prefix'] = 'sr';
-
-    /* flow control server event */
-    eval(@$this->ondefine);
   }
 
 
@@ -45,12 +42,6 @@ class base_webform
 
   function __flush (&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-    
     /**************************************************************************/
     /*                         Sets-up inclusions                             */
     /**************************************************************************/
@@ -143,8 +134,7 @@ class base_webform
                  . $this->format_html_events($this).'>';
     
 
-    /* flushes children */
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
     $_->buffer[] = '</body>';
     $_->buffer[] = '</html>';
@@ -333,7 +323,7 @@ class base_webform
    *
    */
    
-  function format_html_events ($webget)
+  /*function format_html_events ($webget)
   {
     //    return;
     return 
@@ -363,7 +353,7 @@ class base_webform
         'onblur="'.$webget->onblur.'" ' : '').
       (isset($webget->onfocus) ?
         'onfocus="'.$webget->onfocus.'" ' : '');
-  }
+  }*/
   
   
   function format_html_attributes ($webget)

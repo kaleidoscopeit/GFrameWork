@@ -39,8 +39,6 @@ function PDFText($attrs){
 		foreach($reqiured as $value){
 			if(!isset($this->$value)){die ("The property ".$value." in ".get_class($this)." ID -> ".$this->ID." is required.");};
 		}
-
- 		eval($this->ONDECLARECLASS);
 	}
 	
 	function flush(){

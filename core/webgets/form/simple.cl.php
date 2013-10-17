@@ -1,30 +1,25 @@
 <?php
 class form_simple
-{  
-  function __construct(&$_, $attrs)
+{
+  public $req_attribs = array(
+    'style',
+    'class'
+  );
+  
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-    
-    /* flow control server event */
-    eval($this->ondefine);
+    if(isset($this->attributes['id']))
+      $this->attributes['name'] = $this->attributes['id'];
   }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
+    $_->buffer[] = '<form wid="0200" '
+                 . 'method="post" enctype="multipart/form-data" '
+                 . $_->ROOT->format_html_attributes($this)
+                 . ' >';
     
-    $_->buffer[] = '<form method="post" id="'.$this->id.'" wid="0200" '
-                 . 'name="'.$this->id.'" enctype="multipart/form-data" '
-                 . ($this->action ? 'action="'.$this->action.'" ' : '')
-                 . ($this->onsubmit ? 'onsubmit="'.$this->onsubmit.'" ' : '')
-                 . '>';
-    
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
     $_->buffer[] = '</form>';
   }

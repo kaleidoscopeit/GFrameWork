@@ -14,9 +14,6 @@ class fpdf_cell
 			foreach ($value as $local)
 				if ($local != null && !$this->$key)
 					$this->$key=$local;
-
-    /* flow control server event */
-    eval($this->ondefine);
  	}
 
 	function __flush(&$_)

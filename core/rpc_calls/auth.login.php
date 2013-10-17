@@ -1,6 +1,6 @@
 <?php
 /*
-	* Authenticate the user against the server
+  * Authenticate the user against the server
  */
 
 $rpc = array (array (
@@ -45,29 +45,42 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
   $domain = $_STDIN['domain'];
 
   /* check authentication  credentials */  
-  $_->call("system.auth.engine.".$_STDIN["auth_engine"].".ckuser", $_STDIN);
-
-  if($_STDIN[0]['signal'] == 'AUTH_CHECKUSER_ACCEPTED') 
-    $_->static['auth']['user'] = $_STDIN[1];
- 	
-  /* calls login custom function */
-  if (is_callable($_->settings['auth_login_event'])) {
-   		/* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
-  		 if (!$_->settings['auth_login_event']($_STDIN, $_)){
-  		   $_STDOUT[0] = array(
-  		    'desc'   => "Authentication stack error!!!! Contact your sys admin.",
-  		    'signal' => 'AUTH_LOGINSTACK_ERROR',
-  		    'call'   => $self['name']);
-      return FALSE;
-    }
+  if(!$_->call("system.auth.engine."
+              . $_STDIN["auth_engine"]
+              . ".ckuser", $_STDIN)) {
+                
+    $_STDOUT = $_STDIN;
+    $_STDOUT['STDERR']['call'][] = $self['name'];
+ 
+    return FALSE;   
   }
-
-  $_STDOUT[0] = array('signal' => $_STDIN[0], 'call' => $self['name']);
   
-  if($_STDIN[0]['signal'] == 'AUTH_CHECKUSER_ACCEPTED')
-    return TRUE;    
-  else
-    return FALSE;
+  
+  if($_STDIN['STDERR']['signal'] == 'AUTH_CHECKUSER_ACCEPTED') {
+
+    $_->static['auth']['user'] = $_STDIN[1];
+   
+    /* calls login custom function */
+    if (is_callable($_->settings['auth_login_event'])) {
+      /* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
+      if (!$_->settings['auth_login_event']($_STDIN, $_)){
+        $_STDOUT['STDERR'] = array(
+          'call'          => array($self['name']),
+          'signal'        => 'AUTH_LOGINSTACK_ERROR');
+    
+        return FALSE;    
+      }
+    }
+
+    $_STDOUT['STDERR'] = array(
+      'call'          => array($self['name']),
+      'signal'        => $_STDIN[0]['signal']);
+    
+    return TRUE;
+  }
+  
+
+
 });  
 
 ?>

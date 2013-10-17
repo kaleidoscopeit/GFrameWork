@@ -1,24 +1,26 @@
 <?php
 class base_label
 {
+  public $req_attribs = array(
+    'style',
+    'class',
+    'field',
+    'field_format',
+    'caption',
+    'default',
+    'valign',
+    'halign'
+  );
+
   function __construct(&$_, $attrs)
   {
     /* imports properties */
-    register_attributes($this, $attrs, array(
-      'style','class','field','field_format','caption','default','valign','halign'));
-    
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+/*    register_attributes($this, $attrs, array(
+      'style','class','field','field_format','caption','default','valign','halign'));*/
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */
-    if ($this->nopaint) return;  
-
     /* set caption depending by the presence of 'field' property */
     if($this->field){
       $field        = explode(',', $this->field);
@@ -29,7 +31,7 @@ class base_label
 
         /* if no record on server resultset send fields definition to client */
         if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
-          
+
         $field[$key] = &array_get_nested
                        ($_->webgets[$param[0]]->current_record, $param[1]);           
       }
@@ -42,8 +44,8 @@ class base_label
     if($caption == "" && $this->default != "") $caption = $this->default;
 
     /* enable client field definition */
-    if($cfields) $cfields = 'field="' . implode(',', $cfields) . 
-                           '" field_format="' . $field_format . '" ';
+    if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields) . 
+                                   '" field_format="' . $field_format . '" ';
 
     else $cfields = "";
     
@@ -51,14 +53,17 @@ class base_label
     if($this->valign == 'middle' || $this->valign == 'bottom') $align = 10;
 
     $boxing = explode(',', $this->boxing);
+
+    $margins = 0;
     
-    if(preg_match('/x|%/',substr($boxing[2], -1).substr($boxing[3], -1)))
-      $margins = 1; 
+    if(preg_match('/x|%/'
+      ,(isset($boxing[2]) ? substr($boxing[2], -1) : '')
+      .(isset($boxing[3]) ? substr($boxing[3], -1) : ''))) $margins = 1; 
 
     /* builds syles */
     $style     = $this->style.
                  ($this->halign ? 'text-align:'.$this->halign : '');
-                 
+
     $css_style = $_->ROOT->boxing($this->boxing).
                  $_->ROOT->style_registry_add($style).$this->class;
                  
@@ -67,24 +72,23 @@ class base_label
     switch($align+$margins){
       case 11:
 
-        if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
-        
+        if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';
+
         $_->buffer[] = '<div wid="0010" '
                      . $css_style
-                     . $_->ROOT->format_html_events($this)
                      . $_->ROOT->format_html_attributes($this)
                      . $cfields
                      . '>';
 
         $_->buffer[] = '<span class="w0011" style="vertical-align:'
                      . $this->valign.'">';
-                     
+
         $_->buffer[] = '<span>';
         $_->buffer[] = $caption;
         $_->buffer[] = '</span>';
         $_->buffer[] = '</span>';
         $_->buffer[] = '</div>';
-        
+
         break;
 
 
@@ -94,15 +98,14 @@ class base_label
 
         $_->buffer[] = '<div wid="0010" '
                      . $css_style
-                     . $_->ROOT->format_html_events($this)
                      . $_->ROOT->format_html_attributes($this)
                      . $cfields
                      . '>';
-        
+
         $_->buffer[] = '<span style="vertical-align:' . $this->valign . '">';
         $_->buffer[] = $caption;
         $_->buffer[] = '</span>';
-        
+
         $_->buffer[] = '</div>';
 
         break;
@@ -111,10 +114,9 @@ class base_label
       default :
 
         if($css_style!="") $css_style = 'class="w0010 '.$css_style.'" ';      
-                            
+
         $_->buffer[] = '<div wid="0010" '
                      . $css_style
-                     . $_->ROOT->format_html_events($this)
                      . $_->ROOT->format_html_attributes($this)
                      . $cfields
                      . '>'

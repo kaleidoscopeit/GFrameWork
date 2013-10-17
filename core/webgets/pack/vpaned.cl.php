@@ -1,33 +1,30 @@
 <?php
-class pack_vpaned {
-  
-  function __construct(&$_, $attrs)
+class pack_vpaned
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'handle',
+    'vsize'
+  );
+    
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
+    /* builds syles */
+    $this->attributes['class'] = $_->ROOT->boxing($this->boxing)
+                               . $_->ROOT->style_registry_add($this->style)
+                               . $this->class;
+               
     /* builds code */    
-    $_->buffer[] = '<div style="' . $this->style . ";"
-                 . $_->ROOT->boxing($this->boxing) . '" '
-                 . 'wid="0161" id="' . $this->id . '" '
-                 . ($this->handle ? 'handle="' . $this->handle . '" ' : '')
-                 . ($this->vsize ? 'vsize="' . $this->vsize . '" ' : '')
+    $_->buffer[] = '<div wid="0171" '
+                 . $_->ROOT->format_html_attributes($this)
                  . '>';
 
-    /* flushes children */
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
   }

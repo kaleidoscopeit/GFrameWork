@@ -27,7 +27,7 @@ class _engine_views {
   function build($source_url)
   {
     /* loopback to the buck */
-    $_ = $this;
+    $_ = &$this;
 
     /* Check if the view exists */
     $source_url .='/_this';
@@ -41,20 +41,26 @@ class _engine_views {
     
     /* assign global scope javascript code in the root webget 
        ( TODO: has to be more abstract ) */
-    $this->ROOT->global_javascript = 
+
+    $_->static[$_->CALL_UUID]['js']['raw'][] =
       $this->codes['global']['javascript']['default'];
 
+    if (is_file('views/'.$source_url.'.js'))
+      $_->static[$_->CALL_UUID]['js']['raw'][] =
+        file_get_contents('views/'.$source_url.'.js');    
+      
     /* the view php code in the global scope will be executed */
-    eval($this->codes['global']['php']['default']);
+    if(isset($this->codes['global']['php']['default']))
+      eval($this->codes['global']['php']['default']);
                                               
     /* starts cascading execution witch will fills output buffer */
-    $this->ROOT->__flush($this);
+    gfwk_flush($this->ROOT, $this);
 
     /* eventually appends system errors HTML code (needs improovements) */
-    if ($this->system_error_queue)
+    if (isset($this->system_error_queue))
       foreach ($this->system_error_queue as $error)
         $this->buffer[] = $error;
-
+    
     return $this->buffer;
   }
 
@@ -162,6 +168,7 @@ class _engine_views {
   
   function startelm($parser, $library_name, $library_attribs)
   {
+    $_ = &$this;
     $library_class = str_replace(':', '_', $library_name);
     $this->parser = $parser;
     
@@ -188,20 +195,38 @@ class _engine_views {
         if (!isset($library_attribs[$property]))
           $library_attribs[$property] = trim($value);
           
-    // sets the parent of the new class
+    /* sets the parent of the new class */
     if (isset($this->current_webget))
       $library_attribs['parent'] = &$this->current_webget;
 
-    // define the webget and add it to te webgets array
+    /* define the webget and add it to the webgets array */
     $this->webgets[$cwid] =
       new $library_class($this, $library_attribs);
-  
-    // link the new webget to its parent as a child of it
+      
+
+    if(isset($this->webgets[$cwid]->req_attribs))
+      register_attributes($this->webgets[$cwid],
+                          $library_attribs,
+                          $this->webgets[$cwid]->req_attribs);
+
+    $this->webgets[$cwid]->scope = &$this;
+
+    if(method_exists($this->webgets[$cwid],"__define"))
+      $this->webgets[$cwid]->__define($_);
+
+    /* bound 'ondefine' server event to the webget and trig-it */
+    if(isset($this->webgets[$cwid]->ondefine)){
+      $ondefine = function() use (&$_){eval($this->ondefine.';');};
+      $boundClosure = $ondefine->bindTo($this->webgets[$cwid]);
+      $boundClosure();
+    }
+    
+    /* link the new webget to its parent as a child of it */
     if (isset($this->current_webget))
       $this->current_webget->childs[] = 
         &$this->webgets[$cwid];
   
-    // sets the new webget as current webget
+    /* sets the new webget as current webget */
     $this->current_webget = &$this->webgets[$cwid];
   }
 
@@ -212,23 +237,59 @@ class _engine_views {
 
   function endelm($parser, $library_name)
   {
-    // go back to the parent webget
+    /* go back to the parent webget */
     if ($this->current_webget->parent)
       $this->current_webget = &$this->current_webget->parent;
   }
 }
 
+function gfwk_flush(&$webget)
+{
+  $_ = $webget->scope;
+
+  /* executes preflush if exists */
+  if(method_exists($webget, '__preflush')) $webget->__preflush($_);
+  
+  /* bound 'onflush' server event to the webget and trig-it */
+  if(isset($webget->onflush)){
+    $onflush = function() use (&$_){eval($this->onflush.';');};
+    $boundClosure = $onflush->bindTo($webget);
+    $boundClosure();
+  }
+
+  /* inhibit painting if required */
+  if(isset($webget->nopaint)) return;
+  
+  $webget->__flush($_);
+}
+
+function gfwk_flush_children($webget, $filter = NULL)
+{
+  if(isset($webget->childs)) {
+    if(isset($filter)) {
+      foreach ($webget->childs as  $child) 
+        if (get_class($child) == $filter)
+          gfwk_flush($child);
+    }
+    else 
+      foreach ($webget->childs as  $child) gfwk_flush($child);
+  }
+}
+
+
 function __autoload($class_name)
 {
   global $_;
 
-  $library_url   = str_replace('_', '/', $class_name);
-  
+  $library_url = str_replace('_', '/', $class_name);
+
   if (!is_file($_->WEBGETS_PATH.$library_url.'.cl.php'))
     die ('STOP! The library "' . $class_name . '" doesn\'t exists in source'
         .' view "' . $_->CALL_SOURCE . '" at line number '        
         . xml_get_current_line_number($_->parser) . '.');
-        
+
+
+  $_->libraries[] = $library_url;
   require $_->WEBGETS_PATH.$library_url.'.cl.php';
 }
 ?>

@@ -4,6 +4,6 @@ $_.js.reg['0300']={
 	b:function(n){},
 	fs:function(n){
 		n.result_set=eval(n.result_set);
-		n.ready();
+		n.dispatchEvent(n.ready);
 	}
 };

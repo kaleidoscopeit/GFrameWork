@@ -38,9 +38,6 @@ class PDFTable
 		$this->TOP = $this->GEOMETRY[1];
 		$this->WIDTH = $this->GEOMETRY[2];
 		$this->HEIGHT = $this->GEOMETRY[3];
-
-		// esegue il codice contenuto nella proprieta' (evento) :  s:onDeclareClass
-		eval($this->ONDECLARECLASS);
 	}
 
 	function flush() // attua lo scopo della classe

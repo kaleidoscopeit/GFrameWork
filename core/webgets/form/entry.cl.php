@@ -1,24 +1,22 @@
 <?php
-class form_entry {
-  
-  function __construct(&$_, $attrs)
+class form_entry
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'field',
+    'field_format',
+    'value'
+  );
+    
+  function __define(&$_)
   {
-    /* imports properties */
-    register_attributes($this, $attrs, array(
-      'style','class','disabled','readonly','field','field_format'));
-
-    /* flow control server event */
-    eval($this->ondefine);
+    if(isset($this->attributes['id']))
+      $this->attributes['name'] = $this->attributes['id'];
   }
   
   function __flush(&$_)
-  {    
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
+  {   
     /* set value depending by the presence of 'field' property */
     if($this->field){
       $field        = explode(',', $this->field);
@@ -39,27 +37,30 @@ class form_entry {
     else $value = $this->value;
 
     /* enable client field definition */
-    if($cfields) $cfields = 'field="' . implode(',', $cfields) . 
-                           '" field_format="' . $field_format . '" ';
+    if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields)  
+                                 . '" field_format="' . $field_format . '" ';
 
     else $cfields = "";
-    
+
+
     /* builds syles */    
-    $w_class          = 'class="w0210 '.$_->ROOT->boxing($this->boxing).'" ';
-    $css_style        = $_->ROOT->style_registry_add($this->style).
-                        $this->class;
+    $w_class   = 'class="w0210 '
+               . $_->ROOT->boxing($this->boxing)
+               . '" ';
+               
+    $css_style = $_->ROOT->style_registry_add($this->style)
+               . $this->class;
                               
-    if($css_style!="")  $css_style = 'class="'.$css_style.'" ';
+    if($css_style!="") $css_style = 'class="' . $css_style . '" ';
 
     /* builds code */    
     $_->buffer[] = '<div ' . $w_class . '>';
-    $_->buffer[] = '<input name="' . $this->id . '" wid="0210" '
-                 . $_->ROOT->format_html_attributes($this) . ' '
-                 . 'type="text" ' . $css_style . $cfields
-                 . ($this->disabled ? ' disabled ' : '')
-                 . ($this->readonly ? ' readonly ' : '')
-                 . ($this->tip ? ' title="'.$this->tip.'" ' : '')
-                 . ($value ? ' value="'.$value.'" ' : '') . '>';
+    $_->buffer[] = '<input type="text" wid="0210" '
+                 . $cfields
+                 . (isset($value) ? ' value="'.$value.'" ' : '')
+                 . $_->ROOT->format_html_attributes($this)
+                 . $css_style . '>';
+                 
     $_->buffer[] = '</div>';
   }
 }

@@ -18,12 +18,12 @@ $_.js.reg['0060']={
         i=p.pop();
         b.innerHTML=i;
         b.n=n;
-        b.onclick=function(){this.n.setpath(this.value)};
+        b.onclick=function(){this.n.setpath(this.value);};
         c.appendChild(b);
       }
 
       n.onchange();
-    }
+    };
 
   }},
   

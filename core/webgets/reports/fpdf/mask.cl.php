@@ -12,9 +12,6 @@ class fpdf_mask
     $this->top      = $this->geometry[1];
     $this->width    = $this->geometry[2];
     $this->height   = $this->geometry[3];
-
-    /* flow control server event */
-    eval($this->ondefine);
   }
   
   

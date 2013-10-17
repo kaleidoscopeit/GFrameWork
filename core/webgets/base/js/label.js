@@ -1,6 +1,6 @@
-$_.js.reg['0010']={
+$$.js.reg['0010']={
 	a:['field','field_format','eval_field','eval_field_command'],
-	f:['onchange', 'ready'],
+	f:['change', 'ready'],
 	b:function(n){with(n){
 	  var f=n.children[0],
 	  	  ff=(f ? f.children[0] : null);
@@ -12,9 +12,9 @@ $_.js.reg['0010']={
     else n.sub=n;
 
 		n.caption=function(c){with(n){
-			if(c===undefined)return sub.textContent;
+			if(c===undefined)return sub.textContent.replace(/\t|\n|\r/g, '');
 			sub.textContent=c;
-			onchange();
+			n.dispatchEvent(change);
 			return true;
 		}};
 		
@@ -27,15 +27,16 @@ $_.js.reg['0010']={
 		}};
 		
 		n.refresh=function(){
-			$_.jsimport('system.phpjs.vsprintf');
-			if(fs = $_.js.reg['0310'].getfields(n.eval_field))
-				eval(vsprintf(n.eval_field_command,fs));
-			
-			if(fs = $_.js.reg['0310'].getfields(n.field))
-				n.caption(vsprintf(n.field_format,fs));
-		}
+			$$.jsimport('system.phpjs.vsprintf');
+      var fs = $$.js.reg['0310'].getfields(n.eval_field);
+			if(fs != false) eval(vsprintf(n.eval_field_command,fs));
+				
+			var fs = $$.js.reg['0310'].getfields(n.field);
+			if(fs != false) n.caption(vsprintf(n.field_format,fs));
+		};
 	}},
+	
 	fs:function(n){
-		n.ready();
+    n.dispatchEvent(n.ready);
 	}
 };

@@ -80,7 +80,7 @@
 					<pack:vlayout>
          
 						<pack:vlaycell height="50px" style="background-color:#6A6A6A;">
-							<pack:stack id="title_stack" class_normal="ttstack" class_out="ttstack_out" class_in="ttstack_in">
+							<pack:stack id="title_stack" >
 								<pack:stackelm>
 									<base:label
 										caption="Framework Structure"

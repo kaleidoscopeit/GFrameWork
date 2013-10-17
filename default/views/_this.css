@@ -1,5 +1,6 @@
 .ttstack {
 	-webkit-transition : all 220ms ease-in-out;
+	-moz-transition : all 220ms ease-in-out;
 }
 
 .ttstack_in {

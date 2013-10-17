@@ -1,45 +1,43 @@
 <?php
-class form_button {
+class form_button
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'value'
+  );
   
-  function __construct(&$_, $attrs)
+    
+  function __define(&$_)
   {
-    /* imports properties */
-		foreach ($attrs as $key=>$value) $this->$key=$value;
-		
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+    if(!isset($this->attributes['type'])) $this->attributes['type'] = 'button';
+
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
-    /* builds syles */    
-    $w_class          = 'class="w0250 '.$_->ROOT->boxing($this->boxing).'" ';
-    $css_style        = $_->ROOT->style_registry_add($this->style).
-                        $this->class;
-                              
-    if($css_style!="")  $css_style = 'class="'.$css_style.'" ';
+    if(isset($this->attributes['id']))
+      $this->attributes['name'] = $this->attributes['id'];
     
+    /* builds syles */    
+    $w_class   = 'class="w0250 '.$_->ROOT->boxing($this->boxing).'" ';
 
+    /* builds syles */
+    $this->attributes['class'] = $_->ROOT->style_registry_add($this->style)
+                               . $this->class;
+                               
+    if($this->attributes['class'] == '') unset($this->attributes['class']);
+                               
     /* builds code */	
     $_->buffer[] = '<div ' . $w_class . '>';	    
-    $_->buffer[] = '<button name="' . $this->id . '" id="' . $this->id
-                 . '" wid="0250" ' . $_->ROOT->format_html_events($this)
-                 . $css_style
-                 . ($this->tip ? ' title="'.$this->tip.'" ' : '')  
-                 . ($this->type ? ' type="'.$this->type.'" ' : ' type="button" ')
-                 . ($this->disabled ? ' disabled="disabled" ' : '')
+    $_->buffer[] = '<button wid="0250" '
+                 . $_->ROOT->format_html_attributes($this)
                  . '>';
 
     /* flushes children */
-    if ($this->childs) {
+    if (isset($this->childs)) {
       $_->buffer[] = '<div>';
-      foreach ($this->childs as  $child) $child->__flush($_);
+      gfwk_flush_children($this);
       $_->buffer[] = '</div>';        
     } else {
       $_->buffer[] = $this->value;

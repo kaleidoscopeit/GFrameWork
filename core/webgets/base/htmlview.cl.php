@@ -4,12 +4,16 @@ class base_htmlview
   /* Contruct the ROOT webget and provides a number of variables 
    * for the 'webgets define phase' 
    */
-  
-  function __construct (&$_, $attrs)
-  {
-    /* imports properties */
-		foreach ($attrs as $key=>$value) $this->$key=$value;
 
+  public $req_attribs = array(
+    'style',
+    'class',
+    'css',
+    'title'
+  );
+   
+  function __define(&$_)
+  {
     /* Gets the client information */ 
     $_->static['client'] = $this->browser_info();
 
@@ -30,70 +34,47 @@ class base_htmlview
     }
 
     /* sets ROOT placeholder */
-    $_->ROOT                            = $this; 
-
+    $_->ROOT = $this;
+    
     /* style registry prefix */
     $_->static[$_->CALL_UUID]['css']['prefix'] = ($this->id ? $this->id:'sr');
-
-    /* flow control server event */
-    eval($this->ondefine);
   }
-
 
 
   /* ROOT flush phase - responsible to trigger the 'flushing chain reaction' */
 
-  function __flush (&$_)
+  function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-    
     /**************************************************************************/
     /*                         Sets-up inclusions                             */
     /**************************************************************************/
     
     /* static and dynamic webgets specific CSS and JS inclusions */
-    foreach ($_->webgets as $webget) {
-      $webget_type
-        = explode('_', get_class($webget));
-      $webget_js
-        = $_->WEBGETS_PATH.$webget_type[0].'/js/'.$webget_type[1].'.js';
-      $webget_css
-        = $_->WEBGETS_PATH.$webget_type[0].'/css/'.$webget_type[1];
+    foreach ($_->libraries as $library) {
+      
+      $library = explode('/', $library);
+      $library_js = $_->WEBGETS_PATH.implode('/js/', $library).'.js';
+      $library_css = $_->WEBGETS_PATH.implode('/css/', $library).'.js';
 
-
+    /**************************************************************************/
+    /*                           Javascript stuff                             */
+    /**************************************************************************/
+    
       if($_->CALL_OBJECT!='subview'){       
         /* includes static js files */
-        if(is_file($webget_js)) $js_includes[$webget_js] = true;
+        if(is_file($library_js)) $js_includes[$library_js] = true;
         
         /* includes dynamic js files */
-        if(is_file($webget_js.'.php'))
-          $js_includes[$webget_js.'.php?'.$_->CALL_UUID] = true;        
+        if(is_file($library_js.'.php')) require $library_js . ".php";
       }
-      
-      /* includes STATIC css files by specific client engine */
-/*      if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css'))
-        $css_includes[$webget_css.'.'. $_->static['client']['engine'].'.css'] 
-          = true;*/
-        
-      /* or defualt one */
-/*      else if(is_file($webget_css.'.css')) $css_includes[$webget_css.'.css'] 
-        = true;*/
-
-      
-      /* includes DYNAMIC css files by specific client engine */
-/*      if(is_file($webget_css.'.'.$_->static['client']['engine'].'.css.php'))
-        $css_dyn_includes[$webget_css.'.'.$_->static['client']['engine'].
-          '.css.php?'.$_->CALL_UUID] = true;*/
-        
-      /* or defualt one */
-/*      else if(is_file($webget_css.'.css.php'))
-        $css_dyn_includes[$webget_css.'.css.php?'.$_->CALL_UUID] = true;*/
     }
 
+    $js_includes['?js/view' . '&' . $_->CALL_UUID] = true;
+
+    /**************************************************************************/
+    /*                                CSS stuff                               */
+    /**************************************************************************/
+    
     /* project global CSS */
     if(is_file('css/global.css')) $css_includes['css/global.css'] = 1;
 
@@ -108,11 +89,9 @@ class base_htmlview
     if(is_file('views/'.$_->CALL_SOURCE.'/_this.css'))
       $css_includes['views/'.$_->CALL_SOURCE.'/_this.css'] = 1;
 
+    /* register collected view CSS */
     $_->static[$_->CALL_UUID]['css']['files'] = $css_includes;
-
-    $css_includes = array();
-    $css_includes['?css/webgets'] = true;
-    $css_includes['?css/view' . '&' . $_->CALL_UUID] = true;
+    
 
     /**************************************************************************/
     /*                  Writes the code and flushes children                  */
@@ -121,29 +100,27 @@ class base_htmlview
     switch($_->CALL_OBJECT){
       case 'view' :
       case 'views' :
+    $_->buffer = array(); 
         $_->buffer[] = '<!DOCTYPE HTML5>';
         $_->buffer[] = '<html>';
         $_->buffer[] = '<head>';
-        $_->buffer[] = ($this->title ? '<title>'.$this->title.'</title>' : '');
+        $_->buffer[] = (isset($this->title) ? 
+                       '<title>'.$this->title.'</title>' : '');
         $_->buffer[] = '<meta http-equiv="Content-Type" '
                      . 'content="text/html;charset=UTF-8">';
-        
-        foreach($css_includes as $css => $status) 
-          $_->buffer[] = '<link rel="stylesheet" type="text/css" href="'
-                       . $css.'" />';
-                       
+
+        $_->buffer[] = '<link rel="stylesheet" type="text/css" '
+                     . 'href="?css/webgets" />';
+        $_->buffer[] = '<link rel="stylesheet" type="text/css" '
+                     . 'href="?css/view&' . $_->CALL_UUID . '" />';
+                     
         foreach((array) @$js_includes as $js => $status)
           $_->buffer[] = '<script type="text/JavaScript" src="'
                        . $js . '"></script>';
 
-        $_->buffer[] = '<script type="text/JavaScript">'
-                     . $this->global_javascript . '</script>';
         $_->buffer[] = '<body wid="0000" class="'.$this->class.'" '
-                     . ($this->onload ? 'onload="'.$this->onload.'" ' : '')
-                     . ($this->onunload ? 'onunload="'.$this->onunload.'" ' : '')
-                     . ($this->onbeforeunload?'onbeforeunload="'.$this->onbeforeunload.'" ':'')
-                     . ($this->style ? 'style="'.$this->style.'" ' : '')
-                     . $this->format_html_events($this).'>';
+                     . $_->ROOT->format_html_attributes($this)
+                     .'>';
  
         $bottom_code = array('</body>', '</html>');
 
@@ -164,9 +141,7 @@ class base_htmlview
         break;
     }
  
- 
-    /* flushes children */
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
     $_->buffer = array_merge($_->buffer, $bottom_code);
 
@@ -201,13 +176,13 @@ class base_htmlview
     $boxing = explode(',', $boxing) ;
     
     /* sets default values */
-    $hsize    = ($boxing[0] == "" ? $hsize   : $boxing[0]);
-    $vsize    = ($boxing[1] == "" ? $vsize   : $boxing[1]);
-    $halign   = ($boxing[2] == "" ? $halign  : $boxing[2]);
-    $valign   = ($boxing[3] == "" ? $valign  : $boxing[3]);
-    $hoffset  = ($boxing[4] == "" ? $hoffset : $boxing[4]);
-    $voffset  = ($boxing[5] == "" ? $voffset : $boxing[5]);
-    $refer    = ($boxing[6] == "" ? $refer   : $boxing[6]);
+    $hsize    = (@($boxing[0] == "") ? $hsize   : $boxing[0]);
+    $vsize    = (@($boxing[1] == "") ? $vsize   : $boxing[1]);
+    $halign   = (@($boxing[2] == "") ? $halign  : $boxing[2]);
+    $valign   = (@($boxing[3] == "") ? $valign  : $boxing[3]);
+    $hoffset  = (@($boxing[4] == "") ? $hoffset : $boxing[4]);
+    $voffset  = (@($boxing[5] == "") ? $voffset : $boxing[5]);
+    $refer    = (@($boxing[6] == "") ? $refer   : $boxing[6]);
     
     /* sets to zero the internal variables */
     $lpc = $lpx = $tpc = $tpx = $wpc = $wpx = $hpc = $hpx = 0;
@@ -245,8 +220,11 @@ class base_htmlview
                       round(0-$hpx/2+$tpx,2).'px;';
     $vpos['bottom'] = "bottom:".-($tpc + $tpx).($tpx == "0" ? "%" : "px").";";
 
-    if ($rpc!=null || $rpx!=null) {
-      $lef = $wpx+$lpx;$mlef = $wpc+$lpc;$rig = $rpx-$lpx;$mrig = $rpc-$lpc;
+    if (isset($rpc) || isset($rpx)) {
+      $lef = $wpx+$lpx;$mlef
+           = $wpc+$lpc;$rig
+           = $rpx-$lpx;$mrig
+           = (isset($rpc) ? $rpc : 0 )-$lpc;
       
       $hparams = 'left:'.$lef.'px;'.
                  ($mlef != 0 ? 'margin-left:'.$mlef.'%;' : '').
@@ -257,13 +235,13 @@ class base_htmlview
     else $hparams = 
       "width:".$hsize.";".$hpos[$halign].';';
 
-    if ($bpc!=null || $bpx!=null) {
+    if (isset($bpc) || isset($bpx)) {
 
       $top  = $hpx+$tpx;
       $mtop = $hpc+$tpc;
       $bot  = $bpx-$tpx;
       $mbot = $bpc-$tpc;
-      
+
       $vparams = 'top:'.$top.'px;'.
                  ($mtop != 0 ? 'margin-top:'.$mtop.'%;' : '').
                  'bottom:'.$bot.'px;'.

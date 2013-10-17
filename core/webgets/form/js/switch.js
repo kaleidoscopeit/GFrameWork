@@ -10,17 +10,17 @@ $_.js.reg['0290']={
     mask.onmousedown=function(){
       this.n.input.focus();
       return false;
-    } 
+    };
     
     mask.onmouseup=function(){
-      this.n.switch('on');  
-    } 
+      this.n.set('on') 
+    };
     
     input.onkeypress=function(){
       return false;
-    }
+    };
     
-    n.switch = function(status){with(this){
+    n.set = function(status){with(this){
       if(input.value==1){
         input.value=0;
         lever.className="";  

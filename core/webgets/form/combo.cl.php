@@ -1,24 +1,23 @@
 <?php
-class form_combo {
-  
-  function __construct(&$_, $attrs)
-  {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
+class form_combo
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'values',
+    'labels',
+    'default'
+  );
     
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  function __define(&$_)
+  {
+    if(isset($this->attributes['id']))
+      $this->attributes['name'] = $this->attributes['id'];
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
-    // Import the static values from the view
+    /* Import the static values from the view */
     if ($this->values) {
       $this->items['values'] = explode('|', $this->values);
       $this->items['labels'] = explode('|', $this->labels);
@@ -27,19 +26,22 @@ class form_combo {
           $this->items['labels'] = $this->items['values'];
     }
     
-    $w_class         = 'class="w02A0 '.$_->ROOT->boxing($this->boxing).'" ';
-    $css_style       = $_->ROOT->style_registry_add($this->style).$this->class;
+    $w_class         = 'class="w02A0 '
+                     . $_->ROOT->boxing($this->boxing)
+                     . '" ';
+                     
+    $css_style       = $_->ROOT->style_registry_add($this->style)
+                     . $this->class;
+    
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
     
     $_->buffer[] = '<div wid="02A0" ' . $w_class . '>';
-    $_->buffer[] = '<select name="' . $this->id . '" id="'
-                 . $this->id . '" ' . $css_style
-                 . ($this->size ? 'size="'.$this->size.'" ' : '')
-                 . ($this->disabled ? 'disabled="true" ' : '')
-                 . $_->ROOT->format_html_events($this, array('all' ))
-                 . ($this->tip ? 'title="'.$this->tip.'" ' : '')
-                 . '>';
-        
+
+    $_->buffer[] = '<select '
+                 . $_->ROOT->format_html_attributes($this)
+                 . $css_style . '>';
+                 
+                         
     if ($this->items['values']) {
       foreach ($this->items['values'] as $key => $value) {
         $_->buffer[] = '<option value="' . $value . '"'
@@ -81,7 +83,7 @@ class form_combo {
       );
   }
 
-  // delete item by value or by index
+  /* delete item by value or by index */
   function items_remove($item)
   {
     if (count($this->items['values']) == 0) return false;

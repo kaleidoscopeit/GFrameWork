@@ -1,32 +1,31 @@
 <?php
-class base_pathchooser {
+class base_pathchooser
+{
+  public $req_attribs = array(
+    'style',
+    'class',
+    'field',
+    'field_format'
+  );
   
-  function __construct(&$_, $attrs)
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-  
-    /* flow control server event */
-    eval($this->ondefine);
   }
  
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
     /* builds syles */  
-    $css_style = 'class="w0060 '.$_->ROOT->boxing($this->boxing).
-                 $_->ROOT->style_registry_add($this->style).$this->class.'" ';
+    $css_style = 'class="w0060 '
+               . $_->ROOT->boxing($this->boxing)
+               . $_->ROOT->style_registry_add($this->style)
+               . $this->class
+               . '" ';
 
     /* building code */
-    $_->buffer[] = '<div wid="0060" id="' . $this->id . '" ' . $css_style
-                 . ($this->path ? 'path="'.$this->path.'" ' : '')
-                 . $_->ROOT->format_html_events($this).'>';
-    $_->buffer[] = '<input type="text" name="'.$this->id.'" />';
+    $_->buffer[] = '<div wid="0060" '
+                 . $_->ROOT->format_html_attributes($this)
+                 . $css_style . '> ';
+    $_->buffer[] = '<input type="text" name="'.$this->attributes['id'].'" />';
     $_->buffer[] = '<button type="button" >';
     $_->buffer[] = '</button>';
     $_->buffer[] = '<div>';

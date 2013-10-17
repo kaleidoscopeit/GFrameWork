@@ -1,26 +1,22 @@
 <?php
 class form_hidden
-{  
-  function __construct(&$_, $attrs)
+{
+  public $req_attribs = array(
+    'field',
+    'field_format'
+  );
+  
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-    
-    /* flow control server event */
-    eval($this->ondefine);
+    if(isset($this->attributes['id']))
+      $this->attributes['name'] = $this->attributes['id'];
   }
   
   function __flush(&$_)
   {  
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
-    $_->buffer[] = '<input name="' . $this->id . '" id="' . $this->id . '" '
-                 . 'wid="0220" type="hidden" '
-                 . ($this->value ? 'value="'.$this->value.'" ' : '') . ' />';
+    $_->buffer[] = '<input type="hidden" wid="0220" '
+                 . $_->ROOT->format_html_attributes($this)
+                 . ' />';
   }
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-class pack_area
+class schedule_datepicker
 {
   public $req_attribs = array(
     'style',
@@ -18,7 +18,7 @@ class pack_area
                                . $this->class;
                  
     /* builds code */
-    $_->buffer[] = '<div wid="0100" '
+    $_->buffer[] = '<div wid="0400" '
                  . $_->ROOT->format_html_attributes($this)
                  . '> ';
 

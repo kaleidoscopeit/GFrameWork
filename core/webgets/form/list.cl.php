@@ -1,26 +1,27 @@
 <?php
 class form_list
 {
-  function __construct(&$_, $attrs)
+  public $req_attribs = array(
+    'style',
+    'class',
+    'field',
+    'field_format',
+    'labels',
+    'values',
+    'default',
+    'item_style',
+    'item_class'
+  );
+  
+  function __define(&$_)
   {
-    /* imports properties */
-    register_attributes($this, $attrs, array(
-      'style','class','field','field_format','labels','values','default',
-      'item_style','item_class'));      
-    
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+    if(isset($this->attributes['id']))
+      $this->attributes['name'] = $this->attributes['id'];
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
-    // Import static values from the view
+    /* Import static values from the view */
     if ($this->values) {
       $this->items['values'] = explode('|', $this->values);
       $this->items['labels'] = explode('|', $this->labels);
@@ -45,10 +46,9 @@ class form_list
 
     /* builds code */    
     $_->buffer[] = '<div wid="02B0" ' . $wclass . ' opt' . $item_style . '>'
-                 . '<select name="' . $this->id . '" id="' . $this->id . '" '
+                 . '<select '
                  . $_->ROOT->format_html_attributes($this).' '
-                 . 'multiple ' . $css_style                  
-                 . $_->ROOT->format_html_events($this) . '>';
+                 . 'multiple ' . $css_style . '>';
 
 
     
@@ -87,7 +87,7 @@ class form_list
         array_slice($this->items['labels'], $index) : array()));
   }
 
-  // delete item by value or by index
+  /* delete item by value or by index */
   function items_remove($item)
   {
     if (count($this->items['values']) == 0) return false;

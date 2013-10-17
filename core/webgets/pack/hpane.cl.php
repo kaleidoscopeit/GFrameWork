@@ -1,35 +1,26 @@
 <?php
-class pack_hpane {
+class pack_hpane
+{
+  public $req_attribs = array(
+    'minsize',
+    'maxsize',
+    'locked'
+  );
   
-  function __construct(&$_, $attrs)
+  function __define(&$_)
   {
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
-
-    /* flow control server event */
-    eval($this->ondefine);
-   }
+  }
   
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */
-    if ($this->nopaint) return;
-
     /* builds code */
-    $_->buffer .= '<div wis="0160" id="'.$this->id.'" style="'.
-                  $this->style.';" '.
-                  ($this->minsize ? 'misz="'.$this->minsize.'" ' : '').
-                  ($this->maxsize ? 'masz="'.$this->maxsize.'" ' : '').
-                  ($this->locked ?  'lkd="' .$this->locked. '" ' : '').
-                  '>';
+    $_->buffer[] = '<div wid="0160" '
+                 . $_->ROOT->format_html_attributes($this)
+                 . '>';
 
-    /* flushes children */
-    foreach ((array) @$this->childs as  $child) $child->__flush($_);
+    gfwk_flush_children($this);
 
-    $_->buffer .= '</div>';
+    $_->buffer[] = '</div>';
   }
   
 }

@@ -1,24 +1,17 @@
 <?php
 class data_jtable
-{  
-  function __construct(&$_, $attrs)
+{ 
+  public $req_attribs = array(
+    'style',
+    'class'
+  );
+   
+  function __define(&$_)
   {
-    /* imports properties */
-    register_attributes($this, $attrs, array(
-      'style','class'));
-
-    /* flow control server event */
-    eval($this->ondefine);
   }
 
   function __flush(&$_)
   {
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
     /* builds syles */
    $css_style = $_->ROOT->boxing($this->boxing).
                 $_->ROOT->style_registry_add($this->style).
@@ -34,9 +27,7 @@ class data_jtable
     
     $_->buffer[] = '<div>';
 
-    /* flushes children */
-    foreach ((array) @$this->childs as $child)
-      if (get_class($child) == 'data_jtablecell')$child->__flush($_);
+    gfwk_flush_children($this, 'data_jtablecell');
         
     $_->buffer[] = '</div>';
   }  

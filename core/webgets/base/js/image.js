@@ -4,12 +4,12 @@ $_.js.reg['0020']={
 	b:function(n){with(n){
 		n.refresh=function(){
 			$_.jsimport('system.phpjs.vsprintf');
-			if(fs = $_.js.reg['0310'].getfields(n.eval_field))
-				eval(vsprintf(n.eval_field_command,fs));
-			
-			if(fs = $_.js.reg['0310'].getfields(n.field))
-				n.src = vsprintf(n.field_format,fs);
-		}
+      var fs = $_.js.reg['0310'].getfields(n.eval_field);
+			if(fs != false) eval(vsprintf(n.eval_field_command,fs));
+				
+			var fs = $_.js.reg['0310'].getfields(n.field);
+			if(fs != false) n.src = vsprintf(n.field_format,fs);
+		};
 	}},
 	fs:function(n){}
 };
