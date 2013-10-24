@@ -4,13 +4,14 @@ var $_={
   env:{},
   lib:{},
   js:{reg:[]},
-  tmp:{jsbinds:[]},
+  tmp:{jsBindsFiFo:[],jsBindsNS:[]},
   webgets:[],
   
   /* main loop */
-  _wInit:function(w,p){
+  _wInit:function(w,p,n){
+    n=n||'root';
     var ch=w.childNodes,id,ln,r,a,f;
-    w.wid=this.gea(w,'wid');
+    w.wid=this.getAttribute(w,'wid');
     w.childWebgets=[];
     if(w.name) id=w.name;
     else if(typeof w.id == "string") id = w.id;
@@ -20,10 +21,12 @@ var $_={
     if(w.wid) {
       p.childWebgets.push(w);
       w.parentWebget=p;      
-      this.webgets.push(w);
+      this.webgets[n].push(w);
       this._wAttachJs(w);
-    }    
-    if(ch.length>0) this.each(ch,function(v,i){$$._wInit(v,(w.wid?w:p));});
+    }
+    
+    if(ch.length>0)
+      this.each(ch,function(v,i){$$._wInit(v,(w.wid?w:p),n);});
   },
 
   // get a plain array containing all w's child webgets  
@@ -53,7 +56,9 @@ var $_={
   },
   
   // space saving wrappers for common functions
-  gea:function(n,a){try{var ret=n.getAttribute(a);}catch(e){} return ret;},
+  getAttribute:function(n,a){
+    if(n.attributes)return n.getAttribute(a);
+    return false},
   cre:function(n){return document.createElement(n);},
   gei:function(n){return document.getElementById(n);},
 
@@ -62,7 +67,12 @@ var $_={
     if(obj.attachEvent)obj.attachEvent("on"+eve,hdl);
     else obj.addEventListener(eve,hdl,false);
   },
- 
+
+  // crossbrowser add event handler
+  unBindEvent:function(obj,eve,hdl){
+    if(obj.attachEvent)obj.attachEvent("on"+eve,hdl);
+    else obj.removeEventListener(eve,hdl,false);
+  }, 
   // crossbrowser remove event handler
   dde:function(obj,eve,hdl){
     if(obj.detachEvent)obj.detachEvent("on"+eve,hdl);
@@ -165,7 +175,21 @@ var $_={
     if(!er){this.tmp.jsimport[l]=1;return true;}
     else{return false;} 
   },
- 
+
+  importRawJs:function(l){
+    if(l=='')return false;
+    var xhr=this.xhr();
+    xhr.open('GET',l,false);
+    xhr.setRequestHeader('Content-Type', 'application/text');
+    xhr.send(null);
+    try{eval(xhr.responseText)} 
+    catch(e){
+      throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText);
+      return false
+    }
+    return true
+  },
+  
   toggleClass:function(w,c,l,ll){
     l=w.className.split(' ');
     ll=l.indexOf(c);
@@ -192,27 +216,43 @@ var $_={
   bind:function(t,f){
     t=t.split(".");
     t=[t.shift(),t.pop(),t.join('.')];    
-    this.tmp.jsbinds.push({ot:t[0],on:t[2],oa:t[1].replace('on',''),hd:f});
+    this.tmp.jsBindsFiFo.push({ot:t[0],on:t[2],oa:t[1].replace('on',''),hd:f});
   },
 
   /* attach all binds */
-  flushBinds:function(){with($$){
-    for(var i in tmp.jsbinds){
-      var i=tmp.jsbinds[i],
-      obj=gei(i.on);
-  
+  flushBinds:function(n){with($$){
+    n=n||'root';
+
+    /* unbind previous events */
+    if(tmp.jsBindsNS[n]){
+      while (tmp.jsBindsNS[n][0]){
+        var i=tmp.jsBindsNS[n].pop();
+        gei(i.on).removeEventListener(i.oa, i.hd);
+      }
+    }
+    
+    else tmp.jsBindsNS[n]=[];
+
+    /* bind new events */
+    while (tmp.jsBindsFiFo[0]){
+      var i=tmp.jsBindsFiFo.pop(), obj=gei(i.on);
+
       switch(i.ot){
         case 'webget' :
   
           if(typeof(i.hd) == 'function') {
             if(typeof(obj[i.oa]) != 'function') obj[i.oa] = Event(i.oa);
-            ade(obj, i.oa, i.hd);
+            
+            obj.addEventListener(i.oa, i.hd);
+            tmp.jsBindsNS[n].push(i);
           }
           
-          else
-            gei(i.on).setAttribute(i.oa, i.hd);
+          else gei(i.on).setAttribute(i.oa, i.hd);
+          
           break;
-      }
+      }      
+      
+      tmp.jsBindsFiFo[i]=null;
     }
   }}
 };
@@ -236,12 +276,13 @@ var _w=function(w){with($$){
 /* Client code initialization */
 $$.bindEvent(window, "load", function(){with($$){
   document.body.id='root';
-  flushBinds();  
-  _wInit(document.body,{childWebgets:[]});
-  for(var s in lib)lib[s].construct();
-  for(s in webgets){
-    if(js.reg[webgets[s].wid])
-      js.reg[webgets[s].wid].fs(webgets[s]);
+  flushBinds();
+  webgets['root']=[];
+  _wInit(document.body,{childWebgets:[]},'root'); 
+//  for(var s in lib)lib[s].construct();
+  for(var s in webgets['root']){
+    if(js.reg[webgets['root'][s].wid])
+      js.reg[webgets['root'][s].wid].fs(webgets['root'][s]);
   }
 }});
 
@@ -267,3 +308,4 @@ var getParams =function() {
 // backports //
 
 $$.ade = $$.bindEvent;
+$$.gea = $$.getAttribute;

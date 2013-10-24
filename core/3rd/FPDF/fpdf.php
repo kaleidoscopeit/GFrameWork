@@ -472,6 +472,7 @@ function AddFont($family, $style='', $file='')
 	$fontkey = $family.$style;
 	if(isset($this->fonts[$fontkey]))
 		return;
+
 	$info = $this->_loadfont($file);
 	$info['i'] = count($this->fonts)+1;
 	if(!empty($info['diff']))
@@ -520,6 +521,7 @@ function SetFont($family, $style='', $size=0)
 		return;
 	// Test if font is already loaded
 	$fontkey = $family.$style;
+
 	if(!isset($this->fonts[$fontkey]))
 	{
 		// Test if one of the core fonts

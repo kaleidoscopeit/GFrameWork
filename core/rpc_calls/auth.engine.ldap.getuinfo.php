@@ -115,7 +115,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 	$filter = "(&(objectClass=user)(" 
 	        . $_STDIN['uid_field']
 	        . "=" . $_STDIN['user'] . "))";
-       
+
   $sr     = ldap_search($cnx, $_STDIN['basedn'], $filter);
   $entry  = ldap_first_entry($cnx, $sr);
   
@@ -124,10 +124,13 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     'uid' => $_STDOUT[0]
   );
 
+
   foreach ($_STDIN["output_fields"] as $query => $target){
     $query = explode(',/', $query);
+    
+    //echo $_STDOUT['uid'].'  '.$query[0]."\n";
 
-    $_STDOUT[$target] = ldap_get_values($cnx, $entry, $query[0]);
+    @$_STDOUT[$target] = ldap_get_values($cnx, $entry, $query[0]);
 
     if($_STDOUT[$target]['count']>1) {
       unset($_STDOUT[$target]['count']);

@@ -6,7 +6,8 @@
  * 
  */
 
-class _engine_views {
+class _engine_views
+{
 
   function init()
   {
@@ -33,7 +34,7 @@ class _engine_views {
     $source_url .='/_this';
 
     if(!is_file('views/'.$source_url.".xml"))
-       die("View not found!");
+       die("<!--\n\n-->View not found!");
 
     self::populate_root_object($source_url);
 
@@ -173,7 +174,8 @@ class _engine_views {
     $this->parser = $parser;
     
     /* If no already registred, set this first webegt as root webget */
-    if (!isset($this->ROOT) && !isset($library_attribs['id'])) $library_attribs['id'] = 'root';
+    if (!isset($this->ROOT) && !isset($library_attribs['id']))
+      $library_attribs['id'] = 'root';
 
     /* If not explicitly requested assigns an automatic id 
        (for internal coherence) */
@@ -200,9 +202,7 @@ class _engine_views {
       $library_attribs['parent'] = &$this->current_webget;
 
     /* define the webget and add it to the webgets array */
-    $this->webgets[$cwid] =
-      new $library_class($this, $library_attribs);
-      
+    $this->webgets[$cwid] = new $library_class($this);      
 
     if(isset($this->webgets[$cwid]->req_attribs))
       register_attributes($this->webgets[$cwid],

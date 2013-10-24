@@ -20,47 +20,62 @@ $_.js.reg['0070'] = {
       this.goto(v);
     };
 
-    n.xhrcbk = function(x, c, i, t) {
-      x = n.x;
-      t = 0;
-      if (x.readyState == 4 && x.status == 200) {
-        c = x.responseText.match(/<!--[\s\S]*?-->/g);
-        if (c) {
-          c = c[0].split("\n");
-          c.shift();
-          c.pop();
-
-          for ( i = 0; i < c.length; i++) {
-            if (c[i] == "") {
-              t = 1;
-            }
-            if (t == 0)
-              n.incss(c[i]);
-            if (t == 1)
-              n.injs(c[i]);
-          }
-        }
-
+    n.xhrcbk = function(x,c,i,t){
+      x=n.x,t=0;
+      if(x.readyState==4&&x.status==200){
+        c = x.responseText
+             .match(/<!--[\s\S]*?-->/g)[0]
+             .replace('<!--\n', '')
+             .replace('\n-->', '')
+             .split('\n\n');
+  
+        n.incss(c[0]);
+        
         try {
           n.innerHTML = x.responseText;
+
         } catch(e) {
-          alert('Parsing Call response failed (' + v + ') : ' + x.responseText);
+          alert('Parsing Call response failed (' + this + ') : ' + x.responseText);
           return false;
         }
+
+
+        n.injs(c[1]);
+
+        $$.flushBinds(n.id);
+        $$.webgets[n.id]=[];
+        $$._wInit(n,{childWebgets:[]},n.id);
+        $$.webgets[n.id].shift();
+        for(var s in $$.webgets[n.id]) {
+          if($$.js.reg[$$.webgets[n.id][s].wid])
+            $$.js.reg[$$.webgets[n.id][s].wid].fs($$.webgets[n.id][s]);
+        }
+/*      $$.each($$.getPlainWebgets(n), function(elm,i){
+          if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
+        });*/
       }
     };
 
     n.incss = function(u) {
-      var h = document.getElementsByTagName("head")[0];
-      var l = $_.cre('link');
-      l.type = 'text/css';
-      l.rel = 'stylesheet';
-      l.href = u;
-      l.media = 'screen';
-      h.appendChild(l);
+      u=u.split('\n');
+      for(var i in u){
+        i=u[i];
+        var h = document.getElementsByTagName("head")[0];
+        var l = $_.cre('link');
+        l.type = 'text/css';
+        l.rel = 'stylesheet';
+        l.href = i;
+        l.media = 'screen';
+        h.appendChild(l);
+      }
     };
 
-    n.injs = function() {
+    n.injs = function(u) {
+      u=u.split('\n');
+      for(var i in u){
+        i=u[i];
+        $$.importRawJs(i);
+      }
     };
   },
   fs : function(n) {

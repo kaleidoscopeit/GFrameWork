@@ -13,27 +13,28 @@ class pack_hlaycell
 
   function __preflush(&$_){
     /* flow control server event */
-    eval($this->onflush);
+    if(isset($this->onflush))eval($this->onflush);
   }
   
   function __flush(&$_)
   {
     /* no paint switch */    
-    if ($this->nopaint) return;
+    if(isset($this->nopaint)) return;
 
     /* builds syles */
     $style = 'width:' . $this->width.';';
     if(isset($this->within)) 
          $style .= 'padding-right:' . $this->within
                 . 'px;margin-right:-' . $this->within . 'px;';
-    else $style .= $this->style;
+    else if(isset($this->style)) $style .= $this->style; 
     
     $css_style   = $_->ROOT->style_registry_add($style) . ' ';
 
     /* builds code */
     $_->buffer[] = '<div wid="0111" '
                  . 'class="w0111 ' . $css_style
-                 . (isset($this->within) ? '' : $this->class) . '" '
+                 . (isset($this->within) ? '' :
+                    (isset($this->class) ? $this->class : '')) . '" '
                  . $_->ROOT->format_html_attributes($this)
                  . '>';
 

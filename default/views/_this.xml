@@ -1,187 +1,189 @@
 <?xml version="1.0"  encoding="UTF-8" ?>
 
 <base:htmlview
-	title="G-Framework Web3.0 Toolkit"
-	style="background-image:url('images/body-noise.png');"
-	css="dialog captions">
-	<pack:vlayout boxing="800px">
+  title="G-Framework Web3.0 Toolkit"
+  style="background-image:url('images/body-noise.png');"
+  css="dialog captions">
+  <pack:vlayout boxing="800px">
 
 <!--
 ********************************************************************************
 ** LOGO
 ********************************************************************************
-	-->
-	  
-		<pack:vlaycell height="70px">
-			<pack:hlayout>
+  -->
+    
+    <pack:vlaycell height="70px">
+      <pack:hlayout>
       
-				<pack:hlaycell width="454px">
-					<base:image src="images/logo.png" />
-				</pack:hlaycell>
+        <pack:hlaycell width="454px">
+          <base:image src="images/logo.png" />
+        </pack:hlaycell>
         
-				<pack:hlaycell />
+        <pack:hlaycell />
 
-			</pack:hlayout>
-		</pack:vlaycell>
+      </pack:hlayout>
+    </pack:vlaycell>
 
 
 <!--
 ********************************************************************************
 ** PAGE
 ********************************************************************************
-	-->
+  -->
  
-		<pack:vlaycell class="radius10" style="background-color:white;">
-			<pack:hlayout>
+    <pack:vlaycell class="radius10" style="background-color:white;">
+      <pack:hlayout>
 
 
-				<!--
-				************************************************************************
-				** SIDE MENU
-				************************************************************************
-					-->
-	      
-				<pack:hlaycell width="200px">
-					<pack:vlayout >
-         
-						<pack:vlaycell height="50px" style="background-color:#6A6A6A;">
-							<base:label
-								caption="Reference table"
-								halign="center"
-								valign="middle"
-								class="text-shadowed font20 italic"/>
-						</pack:vlaycell>
-            
-						<pack:vlaycell style="background-color:#262626;">
-							<data:table id="table" rowheight="30px" send_to_client="true">
-								<data:tablecell 
-									class="menuitem"
-									onclick="mainpane.goto(table.result_set[this.index].view);title_stack.show(this.index);">
-									<base:label
-										field="table:description"
-										halign="center"
-										valign="middle"
-										class="menu-text"/>
-								</data:tablecell>
-							</data:table>
-						</pack:vlaycell>
-            
-					</pack:vlayout>      
-				</pack:hlaycell>
-
-
-				<!--
-				************************************************************************
-				** MAIN PANE
-				************************************************************************
-					-->
-	        
-				<pack:hlaycell style="border-left:2px groove grey" >
-					<pack:vlayout>
-         
-						<pack:vlaycell height="50px" style="background-color:#6A6A6A;">
-							<pack:stack id="title_stack" >
-								<pack:stackelm>
-									<base:label
-										caption="Framework Structure"
-										halign="center"
-										valign="middle"
-										class="text-shadowed font20 italic"/>
-								</pack:stackelm>
-								<pack:stackelm>
-									<base:label
-										caption="Installation"
-										halign="center"
-										valign="middle"
-										class="text-shadowed font20 italic"/>
-								</pack:stackelm>
-								<pack:stackelm>
-									<base:label
-										caption="Boxing"
-										halign="center"
-										valign="middle"
-										class="text-shadowed font20 italic"/>
-								</pack:stackelm>
-								<pack:stackelm>
-									<base:label
-										caption="Codesnippet"
-										halign="center"
-										valign="middle"
-										class="text-shadowed font20 italic"/>
-								</pack:stackelm>
-							</pack:stack>
-						</pack:vlaycell>
-						
-						<pack:vlaycell>
-							<base:subview id="mainpane" view="framework_structure" />
-						</pack:vlaycell>
-
-					</pack:vlayout>						
-				</pack:hlaycell>
+        <!--
+        ************************************************************************
+        ** SIDE MENU
+        ************************************************************************
+          -->
         
-			</pack:hlayout>                  
-		</pack:vlaycell>
-    
-		<pack:vlaycell height="10p" />
-	</pack:vlayout>
-	
+        <pack:hlaycell width="200px">
+          <pack:vlayout >
+         
+            <pack:vlaycell height="50px" style="background-color:#6A6A6A;">
+              <base:label
+                id="refer"
+                caption="Reference table"
+                halign="center"
+                valign="middle"
+                class="text-shadowed font20 italic"/>
+            </pack:vlaycell>
+            
+            <pack:vlaycell style="background-color:#262626;">
+              <data:table id="table" rowheight="30px" send_to_client="true">
+                <data:tablecell 
+                  class="menuitem"
+                  onclick="mainpane.goto(table.result_set[this.index].view);title_stack.show(this.index);">
+                  <base:label
+                    field="table:description"
+                    halign="center"
+                    valign="middle"
+                    class="menu-text"/>
+                </data:tablecell>
+              </data:table>
+            </pack:vlaycell>
+            
+          </pack:vlayout>      
+        </pack:hlaycell>
 
-	<!--
-	******************************************************************************
-	** VIEW SOURCE BUTTON
-	******************************************************************************
-		-->
-		
-	<base:image
-		src="images/text-xml.png"
-		boxing=",,right,top,-4px,4px"
-		class="fade"
-		tip="view source"
-		onclick="subv_cont.goto('view_source&amp;source=');$_.removeClass(view_source, 'diag_hidden');" />
-		
-		
+
+        <!--
+        ************************************************************************
+        ** MAIN PANE
+        ************************************************************************
+          -->
+          
+        <pack:hlaycell style="border-left:2px groove grey" >
+          <pack:vlayout>
+         
+            <pack:vlaycell height="50px" style="background-color:#6A6A6A;">
+              <pack:stack
+                id="title_stack"
+                classfx="ttstack">
+                <pack:stackelm>
+                  <base:label
+                    caption="Framework Structure"
+                    halign="center"
+                    valign="middle"
+                    class="text-shadowed font20 italic"/>
+                </pack:stackelm>
+                <pack:stackelm>
+                  <base:label
+                    caption="Installation"
+                    halign="center"
+                    valign="middle"
+                    class="text-shadowed font20 italic"/>
+                </pack:stackelm>
+                <pack:stackelm>
+                  <base:label
+                    caption="Boxing"
+                    halign="center"
+                    valign="middle"
+                    class="text-shadowed font20 italic"/>
+                </pack:stackelm>
+                <pack:stackelm>
+                  <base:label
+                    caption="Codesnippet"
+                    halign="center"
+                    valign="middle"
+                    class="text-shadowed font20 italic"/>
+                </pack:stackelm>
+              </pack:stack>
+            </pack:vlaycell>
+            
+            <pack:vlaycell>
+              <base:subview id="mainpane" view="framework_structure" />
+            </pack:vlaycell>
+
+          </pack:vlayout>            
+        </pack:hlaycell>
+        
+      </pack:hlayout>                  
+    </pack:vlaycell>
+    
+    <pack:vlaycell height="10p" />
+  </pack:vlayout>
+  
+
+  <!--
+  ******************************************************************************
+  ** VIEW SOURCE BUTTON
+  ******************************************************************************
+    -->
+    
+  <base:image
+    src="images/text-xml.png"
+    boxing=",,right,top,-4px,4px"
+    class="fade"
+    tip="view source"
+    onclick="subv_cont.goto('view_source&amp;source=');$_.removeClass(view_source, 'diag_hidden');" />
+    
+    
 <!--
 ********************************************************************************
 ** VIEW SOURCE DIALOG
 ********************************************************************************
 -->
 
-	<pack:area
-		id="view_source"
-		class="diag_visible diag_hidden" 
-		onclick="$_.addClass(this, 'diag_hidden');">
+  <pack:area
+    id="view_source"
+    class="diag_visible diag_hidden" 
+    onclick="$_.addClass(this, 'diag_hidden');">
        
-		<pack:area
-			class="round-box"
-			style="background:rgba(0,0,0,0.3);"/>
+    <pack:area
+      class="round-box"
+      style="background:rgba(0,0,0,0.3);"/>
       
-		<pack:area
-			class="mebox"
-			boxing="600px,80%"
-			onclick="event.stopPropagation();">
-			<pack:vlayout boxing="584px">
+    <pack:area
+      class="mebox"
+      boxing="600px,80%"
+      onclick="event.stopPropagation();">
+      <pack:vlayout boxing="584px">
        
-				<pack:vlaycell height="5px"/>
+        <pack:vlaycell height="5px"/>
         
-				<pack:vlaycell height="20px">
-					<base:label
-						class="caption-title"
-						boxing="150px,,left,,10px"
-						caption="View Source :" />
-				</pack:vlaycell>
+        <pack:vlaycell height="20px">
+          <base:label
+            class="caption-title"
+            boxing="150px,,left,,10px"
+            caption="View Source :" />
+        </pack:vlaycell>
 
-				<pack:vlaycell height="5px"/>
+        <pack:vlaycell height="5px"/>
 
-				<pack:vlaycell class="caption-item round-box">
-				  <base:subview id="subv_cont" view="view_source" />
-					<!-- <pack:iframe src="?views/view_source" /> -->
-				</pack:vlaycell> 
+        <pack:vlaycell class="caption-item round-box">
+          <base:subview id="subv_cont" view="view_source" />
+        </pack:vlaycell> 
 
-				<pack:vlaycell height="5px"/>
+        <pack:vlaycell height="5px"/>
 
-			</pack:vlayout>
-		</pack:area>
-	</pack:area>
+      </pack:vlayout>
+    </pack:area>
+  </pack:area>
 
 <!--
 ********************************************************************************

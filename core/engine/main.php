@@ -258,7 +258,8 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         switch ($rule[0]) {
            /* Single variable assignement */
           case 'variable' :
-            eval('if(isset('.$rule[1].'))$_STDIN[$name] = '.$rule[1].';');
+            //echo $rule[1];eval('echo '.$rule[1]);echo "\n";
+            eval('if(@isset('.$rule[1].'))$_STDIN[$name] = '.$rule[1].';');
             break;
             
           case 'call' :
@@ -356,9 +357,9 @@ function register_attributes(&$webget, $attributes, $grab)
       'boxing',
       'parent'));
 
- 	foreach ($grab as $attribute_name) {
+ 	foreach ($grab as $attribute_name) {    
  	  if(isset($attributes[$attribute_name])){
- 		 @$webget->$attribute_name = $attributes[$attribute_name];
+      @$webget->$attribute_name = $attributes[$attribute_name];
    	  unset($attributes[$attribute_name]);
    	}
  	}
@@ -366,7 +367,7 @@ function register_attributes(&$webget, $attributes, $grab)
  	$webget->attributes = $attributes;  
 }
 
-function &array_get_nested(&$arr, $path, $separator = '.') 
+function array_get_nested(&$arr, $path, $separator = '.') 
 {
   if(isset($arr)) if (!is_array($arr)) return false;
 
@@ -376,8 +377,7 @@ function &array_get_nested(&$arr, $path, $separator = '.')
   foreach ($keys as $key) {
     if (isset($cursor[$key]))
       $cursor = &$cursor[$key];
-    else 
-    
+    else    
       return false;
   }
 

@@ -1,11 +1,16 @@
 <?php
-class fpdf_box
+class reports_fpdf_box
 {
-	function __construct (&$_, $attrs)
+  public $req_attribs = array(
+    'geometry',
+    'style',
+    'draw_color',
+    'fill_color',
+    'line_width'
+  );
+  
+	function __define(&$_)
 	{
-    /* imports properties */
-		foreach ($attrs as $key=>$value) $this->$key=$value;	
-
     // webget geometry
     $this->geometry = explode(',',$this->geometry);
     $this->left     = $this->geometry[0];
@@ -16,17 +21,12 @@ class fpdf_box
 	
 	function __flush (&$_)	
 	{
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
 		/* apply local styles */
-		$_->ROOT->set_local_style('draw_color',$this->draw_color);
-		$_->ROOT->set_local_style('fill_color',$this->fill_color);
-		$_->ROOT->set_local_style('line_width',$this->line_width);
-
+    $_->ROOT->set_local_style('draw_color',$this->draw_color);
+    $_->ROOT->set_local_style('fill_color',$this->fill_color);
+    $_->ROOT->set_local_style('line_width',$this->line_width);
+    $_->ROOT->update_styles();
+    
     /* setup local coordinates */
 		$left	= $this->left + $this->parent->left;
 		$top	= $this->top  + $this->parent->top;
@@ -38,6 +38,7 @@ class fpdf_box
 		$_->ROOT->restore_style('draw_color');
 		$_->ROOT->restore_style('fill_color');
 		$_->ROOT->restore_style('line_width');
+    $_->ROOT->update_styles();
 	}
 }
 ?>

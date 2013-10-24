@@ -22,7 +22,7 @@ $_.js.reg['0060']={
         c.appendChild(b);
       }
 
-      n.onchange();
+      n.dispatchEvent(n.change);
     };
 
   }},

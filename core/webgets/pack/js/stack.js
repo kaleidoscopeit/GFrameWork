@@ -1,11 +1,13 @@
 $$.js.reg['0130']={
-  a:['preset','mode','class_in', 'class_normal', 'class_out'],
+  a:['preset','mode','classfx'],
   f:[],
   b:function(n){with(n){
     n.c=children;
     n.cl=c.length;
-
-    for(var x=0;x<cl;x++){$$.addClass(c[x], n.class_normal);}
+    n.classfxNext=n.classfx+'_next';
+    n.classfxPrev=n.classfx+'_prev';
+    
+    for(var x=0;x<cl;x++){$$.addClass(c[x], n.classfx);}
     n.first=function(){n.show(0);};
     n.last=function(){n.show(n.children.length-1);};    
     n.next=function(si,e){
@@ -36,17 +38,24 @@ $$.js.reg['0130']={
     
     n.show=function(i,x,c,f){with(n){
       i=i>-1?i:0;
-      if(n.selid){
-      	if(n.selid<i)$$.addClass(c[n.selid], n.class_out);
-      	if(n.selid>i)$$.addClass(c[n.selid], n.class_in);
+
+      c[i].style.visibility="";
+      
+      if(n.selectedIndex!=null){
+      	if(n.selectedIndex<i) $$.addClass(c[n.selectedIndex], n.classfxPrev);
+      	if(n.selectedIndex>i) $$.addClass(c[n.selectedIndex], n.classfxNext);
       }
 
       try {
-			  $$.removeClass(c[i], n.class_in);
-			  $$.removeClass(c[i], n.class_out);
-			}
+        $$.removeClass(c[i], n.classfxNext);
+        $$.removeClass(c[i], n.classfxPrev);
+      }
+      
 		  catch(e){}
-
+		  
+      //n.addEventListener('webkitTransitionEnd', n.trans_end, false );
+      n.transition = n.addEventListener('transitionend', n.trans_end, false );
+      
       // sets selected as the current shown panel, else exits if the panel doesn't exists
       if(i<cl){
         n.prev_selected=n.selected;
@@ -54,29 +63,31 @@ $$.js.reg['0130']={
         n.selectedIndex=i;
       }
       else return true;
-
-      
-      
-      // make selected panel visible
-      selected.style.display="";
-      n.trans_end();
     }},
-    
+
     n.trans_end=function(){
-      // itherates through all child-nodes and hides all exept the selected in 'i'
+      // iterates through all child-nodes and hides all except the selected in 'i'
       for(x=0;x<cl;x++){
-        if(c[x]!=selected){
-          //c[x].style.width="0px";
-          //c[x].style.height="0px";
-          c[x].style.display="none";
-        }
+        if(c[x]!=selected){          
+         $$.removeClass(c[x], classfxNext);
+         $$.removeClass(c[x], classfxPrev);
+         if(selectedIndex<x)$$.addClass(c[x], classfxNext);
+         else $$.addClass(c[x], classfxPrev);
+         c[x].style.visibility="hidden";
+        }       
       }
-      
-      // Executes panel's onshow code
-      f=new Function(selected.getAttribute('onshow'));      
-      f.call(selected);        
+
+      this.removeEventListener('transitionend', n.trans_end);
+
+      // Executes panel's on-show code
+      if(selected.hasAttribute('onshow')) {
+        f=new Function(selected.getAttribute('onshow'));      
+        f.call(selected);
+      }        
     };
   }},
   
-  fs:function(n){n.show(n.preset|0);}
+  fs:function(n){
+    n.show(n.preset|0);
+    n.trans_end();}
 };

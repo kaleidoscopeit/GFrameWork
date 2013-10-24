@@ -1,34 +1,29 @@
 <?php
-class fpdf_cell
+class reports_fpdf_cell
 {
-	function __construct(&$_, $attrs)
+  public $req_attribs = array(
+    'show_if'
+  );
+  
+	function __define(&$_)
 	{
-    /* imports properties */
-    foreach ($attrs as $key=>$value) $this->$key=$value;
- 		
-		// Set default values
-		$t              = array();
-		$t['show_if'][] = 'true';
-
-		foreach ($t as $key => $value)
-			foreach ($value as $local)
-				if ($local != null && !$this->$key)
-					$this->$key=$local;
  	}
 
+  function __preflush(&$_)
+  {
+    $this->nopaint = NULL;
+
+    $this->left = $this->parent->offset_x;     // set cell left
+    $this->top  = $this->parent->offset_y;     // set cell top
+
+    if(eval('return('.$this->show_if.');') != true) $this->nopaint = true;
+  }
+  
 	function __flush(&$_)
 	{
-    /* flow control server event */
-    eval($this->onflush);
+	  
+		gfwk_flush_children($this);
+	}
 
-    /* no paint switch */    
-    if ($this->nopaint) return;  
-		
-		foreach ((array) @$this->childs as  $child) $child->__flush($_);
-	}
-	
-	function check_show(&$_){
-		return(eval('return('.$this->show_if.');'));
-	}
 }
 ?>

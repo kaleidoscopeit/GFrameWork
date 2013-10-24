@@ -16,7 +16,7 @@ class base_subview
     $css_style = $_->ROOT->boxing($this->boxing)
                . $_->ROOT->style_registry_add($this->style)
                . $this->class;
-                 
+
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
 
     /* builds code */

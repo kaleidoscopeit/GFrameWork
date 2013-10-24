@@ -2,7 +2,8 @@
 
 <base:htmlview
 	title="G-Framework Web3.0 Toolkit"
-	css="dialog captions">
+	css="dialog captions"
+	id="boxing">
 	<pack:vlayout>
 		<pack:vlaycell height="50px" style="background-color:#6A6A6A;">
 			<base:label
@@ -11,5 +12,5 @@
 				valign="middle"
 				class="text-shadowed font20 italic"/>
 		</pack:vlaycell>
-	<pack:vlayout>
+	</pack:vlayout>
 </base:htmlview>

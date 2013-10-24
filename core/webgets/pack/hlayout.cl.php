@@ -14,7 +14,7 @@ class pack_hlayout
   function __flush(&$_)
   {
     /* builds syles */
-    $css_style = $_->ROOT->boxing($this->boxing)
+    @$css_style = $_->ROOT->boxing($this->boxing)
                . $_->ROOT->style_registry_add($this->style)
                . $this->class;
                  
@@ -53,7 +53,7 @@ class pack_hlayout
       }
     
     /* builds code */
-    if(!$this->naked)
+    if(!isset($this->naked))
       $_->buffer[] = '<div wid="0110" '
                    . 'style="min-width:' . $fixed_width . 'px" '
                    . $css_style

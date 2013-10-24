@@ -13,7 +13,7 @@ class pack_stack
 	
 	function __flush(&$_)
 	{		
-		if(!isset($this->preset)) $this->preset = 0;
+		if(!isset($this->preset)) $this->preset = 1;
 
     /* builds syles */
     $this->attributes['class'] = 'w0130 ' 

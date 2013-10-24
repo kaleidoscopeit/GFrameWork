@@ -91,7 +91,7 @@ class base_htmlview
 
     /* register collected view CSS */
     $_->static[$_->CALL_UUID]['css']['files'] = $css_includes;
-    
+    unset($css_includes);
 
     /**************************************************************************/
     /*                  Writes the code and flushes children                  */
@@ -127,8 +127,8 @@ class base_htmlview
         break;
 
       case 'subview' :
-           $_->buffer[] = "<!--\n" 
-                        . implode("\n", array_keys((array)$css_includes))
+           $_->buffer[] = "<!--\n"
+                        . "?css/view&" . $_->CALL_UUID
                         . "\n\n"
                         . implode("\n", array_keys((array)$js_includes))
                         . "\n-->";

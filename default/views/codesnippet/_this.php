@@ -26,13 +26,7 @@
 
 	$this->caption=$_->webgets["table"]->current_record["description"];	
 
-//?webget.go_button.onclick
 
-	stack.show(1,'slide-to-left')
-	
-//?webget.go_button1.onclick
-
-	stack.show(0,'slide-to-right');
 
 //?webget.sample_code.code
 

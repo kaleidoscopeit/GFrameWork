@@ -1,10 +1,13 @@
 <?php
-class fpdf_image {
-	function __construct(&$_, $attrs)
-	{
-    /* imports properties */
-		foreach ($attrs as $key=>$value) $this->$key=$value;	
- 		
+class reports_fpdf_image
+{
+  public $req_attribs = array(
+    'geometry',
+    'url',
+  );
+  
+	function __define(&$_)
+  { 		
     // webget geometry
     $this->geometry = explode(',',$this->geometry);
     $this->left     = $this->geometry[0];
@@ -15,12 +18,6 @@ class fpdf_image {
 	
 	function __flush(&$_)	
 	{
-    /* flow control server event */
-    eval($this->onflush);
-
-    /* no paint switch */    
-    if ($this->nopaint) return;
-
     /* setup local coordinates */
 		$left	= $this->left + $this->parent->left;
 		$top	= $this->top  + $this->parent->top;

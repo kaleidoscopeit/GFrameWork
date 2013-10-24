@@ -22,7 +22,7 @@ class base_label
   function __flush(&$_)
   {
     /* set caption depending by the presence of 'field' property */
-    if($this->field){
+    if(isset($this->field)){
       $field        = explode(',', $this->field);
       $field_format = ($this->field_format ? $this->field_format : '%s');
 
@@ -52,7 +52,7 @@ class base_label
     /* label type switch */
     if($this->valign == 'middle' || $this->valign == 'bottom') $align = 10;
 
-    $boxing = explode(',', $this->boxing);
+    $boxing = explode(',', @$this->boxing);
 
     $margins = 0;
     
