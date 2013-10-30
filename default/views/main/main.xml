@@ -140,7 +140,7 @@
     boxing=",,right,top,-4px,4px"
     class="fade"
     tip="view source"
-    onclick="subv_cont.goto('view_source&amp;source=');$_.removeClass(view_source, 'diag_hidden');" />
+    onclick="subv_cont.goto('view_source&amp;source=main');$_.removeClass(view_source, 'diag_hidden');" />
     
     
 <!--

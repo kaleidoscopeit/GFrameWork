@@ -4,18 +4,18 @@ class _engine_djl {
   
   function get()
   { 
-    $this->CALL_SOURCE = explode('/', $this->CALL_SOURCE);
-    $djl_class         = array_shift($this->CALL_SOURCE);
+    $this->CALL_URI = explode('.', $this->CALL_URI);
+    $djl_class      = array_shift($this->CALL_URI);
 
     switch ($djl_class) {
       case 'system' :
         $this->CALL_SOURCE = '../core/jss/all/'.
-                             implode('/', $this->CALL_SOURCE);
+                             implode('/', $this->CALL_URI);
         break;
         
       case 'user' :
         $this->CALL_SOURCE = 'lib/js_plug/'.
-                             implode ('/', $this->CALL_SOURCE);
+                             implode ('/', $this->CALL_URI);
         break;
         
       case 'webget' :

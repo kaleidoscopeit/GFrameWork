@@ -6,7 +6,7 @@ class base_subview
     'class'
   );
   
-  function __define(&$_, $attrs)
+  function __define(&$_)
   {
   }
 

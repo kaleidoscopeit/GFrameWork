@@ -3,12 +3,14 @@
 /* prints end microtime (for benchmarking purpuose) */
 //echo 'microtime = '.( microtime (true) - $microtime);
 
-include "../core/engine/main.php";
 
 ini_set('display_errors',1); 
 //error_reporting(E_ALL);
-error_reporting(!E_NOTICE);
+//error_reporting(!E_NOTICE);
 ob_start("ob_gzhandler");
+
+include "../core/engine/main.php";
+
 
 /* get the path of called object if not previously declared
    (appens when the view is called in a nested execution) */
@@ -17,7 +19,7 @@ $source = array_shift($source);
 
 /* redirect to the default page if the path of called object is malformed */
 if (strpos ($source, '../') >- 1 OR $source == "")   
-  header("location: ?views");
+  header("location: views/main/");
   
 $tab     = -1;
 $_       = new _($source);

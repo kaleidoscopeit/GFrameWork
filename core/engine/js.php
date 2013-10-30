@@ -15,17 +15,16 @@ class _engine_js {
     if(!$this->CALL_TARGET) die ('TARGET_NOT_SPECIFIED');
   }
   
-  function build($source_url)
+  function build()
   {
     $ftimes         = array();
-    $source_url     ='views/' . $source_url . '/_this.xml';
-    $CALL_UUID       = array_pop(array_keys($_GET));
-    $js_static      = $this->static[$CALL_UUID]['js'];
+    $js_static      = $this->static[$this->CALL_URI]['js'];
+
     $js_raw         = $js_static['raw'];
     $expires         = 60*3;
 
-    unset($this->static[$CALL_UUID]['js']);
-    
+  //  unset($this->static[$this->CALL_URI]['js']);
+
     /* gets the file list and modify tyme */
     switch($this->CALL_TARGET){
       case 'view' :

@@ -12,11 +12,9 @@ class _engine_views
   function init()
   {
     /* initialization */
-
     $this->webget_enum           = 0;
-    $this->static['js-includes'] = '';                                             /* resets js inclusion index */    
-    $this->buffer = array('');
-    
+    unset($this->static[$this->CALL_URI]);
+    $this->buffer = array();
   }
   
   /****************************************************************************/
@@ -31,11 +29,22 @@ class _engine_views
     $_ = &$this;
 
     /* Check if the view exists */
-    $source_url .='/_this';
+    $source_url_uri = "views/"
+                    . $this->CALL_URI
+                    . "/"
+                    . $this->CALL_TARGET;
 
-    if(!is_file('views/'.$source_url.".xml"))
-       die("<!--\n\n-->View not found!");
+    /* Check if the view exists */
+    $source_url_url = "views/"
+                    . $this->CALL_URI
+                    . "/_this";
+//                  . $this->CALL_TARGET;
 
+    if(is_file($source_url.".xml")) $source_url = $source_url_uri;
+    if(is_file($source_url_uri.".xml")) $source_url = $source_url_uri;
+    else if(is_file($source_url_url.".xml"))$source_url = $source_url_url;
+    else die("<!--\n\n-->View not found!");
+ 
     self::populate_root_object($source_url);
 
     /****** from now we use ROOT as placeholder as the main view class ********/
@@ -43,12 +52,12 @@ class _engine_views
     /* assign global scope javascript code in the root webget 
        ( TODO: has to be more abstract ) */
 
-    $_->static[$_->CALL_UUID]['js']['raw'][] =
+    $_->static[$_->CALL_URI]['js']['raw'][] =
       $this->codes['global']['javascript']['default'];
 
-    if (is_file('views/'.$source_url.'.js'))
-      $_->static[$_->CALL_UUID]['js']['raw'][] =
-        file_get_contents('views/'.$source_url.'.js');    
+    if (is_file($source_url.'.js'))
+      $_->static[$_->CALL_URI]['js']['raw'][] =
+        file_get_contents($source_url.'.js');    
       
     /* the view php code in the global scope will be executed */
     if(isset($this->codes['global']['php']['default']))
@@ -61,7 +70,7 @@ class _engine_views
     if (isset($this->system_error_queue))
       foreach ($this->system_error_queue as $error)
         $this->buffer[] = $error;
-    
+
     return $this->buffer;
   }
 
@@ -85,7 +94,7 @@ class _engine_views
         array('self', "endelm"));
         
     /* loads main XML view and eventually merges nested overlays */
-    $source = file_get_contents('views/'.$source_url.'.xml');
+    $source = file_get_contents($source_url.'.xml');
 
     /* parses the complete view. This will build the big ROOT object */
     if (!xml_parse($parser, $source, true))
@@ -110,8 +119,8 @@ class _engine_views
   function get_codes($source_url)
   {
     /* checks if codes file exists */
-    if (!is_file('views/'.$source_url.'.php')) return;
-    $file = @file_get_contents('views/'.$source_url.'.php');
+    if (!is_file($source_url.'.php')) return;
+    $file = @file_get_contents($source_url.'.php');
 
     /* strips comments if debug-mode is disabled */
     if ($this->settings['debug'] == false)

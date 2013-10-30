@@ -12,7 +12,7 @@ class base_label
     'halign'
   );
 
-  function __construct(&$_, $attrs)
+  function __define(&$_)
   {
     /* imports properties */
 /*    register_attributes($this, $attrs, array(

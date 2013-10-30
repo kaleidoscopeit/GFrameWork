@@ -1,31 +1,42 @@
 <?php
+
 class _
 {
    
   function __construct($source)
-  {    
+  {
+    /* start session */
+    session_start();  
+
     /* imports the project configuration file and 
        the configuration database engine */
     require "etc/config.php";
-    
-    /* extract the type of object called ( must be the first part ) */
-    $source = explode('/', rtrim($source,"/"));
+
+    /* imports GIDE static data from browser session */
+    $this->static = &$_SESSION[$this->settings['app-uuid']];
 
     /* global names */
-    $this->CALL_OBJECT  = array_shift($source);
-    $this->CALL_TARGET  = array_pop($source);
-		$source[] 					= $this->CALL_TARGET;
-    $this->CALL_SOURCE  = implode('/', $source);
-    $this->CALL_UUID    = hash('crc32',$this->CALL_SOURCE);
-
-    $this->CORE_PATH    = '../core';
-    $this->WEBGETS_PATH = $this->CORE_PATH . '/webgets/';
+    $this->set_global_names($source);
     
     /* debug calls */
     $message=array('message'=>'call debug');
     $this->call('system.utils.write_debug',$message);
   }                        
-  
+
+  function set_global_names($source){
+    /* extract the type of object called ( must be the first part ) */
+    $source = explode('/', rtrim($source,"/"));
+    
+    /* global names */
+    $this->CALL_OBJECT = array_shift($source);
+    $this->CALL_PATH   = implode('/', $source);
+    $this->CALL_URI    = implode('.', $source);
+    $this->CALL_TARGET = $source[count($source)-1];
+    $this->APP_PATH = '//' . $_SERVER['HTTP_HOST']
+                    . dirname($_SERVER['PHP_SELF']);
+    $this->CORE_PATH    = '../core';
+    $this->WEBGETS_PATH = $this->CORE_PATH . '/webgets/';    
+  }  
 
   /* apply the security policy if required and act as hub for various 
      sub funcitions depending by the called object */
@@ -34,12 +45,7 @@ class _
     /* private loopback to the default name of the gide class */
     $_=$this;
 
-    /* try to set the session longer and start it */
-    session_start();  
 
-    /* imports GIDE static data from browser session */
-    $this->static = &$_SESSION[$this->settings['app-uuid']];
-//print_r($this->static);
     /* Authentication checkpoint */
 //    if (!$_->call('system.auth.check',$_buf))
 //      $this->CALL_SOURCE = $this->settings['auth_login_page'];
@@ -50,31 +56,32 @@ class _
       
     }
 
+
     switch ($this->CALL_OBJECT) { 
       case 'views' :
       case 'view' :
       case 'subview' : 
-      
+
         require_once __DIR__ . '/views.php';
-if (!$_->call('system.auth.check',$_buf))
-$this->CALL_SOURCE = $this->settings['auth_login_page'];
+
+        if (!$_->call('system.auth.check',$_buf))
+          $this->set_global_names($this->settings['auth_login_page']);
 
         _engine_views::init();
         
-        return _engine_views::build($this->CALL_SOURCE);
+        return _engine_views::build();
         break;
 
       case 'reports' :
+        if (!$_->call('system.auth.check',$_buf)) die('Access Denied');
         require_once __DIR__ . '/reports.php';
-if (!$_->call('system.auth.check',$_buf))
-$this->CALL_SOURCE = $this->settings['auth_login_page'];
         return _engine_reports::build();
         break;
         
       case 'call' :
         $response[1] = unserialize($_POST['b']);
         $flags       = isset($_POST['h']) ? $_POST['h'] : '';
-        $path        = str_replace('/', '.', $this->CALL_SOURCE);
+        $path        = $this->CALL_URI;
         $response[0] = $this->call($path, $response[1], $flags);
         echo           serialize($response);
         break;
@@ -85,26 +92,23 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
         break;
 
       case 'css' :
+        //if (!$_->call('system.auth.check',$_buf)) die('Access Denied');
         require_once __DIR__ . '/css.php';
-if (!$_->call('system.auth.check',$_buf))
-$this->CALL_SOURCE = $this->settings['auth_login_page'];
         _engine_css::init();
         return _engine_css::build($this->CALL_SOURCE);
         break;
 
       case 'js' :
+        //if (!$_->call('system.auth.check',$_buf)) die('Access Denied');
         require_once __DIR__ . '/js.php';
-if (!$_->call('system.auth.check',$_buf))
-$this->CALL_SOURCE = $this->settings['auth_login_page'];
         _engine_js::init();
         return _engine_js::build($this->CALL_SOURCE);
         break;
         
 
       case 'compile' :
+        if (!$_->call('system.auth.check',$_buf)) die('Access Denied');
         require_once __DIR__ . '/compile.php';
-if (!$_->call('system.auth.check',$_buf))
-$this->CALL_SOURCE = $this->settings['auth_login_page'];
         _engine_compile::init();
         return _engine_compile::build($this->CALL_SOURCE);
         break;
@@ -197,12 +201,12 @@ $this->CALL_SOURCE = $this->settings['auth_login_page'];
  
     /* call the RPC */
     $rpc_status = $function($this, $_STDIN, $rpc_response);
-    
+
     /* FAILURE BEHAVIOUR */
 
     /* in case of FAILURE do following dependig by choosen output option */
     if ($rpc_status == false) {
-      
+ 
       /* directly die */
       if (in_array('die',$options))
         die("RPC '".$rpc_name."' failed.");

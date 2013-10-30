@@ -53,8 +53,10 @@ $$.js.reg['0130']={
       
 		  catch(e){}
 		  
-      //n.addEventListener('webkitTransitionEnd', n.trans_end, false );
-      n.transition = n.addEventListener('transitionend', n.trans_end, false );
+		  if(n.classfx != null) {
+        //n.addEventListener('webkitTransitionEnd', n.trans_end, false );
+        n.transition = n.addEventListener('transitionend', n.trans_end, false );
+      }		  
       
       // sets selected as the current shown panel, else exits if the panel doesn't exists
       if(i<cl){
@@ -62,13 +64,15 @@ $$.js.reg['0130']={
         n.selected=c[i];
         n.selectedIndex=i;
       }
-      else return true;
+
+      if(n.classfx == null) n.trans_end();
+      return true;
     }},
 
     n.trans_end=function(){
       // iterates through all child-nodes and hides all except the selected in 'i'
       for(x=0;x<cl;x++){
-        if(c[x]!=selected){          
+        if(c[x]!=selected){
          $$.removeClass(c[x], classfxNext);
          $$.removeClass(c[x], classfxPrev);
          if(selectedIndex<x)$$.addClass(c[x], classfxNext);
@@ -81,7 +85,7 @@ $$.js.reg['0130']={
 
       // Executes panel's on-show code
       if(selected.hasAttribute('onshow')) {
-        f=new Function(selected.getAttribute('onshow'));      
+        var f=new Function(selected.getAttribute('onshow'));      
         f.call(selected);
       }        
     };

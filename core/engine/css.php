@@ -15,19 +15,20 @@ class _engine_css {
     if(!$this->CALL_TARGET) die ('TARGET_NOT_SPECIFIED');
   }
   
-  function build($source_url)
+  function build()
   {
     $ftimes         = array();
-    $source_url     ='views/' . $source_url . '/_this.xml';
-    $CALL_UUID       = array_pop(array_keys($_GET));
-    $css_static     = $this->static[$CALL_UUID]['css'];
-    $css_files      = $css_static['files'];
+
+    if(isset($this->static[$this->CALL_URI]['css']))
+      $css_static = $this->static[$this->CALL_URI]['css'];
+
     $style_prefix   = $css_static['prefix'];
     $style_registry = $css_static['registry'];
     $expires         = 60*3;
 
-    unset($this->static[$CALL_UUID]['css']);
-        /* gets the file list and modify tme */
+    unset($this->static[$this->CALL_URI]['css']);
+    
+    /* gets the file list and modify tme */
     switch($this->CALL_TARGET){
       case 'webgets' :
         $css_files = array();
@@ -46,25 +47,11 @@ class _engine_css {
         $ftimes = array_pop($ftimes);
 
         break;
-        
-      case 'view' :
-        $css_files[$source_url] = true;
-                $ftimes = @array_map(function($file){
-                  return filemtime($file);
-        },array_keys($css_files));
-
-        sort($ftimes , SORT_NUMERIC);
-        $ftimes = array_pop($ftimes);
-                    
-        break;
-        
-      default :
-        echo 'WRONG_TARGET';
     }
 
 
     header('Content-type: text/css');
-//    header("Pragma: public");
+/*//    header("Pragma: public");
 //    header("Cache-Control: maxage=".$expires);
 //    header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
     
@@ -76,8 +63,7 @@ class _engine_css {
     }
          
     else 
-//      header('Last-Modified: '.gmdate('D, d M Y H:i:s', $ftimes).' GMT', true, 200);
-  
+//      header('Last-Modified: '.gmdate('D, d M Y H:i:s', $ftimes).' GMT', true, 200);*/
   
     switch($this->CALL_TARGET){
       case 'webgets' :
@@ -86,14 +72,10 @@ class _engine_css {
         }, array_keys($css_files));
         break;
 
-              case 'view' :
+      default :
         @array_map(function($key, $value) use ($style_prefix){
-          echo '.' . $style_prefix . $key . '{'.$value."}";
-        } , array_keys($style_registry), $style_registry);
-          
-        @array_map(function($file){
-          echo preg_replace('/[\t\n]+/', '', file_get_contents($file));
-        }, array_keys($css_files));
+          echo '.' . $style_prefix . $key . '{'.$value."}";},
+          array_keys($style_registry), $style_registry);
 
         break;      
       

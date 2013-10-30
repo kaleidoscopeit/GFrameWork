@@ -48,7 +48,7 @@ var $_={
   
     for(f in r.f){
       f=r.f[f];
-      if(typeof(f) != 'function') w[f] = Event(f);
+      if(typeof(f) != 'function') w[f] = new Event(f);
       this.bindEvent(w, f, Function(w.getAttribute(f) || ''));
     }
     r.b(w);
@@ -118,6 +118,7 @@ var $_={
     this.jsimport('system.phpjs.unserialize');
     this.jsimport('system.phpjs.serialize');
 
+
     var x=this.xhr(),f=-1,p='b='+serialize(b),c=1,i,o;
 
     // look-up for 'stack' flag in order to manage it locally 
@@ -130,7 +131,7 @@ var $_={
       h=h.join(',');
       p+=h?'&h='+h:'';
     }  
-  
+
     x.open('POST', '?call/'+m.replace(/\./g,'/') , false);
     x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     x.setRequestHeader("Content-length", p.length);
@@ -234,15 +235,16 @@ var $_={
     else tmp.jsBindsNS[n]=[];
 
     /* bind new events */
-    while (tmp.jsBindsFiFo[0]){
+    while (tmp.jsBindsFiFo[0] != null){
       var i=tmp.jsBindsFiFo.pop(), obj=gei(i.on);
 
       switch(i.ot){
         case 'webget' :
   
           if(typeof(i.hd) == 'function') {
-            if(typeof(obj[i.oa]) != 'function') obj[i.oa] = Event(i.oa);
-            
+            if(typeof(obj[i.oa]) != 'function') {
+              obj[i.oa] = new Event(i.oa);
+            }
             obj.addEventListener(i.oa, i.hd);
             tmp.jsBindsNS[n].push(i);
           }
@@ -277,6 +279,7 @@ var _w=function(w){with($$){
 $$.bindEvent(window, "load", function(){with($$){
   document.body.id='root';
   flushBinds();
+
   webgets['root']=[];
   _wInit(document.body,{childWebgets:[]},'root'); 
 //  for(var s in lib)lib[s].construct();
@@ -284,6 +287,9 @@ $$.bindEvent(window, "load", function(){with($$){
     if(js.reg[webgets['root'][s].wid])
       js.reg[webgets['root'][s].wid].fs(webgets['root'][s]);
   }
+
+  if(typeof(document.body.ready) == 'object')
+    document.body.dispatchEvent(document.body.ready);
 }});
 
 // Extract "GET" parameters from a JS include query string

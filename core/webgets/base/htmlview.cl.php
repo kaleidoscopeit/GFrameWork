@@ -17,27 +17,14 @@ class base_htmlview
     /* Gets the client information */ 
     $_->static['client'] = $this->browser_info();
 
-    switch ($_->static['client']['browser'])
-    {
-      case 'firefox' : case 'gecko' :
-        $_->static['client']['engine'] = 'gecko';
-        break;
-      case 'msie' :
-        $_->static['client']['engine'] = 'trident';
-        break;
-      case 'safari' : case 'webkit' : case 'chrome' :
-        $_->static['client']['engine'] = 'webkit';
-        break;
-      case 'opera' :
-        $_->static['client']['engine'] = 'presto';
-        break;
-    }
-
     /* sets ROOT placeholder */
     $_->ROOT = $this;
     
-    /* style registry prefix */
-    $_->static[$_->CALL_UUID]['css']['prefix'] = ($this->id ? $this->id:'sr');
+    /* setup css rules */
+    $this->css_rules = array(
+      'prefix' => ($this->id ? $this->id:'sr'),
+      'includes' => array()
+    );
   }
 
 
@@ -53,8 +40,10 @@ class base_htmlview
     foreach ($_->libraries as $library) {
       
       $library = explode('/', $library);
-      $library_js = $_->WEBGETS_PATH.implode('/js/', $library).'.js';
-      $library_css = $_->WEBGETS_PATH.implode('/css/', $library).'.js';
+      $library_js = $_->WEBGETS_PATH . implode('/js/', $library).'.js';
+      $library_css = $_->WEBGETS_PATH . implode('/css/', $library).'.css';
+
+
 
     /**************************************************************************/
     /*                           Javascript stuff                             */
@@ -69,84 +58,108 @@ class base_htmlview
       }
     }
 
-    $js_includes['?js/view' . '&' . $_->CALL_UUID] = true;
+   
 
     /**************************************************************************/
     /*                                CSS stuff                               */
     /**************************************************************************/
-    
-    /* project global CSS */
-    if(is_file('css/global.css')) $css_includes['css/global.css'] = 1;
 
-    /* project selected CSS by this view */
-    if($this->css != '') {
-      $css_enabled = explode(' ', $this->css);
-      foreach($css_enabled as $css)
-        if(is_file('css/'.$css.'.css')) $css_includes['css/'.$css.'.css'] = 1;
-    }
+    /* project global CSS */
+    $this->css .= ' global';
+
+    /* current view attaced CSS plus global */
+    array_map(function($css) use (&$_){
+      $_->ROOT->css_rules['includes']['css/'.$css.'.css'] = 1;
+    }, explode(' ', trim($this->css)));
 
     /* static CSS file of this view */
-    if(is_file('views/'.$_->CALL_SOURCE.'/_this.css'))
-      $css_includes['views/'.$_->CALL_SOURCE.'/_this.css'] = 1;
+    $this->css_rules['includes']
+      ['views/'.$_->CALL_URI.'/_this.css'] = 1;
 
-    /* register collected view CSS */
-    $_->static[$_->CALL_UUID]['css']['files'] = $css_includes;
-    unset($css_includes);
+
+
+    /**************************************************************************/
+    /*                              flushes all view                          */
+    /**************************************************************************/
+        
+    gfwk_flush_children($this);
+
+
 
     /**************************************************************************/
     /*                  Writes the code and flushes children                  */
     /**************************************************************************/
 
     switch($_->CALL_OBJECT){
-      case 'view' :
       case 'views' :
-    $_->buffer = array(); 
-        $_->buffer[] = '<!DOCTYPE HTML5>';
-        $_->buffer[] = '<html>';
-        $_->buffer[] = '<head>';
-        $_->buffer[] = (isset($this->title) ? 
-                       '<title>'.$this->title.'</title>' : '');
-        $_->buffer[] = '<meta http-equiv="Content-Type" '
-                     . 'content="text/html;charset=UTF-8">';
+        $top_code = array(); 
+        
+        $top_code[] = '<!DOCTYPE HTML5>';
+        $top_code[] = '<html>';
+        $top_code[] = '<head>';
+        $top_code[] = (isset($this->title) ? 
+                      '<title>'.$this->title.'</title>' : '');
+        $top_code[] = '<meta http-equiv="Content-Type" '
+                    . 'content="text/html;charset=UTF-8" />';
 
-        $_->buffer[] = '<link rel="stylesheet" type="text/css" '
-                     . 'href="?css/webgets" />';
-        $_->buffer[] = '<link rel="stylesheet" type="text/css" '
-                     . 'href="?css/view&' . $_->CALL_UUID . '" />';
-                     
-        foreach((array) @$js_includes as $js => $status)
-          $_->buffer[] = '<script type="text/JavaScript" src="'
-                       . $js . '"></script>';
+        array_map(function($css) use (&$top_code){
+          $top_code[] = '<link rel="stylesheet" type="text/css" '
+                      . 'href="' . $css .'" />';},
+          array_keys($this->css_rules['includes']));
+                      
+        $top_code[] = '<link rel="stylesheet" type="text/css" '
+                    . 'href="' . '?css/webgets" />';
 
-        $_->buffer[] = '<body wid="0000" class="'.$this->class.'" '
-                     . $_->ROOT->format_html_attributes($this)
-                     .'>';
+        array_map(function($js) use (&$top_code){
+          $top_code[] = '<script type="text/JavaScript" src="'
+                      . $js . '"></script>';},
+          array_keys($js_includes));
+               
+//        $top_code[] = '<script type="text/JavaScript" src="'
+//                    . 'views/'.$_->CALL_URI.'/'.$_->CALL_TARGET.'.js' . '"></script>';
+        $top_code[] = '<script type="text/JavaScript" src="'
+                    . 'views/'.$_->CALL_URI.'/_this.js' . '"></script>';
+                    
+        $top_code[] = '<style type="text/css">';
+
+        foreach($this->css_rules['registry'] as $index => $value) {
+          $top_code[] = '.' . $this->css_rules['prefix']
+                      . $index . '{'.$value."}";
+        }        
+        
+        $top_code[] = '</style>';
+        $top_code[] = '</head>';
+        $top_code[] = '<body wid="0000" class="'.$this->class.'" '
+                    . $_->ROOT->format_html_attributes($this)
+                    . '>';
  
         $bottom_code = array('</body>', '</html>');
 
         break;
 
+
       case 'subview' :
-           $_->buffer[] = "<!--\n"
-                        . "?css/view&" . $_->CALL_UUID
-                        . "\n\n"
-                        . implode("\n", array_keys((array)$js_includes))
-                        . "\n-->";
 
-        $_->buffer[] = '<div wid="0071" '
-                     . $this->format_html_events($this).'>';
+        $top_code[] = "<!--\n"
+                    . implode("\n", array_keys($this->css_rules['includes']))
+                    . "\n?css/" . $_->CALL_URI
+                    . "\n\n"  
+                    . implode("\n", array_keys((array)$js_includes))
+                    . "\n-->";                       
 
-        $bottom_code = array('</div>');
+        $top_code[] = '<div wid="0071" '
+                     . $this->format_html_attributes($this).'>';
+
+        $bottom_code = array('</div>');        
         
+        /* register collected view CSS */
+        $_->static[$_->CALL_URI]['css'] = $this->css_rules;
+       
         break;
-    }
- 
-    gfwk_flush_children($this);
+    }   
 
-    $_->buffer = array_merge($_->buffer, $bottom_code);
-
+    $_->buffer = array_merge($top_code, $_->buffer, $bottom_code);
   }
-  
 
 
   /* Returns a preformatted style following the "Global Positioning Rules"
@@ -160,16 +173,15 @@ class base_htmlview
    *
    */
 
-  function boxing( 
-    $boxing,
-    $hsize    = "100%",
-    $vsize    = "100%",
-    $halign   = "center", 
-    $valign   = "middle",   
-    $hoffset  = "0px", 
-    $voffset  = "0px",
-    $refer    = "parent"
-  ) {
+  function boxing($boxing,
+                  $hsize    = "100%",
+                  $vsize    = "100%",
+                  $halign   = "center", 
+                  $valign   = "middle",   
+                  $hoffset  = "0px", 
+                  $voffset  = "0px",
+                  $refer    = "parent" )
+  {
 
     if($boxing == 'false') return null;
     
@@ -257,7 +269,7 @@ class base_htmlview
   
   
   /*
-    Tavola per il calcolo  del posizionamento nella funzione boxing
+    Boxing positioning calculation table
     
     root    lt  height(px|%)  width(px|%)  left=0+left(px|%)                                top=0+top(px|%)      
     root    ct  height(px|%)  width(px|%)  left=0+left(px)-width/2(px)                      top=0+top(px|%)                                                                    margin-left=50-width/2(%)+left(%)      
@@ -297,7 +309,7 @@ class base_htmlview
 
   /* forces one or more error messages on top of the view
    *
-   * Very very bad code ...
+   * Very very ugly code ...
    *  
    */
   
@@ -328,43 +340,9 @@ class base_htmlview
    *
    * returns
    *
-   * empty string  : no event matched
-   * html string   : preformatted html events
+   * html string   : preformatted html attributes
    *
    */
-   
-  function format_html_events ($webget)
-  {
-    //    return;
-    return 
-      (isset($webget->onclick) ?
-        'onclick="'.$webget->onclick.'" ' : '').
-      (isset($webget->onmousedown) ? 
-        'onmousedown="'.$webget->onmousedown.'"' : '').
-      (isset($webget->onmouseup) ?
-        'onmouseup="'.$webget->onmouseup.'" ' : '').
-      (isset($webget->onmouseover) ?
-        'onmouseover="'.$webget->onmouseover.'" ' : '').
-      (isset($webget->onmouseout) ?
-        'onmouseout="'.$webget->onmouseout.'" ' : '').
-      (isset($webget->onkeydown) ?
-        'onkeydown="'.$webget->onkeydown.'" ' : '').
-      (isset($webget->onkeyup) ?
-        'onkeyup="'.$webget->onkeyup.'"' : '').
-      (isset($webget->onkeypress) ?
-        'onkeypress="'.$webget->onkeypress.'" ' : '').
-      (isset($webget->ready) ?
-        'ready="'.$webget->ready.'" ' : '').
-      (isset($webget->onchange) ?
-        'onchange="'.$webget->onchange.'" ' : '').
-      (isset($webget->onscroll) ?
-        'onscroll="'.$webget->onscroll.'" ' : '').
-      (isset($webget->onblur) ?
-        'onblur="'.$webget->onblur.'" ' : '').
-      (isset($webget->onfocus) ?
-        'onfocus="'.$webget->onfocus.'" ' : '');
-  }
-  
   
   function format_html_attributes ($webget)
   {
@@ -375,6 +353,8 @@ class base_htmlview
 
     return implode(' ', (array) @$out)." ";
   }
+
+
   
   /* Makes an array with the browser information 
    *
@@ -402,10 +382,13 @@ class base_htmlview
       'gecko',
       'chrome'
     );
+
   
     /* Clean up agent and build regex that matches phrases for known browsers
-       (e.g. "Firefox/2.0" or "MSIE 6.0" (This only matches the major and minor
-       version numbers.  E.g. "2.0.0.6" is parsed as simply "2.0" */
+     * (e.g. "Firefox/2.0" or "MSIE 6.0" (This only matches the major and minor
+     * version numbers.  E.g. "2.0.0.6" is parsed as simply "2.0"
+     */
+     
     $agent = strtolower($agent ? $agent : $_SERVER['HTTP_USER_AGENT']);
     
     $pattern = '#(?<browser>'.
@@ -415,36 +398,57 @@ class base_htmlview
     /* Find all phrases (or return empty array if none found) */
     if (!preg_match_all($pattern, $agent, $matches)) return array();
   
+    switch ($_->static['client']['browser'])
+    {
+      case 'firefox' :
+      case 'gecko' :
+        $engine = 'gecko';
+        break;
+        
+      case 'msie' :
+        $engine = 'trident';
+        break;
+        
+      case 'safari' :
+      case 'webkit' :
+      case 'chrome' :
+        $engine = 'webkit';
+        break;
+        
+      case 'opera' :
+        $engine = 'presto';
+        break;
+    }
+
     /* Since some UAs have more than one phrase (e.g Firefox has a Gecko phrase,
-       Opera 7,8 have a MSIE phrase), use the last one found (the right-most one
-       in the UA).  That's usually the most correct. */
+     *  Opera 7,8 have a MSIE phrase), use the last one found (the right-most one
+     *  in the UA).  That's usually the most correct.
+     */
     $i = count($matches['browser'])-1;
-    
+         
     return array(
       'browser' => $matches['browser'][$i],
       'version' => $matches['version'][$i],
-      $matches['browser'][$i] => $matches['version'][$i]);
+      $matches['browser'][$i] 
+                => $matches['version'][$i],
+      'engine'  => $engine
+    );
   }
 
 
 
   /* inline style registry (attempt to save code by making
-     dynamic sylesheet for repeated inline syles) */ 
+   * dynamic sylesheet for repeated inline syles)
+   */ 
     
   function style_registry_add($style)
   {
     global $_;
-    $css_static = &$_->static[$_->CALL_UUID]['css'];
-
     if($style == '') return null;
-    
-    $css_style = array_search($style, (array) @$css_static['registry']);
-      
-    if($css_style!==false) return $css_static['prefix'] . $css_style . ' ';
-
-    $css_static['registry'][] = $style;
-    
-    return $css_static['prefix'] . (count($css_static['registry'])-1).' ';
+    $css_style = array_search($style, (array) @$this->css_rules['registry']);
+    if($css_style!==false) return $this->css_rules['prefix'] . $css_style . ' ';
+    $this->css_rules['registry'][] = $style;
+    return $this->css_rules['prefix'] . (count($this->css_rules['registry'])-1).' ';
   }
 }
 ?>

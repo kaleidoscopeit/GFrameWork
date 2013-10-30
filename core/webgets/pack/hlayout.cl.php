@@ -57,7 +57,6 @@ class pack_hlayout
       $_->buffer[] = '<div wid="0110" '
                    . 'style="min-width:' . $fixed_width . 'px" '
                    . $css_style
-                   . $_->ROOT->format_html_events($this)
                    . $_->ROOT->format_html_attributes($this)
                    . '>';
                                     

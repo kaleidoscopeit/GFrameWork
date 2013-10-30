@@ -2,6 +2,7 @@ $_.js.reg['0150']={
   a:['view','tcn','tci','tco','tct'],
   f:['onload'],  
   b:function(n){with(n){
+    //alert('a');
     n.ifa=$_.cre('iframe');
     n.ifb=$_.cre('iframe');
     n.ifc=$_.cre('iframe');
