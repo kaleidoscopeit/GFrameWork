@@ -19,21 +19,22 @@ class pack_hlaycell
   function __flush(&$_)
   {
     /* no paint switch */    
-    if(isset($this->nopaint)) return;
+    if (isset($this->nopaint)) return;
 
     /* builds syles */
     $style = 'width:' . $this->width.';';
     if(isset($this->within)) 
-         $style .= 'padding-right:' . $this->within
-                . 'px;margin-right:-' . $this->within . 'px;';
+      $style .= 'padding-right:' . $this->within
+             . 'px;margin-right:-' . $this->within . 'px;';
+             
     else if(isset($this->style)) $style .= $this->style; 
     
-    $css_style   = $_->ROOT->style_registry_add($style) . ' ';
+    $css_style = $_->ROOT->style_registry_add($style) . ' ';
 
     /* builds code */
     $_->buffer[] = '<div wid="0111" '
-                 . 'class="w0111 ' . $css_style
-                 . (isset($this->within) ? '' :
+                 . 'class="' . $css_style
+                 . (isset($this->within) ? 'w0112' :
                     (isset($this->class) ? $this->class : '')) . '" '
                  . $_->ROOT->format_html_attributes($this)
                  . '>';

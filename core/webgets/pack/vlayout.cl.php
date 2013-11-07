@@ -4,7 +4,8 @@ class pack_vlayout
   public $req_attribs = array(
     'style',
     'class',
-    'naked'
+    'naked',
+    'class'
   );
   
   function __define(&$_)
@@ -49,8 +50,7 @@ class pack_vlayout
     $this->attributes['class'] =
         (isset($this->boxing) ? $_->ROOT->boxing($this->boxing) : '')
       . $_->ROOT->style_registry_add(
-        'min-height:' . $fixed_height . 'px;'
-        . $this->style)
+        'min-height:' . $fixed_height . 'px;' . $this->style)
       . (isset($this->class) ? $this->class : '');
                                
     /* builds code */

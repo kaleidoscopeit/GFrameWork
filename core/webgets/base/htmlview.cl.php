@@ -6,8 +6,6 @@ class base_htmlview
    */
 
   public $req_attribs = array(
-    'style',
-    'class',
     'css',
     'title'
   );
@@ -65,12 +63,13 @@ class base_htmlview
     /**************************************************************************/
 
     /* project global CSS */
-    $this->css .= ' global';
+    if ($_->CALL_OBJECT!='subview') $this->css .= ' global';
 
     /* current view attaced CSS plus global */
-    array_map(function($css) use (&$_){
-      $_->ROOT->css_rules['includes']['css/'.$css.'.css'] = 1;
-    }, explode(' ', trim($this->css)));
+    if($this->css!='')
+      array_map(function($css) use (&$_){
+        $_->ROOT->css_rules['includes']['css/'.$css.'.css'] = 1;
+      }, explode(' ', trim($this->css)));
 
     /* static CSS file of this view */
     $this->css_rules['includes']
@@ -125,11 +124,10 @@ class base_htmlview
         foreach($this->css_rules['registry'] as $index => $value) {
           $top_code[] = '.' . $this->css_rules['prefix']
                       . $index . '{'.$value."}";
-        }        
-        
+        }
         $top_code[] = '</style>';
         $top_code[] = '</head>';
-        $top_code[] = '<body wid="0000" class="'.$this->class.'" '
+        $top_code[] = '<body wid="0000" '
                     . $_->ROOT->format_html_attributes($this)
                     . '>';
  

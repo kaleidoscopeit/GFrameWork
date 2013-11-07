@@ -1,0 +1,12 @@
+This webget let to show a date selector with a custom layout.
+
+It's a composite webget, means that it's necessary to use a number of child
+webget whit a specific nested id in order to build it correctly.
+
+Root parameters :
+
+Child Webgets :
+
+Properties :
+
+Methods :

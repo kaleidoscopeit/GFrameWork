@@ -5,11 +5,13 @@
   -webkit-border-radius: 5px;
 }
 
-.radius10
+.radius10 
 {
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
+  box-shadow: 5px 5px 5px #888888;
+
 }
 
 .fade

@@ -54,6 +54,7 @@ $_.js.reg['0070'] = {
           if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
         });*/
       }
+      return true;
     };
 
     n.incss = function(u) {

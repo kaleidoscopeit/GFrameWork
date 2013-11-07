@@ -2,9 +2,9 @@
 
 <base:htmlview
   title="G-Framework Web3.0 Toolkit"
-  style="background-image:url('images/body-noise.png');"
-  css="dialog captions">
-  <pack:vlayout boxing="800px">
+  style="background-image:url('images/body-noise.png');overflow:visible;"
+  css="dialog captions" >
+  <pack:vlayout boxing="800px" style="overflow:visible;">
 
 <!--
 ********************************************************************************
@@ -47,7 +47,7 @@
             <pack:vlaycell height="50px" style="background-color:#6A6A6A;">
               <base:label
                 id="refer"
-                caption="Reference table"
+                caption="Arguments"
                 halign="center"
                 valign="middle"
                 class="text-shadowed font20 italic"/>
@@ -125,7 +125,7 @@
       </pack:hlayout>                  
     </pack:vlaycell>
     
-    <pack:vlaycell height="10p" />
+    <pack:vlaycell height="10px" />
   </pack:vlayout>
   
 
