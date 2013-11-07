@@ -47,13 +47,13 @@ class base_htmlview
     /*                           Javascript stuff                             */
     /**************************************************************************/
     
-      if($_->CALL_OBJECT!='subview'){       
+   //   if($_->CALL_OBJECT!='subview'){       
         /* includes static js files */
         if(is_file($library_js)) $js_includes[$library_js] = true;
         
         /* includes dynamic js files */
         if(is_file($library_js.'.php')) require $library_js . ".php";
-      }
+    //  }
     }
 
    
@@ -137,10 +137,9 @@ class base_htmlview
 
 
       case 'subview' :
-
         $top_code[] = "<!--\n"
                     . implode("\n", array_keys($this->css_rules['includes']))
-                    . "\n?css/" . $_->CALL_URI
+                    . "\n?css/" . $_->CALL_PATH
                     . "\n\n"  
                     . implode("\n", array_keys((array)$js_includes))
                     . "\n-->";                       

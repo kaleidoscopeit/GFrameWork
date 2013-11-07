@@ -1,0 +1,66 @@
+#datepicker{
+  font: bold 13px sans,arial ;
+  border:0px solid transparent;
+  box-shadow: 1px 1px 5px #000000;
+  border-radius:10px;
+  background-color:#262626;
+  color: #D3D3D3;
+}
+
+#datepicker\.active_bar {
+  background-color: #ADD8E6;
+  border-bottom: 1px solid #1B1B1B;
+}
+
+#datepicker\.weekday_bar {
+  border-bottom: 1px solid #1B1B1B;
+
+  background-color: #6A6A6A;
+}
+
+
+#datepicker\.week_cell {
+  border-bottom: 1px solid #1B1B1B;
+  border-top: 1px solid #323232;
+}
+
+#datepicker\.month_area {
+  background-color:white;
+}
+
+
+#datepicker\.day_cell {
+  color: grey;
+  border-right:1px solid lightgrey;
+  border-bottom:1px solid lightgrey;
+  -moz-box-sizing: content-box;
+  box-sizing:content-box
+}
+
+#datepicker\.day_cell:hover {
+  background-color:blue;
+}
+
+#datepicker\.month_prev,#datepicker\.month_next {
+  background-color: rgba(0,0,0,0.4);
+  border-radius:10px;
+}
+
+#datepicker\.month_prev:hover,#datepicker\.month_next:hover {
+  background-color: rgba(0,0,0,0.6);
+  border-radius:10px;
+}
+
+.day_cell_disabled {
+  text-shadow: 1.5px -.5px #aaaaaa, 2.5px 0.5px white;
+}
+
+
+
+.day_cell_today {
+  
+}
+
+.day_cell_selected {
+  
+}

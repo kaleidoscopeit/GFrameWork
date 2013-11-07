@@ -1,0 +1,77 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<!DOCTYPE view [
+  <!ENTITY datePickerId
+    "datepicker">
+]>
+
+<base:htmlview id="subdatepicker">
+
+	<schedule:datepicker
+  	id="&datePickerId;"
+ 		boxing="300px,300px"
+ 		style="border:1px solid black;"
+ 		spacing="0"> 
+    <pack:vlayout>
+        
+      <pack:vlaycell height="40px" id="&datePickerId;.active_bar">
+		    <pack:hlayout >
+		      
+		      <pack:hlaycell width="40px">      
+		        <base:label 
+		            boxing="5px,5px,5px,5px"
+		            id="&datePickerId;.month_prev"
+		            caption="&lt;"
+		            halign="center"/>
+		      </pack:hlaycell>
+		      
+		      <pack:hlaycell >
+		        <base:label id="&datePickerId;.month_label" />
+		      </pack:hlaycell>
+		      
+		      <pack:hlaycell width="40px">
+		        <base:label 
+		          id="&datePickerId;.month_next"
+		          boxing="5px,5px,5px,5px"
+		          caption="&gt;"
+		          halign="center"/>
+		      </pack:hlaycell>
+		            
+		    </pack:hlayout>
+	    </pack:vlaycell>
+	    
+	    <pack:vlaycell height="20px">
+	      <pack:hlayout id="&datePickerId;.weekday_bar">
+	        <pack:hlaycell width="25px">
+	        </pack:hlaycell>
+	        <pack:hlaycell>
+	            <base:label
+	            		id="&datePickerId;.weekday_cell"
+	            		halign="center" />
+	        </pack:hlaycell>
+		  	
+		  	</pack:hlayout>
+	    </pack:vlaycell>
+	    
+	    <pack:vlaycell>
+	      <pack:hlayout>
+	          
+		      <pack:hlaycell width="25px">
+		  			<base:label
+		  			    id="&datePickerId;.week_cell"
+		  			    halign="center"/>
+		      </pack:hlaycell>
+		      
+		      <pack:hlaycell>
+		        <pack:area id="&datePickerId;.month_area">
+		  			<base:label
+		  					id="&datePickerId;.day_cell"
+		  					halign="center"/>
+		  			</pack:area>		          
+		      </pack:hlaycell>
+		      
+		    </pack:hlayout>
+	    </pack:vlaycell>	
+    </pack:vlayout>
+	</schedule:datepicker>
+</base:htmlview>

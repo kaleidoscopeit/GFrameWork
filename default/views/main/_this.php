@@ -3,21 +3,32 @@
 //?webget.table.onflush
 	
 $this->result_set=array(
-	 array('name'=>'base:label',
-  	     'description'=>'Framework Structure',
+   array('description'=>'GENERAL',
+         'type'=>'caption'),
+         
+	 array('description'=>'Framework Structure',
+         'type'=>'item',
   	     'view'=>'framework_structure'),
   	     
-	 array('name'=>'base:image',
-	       'description'=>'Installation',
+	 array('description'=>'Installation',
+         'type'=>'item',
 	       'view'=>'installation'),
 	       
-	 array('name'=>'base:button',
-	       'description'=>'Boxing',
+	 array('description'=>'Boxing',
+         'type'=>'item',
 	       'view'=>'boxing'),
 	       
-	 array('name'=>'base:button',
-	       'description'=>'Codesnippet',
-	       'view'=>'codesnippet'),
+   array('description'=>'WEBGETS LIBRARY',
+         'type'=>'caption'),
+
+   array('description'=>'schedule:datepicker',
+         'type'=>'item',
+         'view'=>'webgets/schedule/datepicker'),         
+
+
+   array('description'=>'Codesnippet',
+         'type'=>'item',
+         'view'=>'codesnippet'),         
 );
 
 //?webget.tablecell.onflush

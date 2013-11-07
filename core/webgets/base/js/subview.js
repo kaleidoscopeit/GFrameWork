@@ -30,7 +30,7 @@ $_.js.reg['0070'] = {
              .split('\n\n');
   
         n.incss(c[0]);
-        
+
         try {
           n.innerHTML = x.responseText;
 
@@ -73,7 +73,7 @@ $_.js.reg['0070'] = {
 
     n.injs = function(u) {
       u=u.split('\n');
-      for(var i in u){
+       for(var i in u){
         i=u[i];
         $$.importRawJs(i);
       }

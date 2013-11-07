@@ -28,7 +28,7 @@ $_.js.reg['0400']={
         }
         nn.caption(n.sdays[col]);
       }
-            
+       
       var row=0,fmwk=this.getMonthFirstWeek(),act=0,
           bclass=n.day_cell.getAttribute('dyn_class');
       while(row<6) {    

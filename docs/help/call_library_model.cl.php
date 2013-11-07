@@ -9,7 +9,7 @@ $rpc = array(array(
 
 '[argument_name]' => array (
   'type'     => '[variable_type]',
-  'required' => [true or false],
+  'required' => (true||false),
   'origin'   => array (
       'variable:$_STDIN["<<<argument_name>>>"]',
       '[origin_type]:[origin_code]',
