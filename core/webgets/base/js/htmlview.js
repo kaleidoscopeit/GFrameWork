@@ -17,7 +17,7 @@ var $_={
     else if(typeof w.id == "string") id = w.id;
 
     //if(id)if(window[id] != w)window[id] = w;
-    if(id)eval("if(typeof window."+id+" == 'undefined') window."+id+"=w;");
+    if(id)eval("window."+id+"=w;");
     if(w.wid) {
       p.childWebgets.push(w);
       w.parentWebget=p;      

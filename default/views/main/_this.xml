@@ -95,10 +95,17 @@
         <pack:hlaycell style="border-left:2px groove grey" >
           <pack:vlayout>
          
-            <pack:vlaycell height="50px" style="background-color:#6A6A6A;">
+            <pack:vlaycell
+                height="50px"
+                style="background-color:#6A6A6A;">
               <pack:stack
-                id="title_stack"
-                classfx="ttstack">
+                	id="title_stack"
+                	classfx="ttstack"
+                	preset="1">
+
+								<pack:stackelm>
+                </pack:stackelm>
+                
                 <pack:stackelm>
                   <base:label
                     caption="Framework Structure"
@@ -106,6 +113,7 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
+                
                 <pack:stackelm>
                   <base:label
                     caption="Installation"
@@ -113,6 +121,7 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
+                
                 <pack:stackelm>
                   <base:label
                     caption="Boxing"
@@ -120,18 +129,35 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
+
+                <pack:stackelm>
+                </pack:stackelm>
+                
                 <pack:stackelm>
                   <base:label
-                    caption="Codesnippet"
+                    caption="schedule:datepicker"
                     halign="center"
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
+
+                <pack:stackelm>
+                  <base:label
+                    caption="base:codesnippet"
+                    halign="center"
+                    valign="middle"
+                    class="text-shadowed font20 italic"/>
+                </pack:stackelm>
+                
+                
               </pack:stack>
             </pack:vlaycell>
             
             <pack:vlaycell>
-              <base:subview id="mainpane" view="framework_structure" />
+              <base:subview
+                  id="mainpane"
+                  view="general/framework_structure"
+                  style="overflow:auto;"/>
             </pack:vlaycell>
 
           </pack:vlayout>            
@@ -140,7 +166,7 @@
       </pack:hlayout>                  
     </pack:vlaycell>
     
-    <pack:vlaycell height="10px" />
+    <pack:vlaycell height="20px" />
   </pack:vlayout>
   
 
@@ -156,7 +182,7 @@
     class="fade"
     tip="view source"
     onclick="subv_cont.goto('view_source&amp;source=main');$_.removeClass(view_source, 'diag_hidden');" />
-    
+ 
     
 <!--
 ********************************************************************************
@@ -190,8 +216,8 @@
 
         <pack:vlaycell height="5px"/>
 
-        <pack:vlaycell class="caption-item round-box">
-          <base:subview id="subv_cont" view="view_source" />
+        <pack:vlaycell class="caption-item round-box" >
+          <base:subview id="subv_cont" view="view_source"/>
         </pack:vlaycell> 
 
         <pack:vlaycell height="5px"/>

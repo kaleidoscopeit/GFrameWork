@@ -92,6 +92,7 @@ $$.js.reg['0130']={
   }},
   
   fs:function(n){
+
     n.show(n.preset|0);
     n.trans_end();}
 };

@@ -1,0 +1,32 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?> :text:::ID",
+		3:"<?php echo $lc_msg['DSN'];?>:dialog:c=DATABASE&l=SOCKET&o=srcsel::DSN",
+		4:"<?php echo $lc_msg['TABLE'];?>:dialog:c=DATABASE&l=SOCKET&o=tblsel::TABLE",
+		5:"<?php echo $lc_msg['FIELDS'];?>:dialog:c=DATABASE&l=SOCKET&o=fldsel::FIELDS",
+		6:"<?php echo $lc_msg['KEYFIELD'];?>:text:::KEYFIELD",
+		7:"<?php echo $lc_msg['FILTER'];?>:text:::FILTER",
+		8:"<?php echo $lc_msg['JOIN'];?>:text:::JOIN",
+		9:"<?php echo $lc_msg['ORDERBY'];?>:text:::ORDERBY",
+		10:"<?php echo $lc_msg['GROUPBY'];?>:text:::GROUPBY",
+		12:"<?php echo $lc_msg['GETQTY'];?>:spin::1,:GETQTY",
+		13:"<?php echo $lc_msg['RSPROTECT'];?>:bool:::RSPROTECT",
+		14:"<?php echo $lc_msg['RSTRACE'];?>:bool:::RSTRACE",
+		50:"<?php echo $lc_msg['DEBUG'];?>:bool:::DEBUG",
+		51:"<?php echo $lc_msg['CANREAD'];?>:bool:::CANREAD",
+		52:"<?php echo $lc_msg['CANAPPEND'];?>:bool:::CANAPPEND",
+		53:"<?php echo $lc_msg['CANUPDATE'];?>:bool:::CANUPDATE",
+		54:"<?php echo $lc_msg['CANDELETE'];?>:bool:::CANDELETE",
+		55:"<?php echo $lc_msg['ACCESSMODE'];?>:text:::ACCESSMODE"
+	},
+	events:{
+		1:"<?php echo $lc_msg['ONCLIENTFLUSH'];?>:jscode:ONCLIENTFLUSH",
+		2:"<?php echo $lc_msg['ONAPPEND'];?>:jscode:ONBEFOREAPPEND",
+		3:"<?php echo $lc_msg['ONUPDATE'];?>:jscode:ONBEFOREUPDATE",
+		4:"<?php echo $lc_msg['ONAFTERGET'];?>:jscode:ONAFTERGET",
+		5:"<?php echo $lc_msg['ONDATAFAIL'];?>:jscode:ONDATAFAIL",		
+		50:"<?php echo $lc_msg['ONDECLARECLASS'];?>:phpcode:ONDECLARECLASS",
+		51:"<?php echo $lc_msg['ONBEFOREFLUSH'];?>:phpcode:ONBEFOREFLUSH",
+		52:"<?php echo $lc_msg['ONAFTERFLUSH'];?>:phpcode:ONAFTERFLUSH"
+	}
+})

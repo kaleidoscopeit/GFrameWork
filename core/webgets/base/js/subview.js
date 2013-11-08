@@ -29,7 +29,7 @@ $_.js.reg['0070'] = {
              .replace('\n-->', '')
              .split('\n\n');
   
-        n.incss(c[0]);
+        if(typeof(c[0])!='undefined')n.incss(c[0]);
 
         try {
           n.innerHTML = x.responseText;
@@ -40,7 +40,7 @@ $_.js.reg['0070'] = {
         }
 
 
-        n.injs(c[1]);
+        if(typeof(c[1])!='undefined')n.injs(c[1]);
 
         $$.flushBinds(n.id);
         $$.webgets[n.id]=[];
@@ -73,7 +73,7 @@ $_.js.reg['0070'] = {
 
     n.injs = function(u) {
       u=u.split('\n');
-       for(var i in u){
+      for(var i in u){
         i=u[i];
         $$.importRawJs(i);
       }

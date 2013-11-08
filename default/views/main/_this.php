@@ -8,7 +8,7 @@ $this->result_set=array(
          
 	 array('description'=>'Framework Structure',
          'type'=>'item',
-  	     'view'=>'framework_structure'),
+  	     'view'=>'general/framework_structure'),
   	     
 	 array('description'=>'Installation',
          'type'=>'item',
@@ -30,8 +30,4 @@ $this->result_set=array(
          'type'=>'item',
          'view'=>'codesnippet'),         
 );
-
-//?webget.tablecell.onflush
-
-  $this->onclick=""	
 ?>

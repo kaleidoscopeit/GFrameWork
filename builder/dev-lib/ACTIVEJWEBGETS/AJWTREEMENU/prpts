@@ -1,0 +1,20 @@
+({
+	properties:{
+		1:"Id:text:::ID",
+		4:"Stile CSS:text:::STYLE",
+		50:"Sinistra (X):spin::0,x:GEOMETRY[0]",
+		51:"Alto (Y):spin::0,x:GEOMETRY[1]",
+		52:"Larghezza (W):spin::0,x:GEOMETRY[2]",
+		53:"Altezza (H):spin::0,x:GEOMETRY[3]"
+	},
+	events:{
+		1:"Su mouse sopra:jscode:ONMOUSEOVER",
+		2:"Su mouse fuori:jscode:ONMOUSEOUT",
+		3:"Su click:jscode:ONCLICK",
+		4:"Su premuto:jscode:ONMOUSEDOWN",
+		5:"Su rilasciato:jscode:ONMOUSEUP",
+		50:"Su dichiarazione:phpcode:ONDECLARECLASS",
+		51:"Su pre-disegno:phpcode:ONBEFOREFLUSH",
+		52:"Su post-disegno:phpcode:ONAFTERFLUSH"
+	}
+})

@@ -1,0 +1,35 @@
+({
+	properties:{
+		1:"Id:text:::ID",
+		3:"Nome sorgente:text:::DSN",
+		4:"Tabella princ.:text:::TABLE",
+		5:"Scelta campi:text:::FIELDS",
+		6:"Campo chiave:text:::KEYFIELD",
+		7:"Filtro:text:::FILTER",
+		8:"Ordina per:text:::ORDERBY",
+		9:"Raggruppa:text:::GROUPBY",
+		9:"join destra:text:::JOIN",				
+		11:"Limita qta':text:::GETQTY",
+		50:"Modo di accesso:text:::ACCESSMODE",
+		51:"Puo' leggere:bool:::CANREAD",
+		52:"Puo' aggiungere:bool:::CANAPPEND",
+		53:"Puo' aggiornare:bool:::CANUPDATE",
+		54:"Puo' cancellare:bool:::CANDELETE",
+		55:"Puo' copiare:bool:::CANCOPY",
+		56:"Prot Records:bool:::RSPROTECT",
+		57:"Tracia modifiche:bool:::RSTRACE",
+		59:"Modo debug:bool:::DEBUG",
+	},
+	events:{
+		1:"Prima di aggiunta:phpcode:ONBEFOREAPPEND",
+		2:"Prima di aggiorna:phpcode:ONBEFOREUPDATE",
+		2:"Prima di copiare:phpcode:ONBEFORECOPY",
+		3:"Su recupero dati:phpcode:ONAFTERGET",
+		4:"Su errore dati:phpcode:ONDATAFAIL",
+		2:"Su query pronta:phpcode:ONQUERYREADY",
+		50:"Su dichiarazione:phpcode:ONDECLARECLASS",
+		51:"Su pre-disegno:phpcode:ONBEFOREFLUSH",
+		52:"Su post-disegno:phpcode:ONAFTERFLUSH",
+		53:"Su disegno:phpcode:ONFLUSH"
+	}
+})

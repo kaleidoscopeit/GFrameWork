@@ -1,0 +1,24 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?>:text:::ID",
+		2:"<?php echo $lc_msg['DSN'];?>:text:::DSN",
+		4:"<?php echo $lc_msg['DEBUG'];?>:bool:::DEBUG",
+		30:"<?php echo $lc_msg['CANREAD'];?>:bool:::CANREAD",
+		31:"<?php echo $lc_msg['CANAPPEND'];?>:bool:::CANAPPEND",
+		32:"<?php echo $lc_msg['CANUPDATE'];?>:bool:::CANUPDATE",
+		33:"<?php echo $lc_msg['CANDELETE'];?>:bool:::CANDELETE",
+		50:"<?php echo $lc_msg['GEOMETRY0'];?>:spin::0,x:GEOMETRY[0]",
+		51:"<?php echo $lc_msg['GEOMETRY1'];?>:spin::0,x:GEOMETRY[1]",
+		52:"<?php echo $lc_msg['GEOMETRY2'];?>:spin::0,x:GEOMETRY[2]",
+		53:"<?php echo $lc_msg['GEOMETRY3'];?>:spin::0,x:GEOMETRY[3]"
+	},
+	events:{
+		1:"<?php echo $lc_msg['ONDATAVERIFIED'];?>:phpcode:ONDATAVERIFIED",
+		2:"<?php echo $lc_msg['ONDATASENT'];?>:phpcode:ONDATASENT",		
+		3:"<?php echo $lc_msg['ONSENTFAIL'];?>:phpcode:ONSENTFAIL",
+		5:"<?php echo $lc_msg['ONLASTRECORD'];?>:phpcode:ONLASTRECORD",
+		6:"<?php echo $lc_msg['ONDATAERROR'];?>:phpcode:ONDATAERROR",
+		7:"<?php echo $lc_msg['ONDATAOK'];?>:phpcode:ONDATAOK",
+		50:"<?php echo $lc_msg['ONDECLARECLASS'];?>:phpcode:ONDECLARECLASS",
+	}
+})

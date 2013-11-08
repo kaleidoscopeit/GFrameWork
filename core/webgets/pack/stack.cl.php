@@ -14,7 +14,8 @@ class pack_stack
 	function __flush(&$_)
 	{		
 		if(!isset($this->preset)) $this->preset = 1;
-
+    $this->attributes['preset'] = $this->preset;
+    
     /* builds syles */
     $this->attributes['class'] = 'w0130 ' 
       . $_->ROOT->boxing($this->boxing)

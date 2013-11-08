@@ -1,0 +1,35 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?>:text:::ID",
+		3:"<?php echo $lc_msg['DSN'];?>:dialog:c=DATABASE&l=DSMSSQL&o=srcsel::DSN",
+		4:"<?php echo $lc_msg['TABLE'];?>:dialog:c=DATABASE&l=DSMSSQL&o=tblsel::TABLE",
+		5:"<?php echo $lc_msg['FIELDS'];?>:dialog:c=DATABASE&l=DSMSSQL&o=fldsel::FIELDS",
+		6:"<?php echo $lc_msg['KEYFIELD'];?>:text:::KEYFIELD",
+		7:"<?php echo $lc_msg['FILTER'];?>:text:::FILTER",
+		8:"<?php echo $lc_msg['ORDERBY'];?>:text:::ORDERBY",
+		9:"<?php echo $lc_msg['GROUPBY'];?>:text:::GROUPBY",
+		10:"<?php echo $lc_msg['JOIN'];?>:text:::JOIN",				
+		11:"<?php echo $lc_msg['GETQTY'];?>:spin::max,0,:GETQTY",
+		50:"<?php echo $lc_msg['ACCESSMODE'];?>:text:::ACCESSMODE",
+		51:"<?php echo $lc_msg['CANREAD'];?>:bool:::CANREAD",
+		52:"<?php echo $lc_msg['CANAPPEND'];?>:bool:::CANAPPEND",
+		53:"<?php echo $lc_msg['CANUPDATE'];?>:bool:::CANUPDATE",
+		54:"<?php echo $lc_msg['CANDELETE'];?>:bool:::CANDELETE",
+		55:"<?php echo $lc_msg['CANCOPY'];?>:bool:::CANCOPY",
+		56:"<?php echo $lc_msg['RSPROTECT'];?>:bool:::RSPROTECT",
+		57:"<?php echo $lc_msg['RSTRACE'];?>:bool:::RSTRACE",
+		59:"<?php echo $lc_msg['DEBUG'];?>:bool:::DEBUG"
+	},
+	events:{
+		1:"<?php echo $lc_msg['ONGET'];?>:phpcode:ONGET",
+		2:"<?php echo $lc_msg['ONAFTERGET'];?>:phpcode:ONAFTERGET",
+		3:"<?php echo $lc_msg['ONAPPEND'];?>:phpcode:ONAPPEND",
+		4:"<?php echo $lc_msg['ONAFTERAPPEND'];?>:phpcode:ONAFTERAPPEND",
+		5:"<?php echo $lc_msg['ONUPDATE'];?>:phpcode:ONUPDATE",		
+		7:"<?php echo $lc_msg['ONDELETE'];?>:phpcode:ONDELETE",
+		8:"<?php echo $lc_msg['ONCOPY'];?>:phpcode:ONCOPY",
+		9:"<?php echo $lc_msg['ONDATAFAIL'];?>:phpcode:ONDATAFAIL",
+		10:"<?php echo $lc_msg['ONQUERYREADY'];?>:phpcode:ONQUERYREADY",
+		11:"<?php echo $lc_msg['ONDECLARECLASS'];?>:phpcode:ONDECLARECLASS"
+	}
+})

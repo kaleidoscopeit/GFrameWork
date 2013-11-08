@@ -1,0 +1,23 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?>:text:::ID",
+		4:"<?php echo $lc_msg['STYLE'];?> CSS:text:::STYLE",
+		5:"<?php echo $lc_msg['SRC'];?>:text:::SRC",
+		10:"<?php echo $lc_msg['ENABLEPARENT'];?>:bool:::ENABLEPARENT",
+		50:"<?php echo $lc_msg['GEOMETRY0'];?>:spin::0,x:GEOMETRY[0]",
+		51:"<?php echo $lc_msg['GEOMETRY1'];?>:spin::0,x:GEOMETRY[1]",
+		52:"<?php echo $lc_msg['GEOMETRY2'];?>:spin::0,x:GEOMETRY[2]",
+		53:"<?php echo $lc_msg['GEOMETRY3'];?>:spin::0,x:GEOMETRY[3]"
+	},
+	events:{
+		1:"<?php echo $lc_msg['ONLOAD'];?>:jscode:ONLOAD",
+		2:"<?php echo $lc_msg['ONCLICK'];?>:jscode:ONCLICK",
+		3:"<?php echo $lc_msg['ONMOUSEOVER'];?>:jscode:ONMOUSEOVER",
+		4:"<?php echo $lc_msg['ONMOUSEOUT'];?>:jscode:ONMOUSEOUT",
+		5:"<?php echo $lc_msg['ONMOUSEDOWN'];?>:jscode:ONMOUSEDOWN",
+		6:"<?php echo $lc_msg['ONMOUSEUP'];?>:jscode:ONMOUSEUP",
+		50:"<?php echo $lc_msg['ONDECLARECLASS'];?>:phpcode:ONDECLARECLASS",
+		51:"<?php echo $lc_msg['ONBEFOREFLUSH'];?>:phpcode:ONBEFOREFLUSH",
+		52:"<?php echo $lc_msg['ONAFTERFLUSH'];?>:phpcode:ONAFTERFLUSH"
+	}
+})

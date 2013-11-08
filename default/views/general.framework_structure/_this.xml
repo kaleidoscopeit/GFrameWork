@@ -1,0 +1,130 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+<base:htmlview id="gfwkstructure" style="padding:10px">
+	<pack:vlayout naked="true">
+	    
+		<pack:vlaycell height="450">
+			<base:image
+			    src="images/gfwk-digram.png"
+			    boxing="512px,426px"/>
+		</pack:vlaycell>
+		
+		<pack:vlaycell height="30">
+			<base:label
+				class="font16 bold"
+				caption="Engine :"/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="70">
+			<base:label
+				class="font12"
+				valign="top"
+				caption="Act like an HUB for client calls. Is responsible for the client authentication and authorization and will route the program flow through the right way depending by the type of client request. The type of calls, Engine can handle, is extensible by developing new plugins."/>
+		</pack:vlaycell>
+		
+		<pack:vlaycell height="30">
+			<base:label
+				class="font16 bold"
+				caption="Libraries :"/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="70">
+			<base:label
+				class="font12"
+				valign="top"
+				caption="Act like an HUB for client calls. Is responsible for the client authentication and authorization and will route the program flow through the right way depending by the type of client request. The type of calls, Engine can handle, is extensible by developing new plugins."/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="30">
+			<base:label
+				class="font16 bold"
+				caption="Applications :"/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="80">
+			<base:label
+				class="font12"
+				valign="top"
+				caption="Every installation can handle an infinite number of applications. Every application has it’s own private session data, despite in theory a client session can access to all session data. Work is under way in order to implement a formal mechanism for inter applications data exchange."/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="30">
+			<base:label
+				class="font16 bold"
+				caption="Applications are made by the following components :"/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="120">
+			<base:label
+				class="font12"
+				valign="top"
+				caption=". Views written in XML. Each view has it own ‘code file’ and eventually a Style Sheet file.&lt;br&gt;
+					. Local RPC Calls&lt;br&gt;
+					. Local Hotpluggable Javascrips functions&lt;br&gt;
+					. The  G-Conf registry&lt;br&gt;&lt;br&gt;
+					All communications are carried through the http o https protocol and are regulated by a complex authentication/authorization system with plugin for various protocols."/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="30">
+			<base:label
+				class="font16 bold"
+				caption="Web presentation :"/>
+		</pack:vlaycell>
+		
+		<pack:vlaycell height="70">
+			<base:label
+				class="font12"
+				valign="top"
+				caption="Webgets are responsible for build the views. Views can be in HTML, XUL, PDF,  or a custom format(mime). A Core Developer can made an Engine plugin and a number of webget in order to build it’s own custom ‘view’ output."/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="30">
+			<base:label
+				class="font16 bold"
+				caption="Web dynamism :"/>
+		</pack:vlaycell>
+		
+		<pack:vlaycell height="130">
+			<base:label
+				class="font12"
+				valign="top"
+				caption="Running HTML/Javascript views can dynamically execute RPC (Remote Procedure Calls) written in PHP residing on the remote server. It’s an AJAX modern mechanism built  in order to avoid the hassle of the direct XHR handling. RPC’s are subjcted to the authentication/authorization system based on G-Conf.
+					&lt;br&gt;&lt;br&gt;Hotpluggable Javascript functions are stubs of code not sent to the client during the client request. This mechanism let the Application Developer to dynamically include Javascript functions when they are really needed"/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="40">
+			<base:label
+				class="font16 bold"
+				caption="Realtime Interaction : (not yet implemented)"/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="50">
+			<base:label
+				class="font16 bold"
+				caption="G-BUS let Web application and their users to reach an extreme interaction level :"/>
+		</pack:vlaycell>
+				
+		<pack:vlaycell height="110">
+			<base:label
+				class="font12"
+				valign="top"
+				caption=". views can interact each other whether they are in the same client or not&lt;br&gt;
+					. server can push information to the clients (a single client , a group or all)&lt;br&gt;
+					. webgets can modify their behavior, e.g. by changing their content or i.e their theme at runtime&lt;br&gt;
+					. on line collaborative activities (like Google Drive)&lt;br&gt;
+					. javascript games, live chat and so on…"/>
+		</pack:vlaycell>
+
+		<pack:vlaycell height="30">
+			<base:label
+				class="font16 bold"
+				caption="Others bindings : (not yet implemented)"/>
+		</pack:vlaycell>
+		
+		<pack:vlaycell height="50">
+			<base:label
+				class="font12"
+				valign="top"
+				caption="Works are in progress in order to build linking libraries for the widespread  programming languages and platforms like Python and Android"/>
+		</pack:vlaycell>
+	</pack:vlayout>
+</base:htmlview>

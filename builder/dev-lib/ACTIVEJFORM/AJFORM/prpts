@@ -1,0 +1,27 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?>:text:::ID",
+		2:"<?php echo $lc_msg['DSN'];?>:text:::DSN",
+		3:"<?php echo $lc_msg['FILTER'];?>:text:::FILTER",
+		4:"<?php echo $lc_msg['DEBUG'];?>:select:<?php echo $lc_msg['DEBUG_1'];?>:0,1,2:DEBUG",
+		30:"<?php echo $lc_msg['CANREAD'];?>:bool:::CANREAD",
+		31:"<?php echo $lc_msg['CANAPPEND'];?>:bool:::CANAPPEND",
+		32:"<?php echo $lc_msg['CANUPDATE'];?>:bool:::CANUPDATE",
+		33:"<?php echo $lc_msg['CANDELETE'];?>:bool:::CANDELETE",
+	},
+	events:{
+		1:"<?php echo $lc_msg['ONCLIENTFLUSH'];?>:jscode:ONCLIENTFLUSH",
+		3:"<?php echo $lc_msg['ONSUBMIT'];?>:jscode:ONSUBMIT",
+		4:"<?php echo $lc_msg['ONDATAFAIL'];?>:jscode:ONDATAFAIL",
+		5:"<?php echo $lc_msg['ONDATASENT'];?>:jscode:ONDATASENT",
+		6:"<?php echo $lc_msg['ONDATAOK'];?>:jscode:ONDATAOK",
+		7:"<?php echo $lc_msg['ONUPDATE'];?>:jscode:ONUPDATE",
+		8:"<?php echo $lc_msg['ONAPPEND'];?>:jscode:ONAPPEND",
+		9:"<?php echo $lc_msg['ONVALIDERR'];?>:jscode:ONVALIDERR",
+		10:"<?php echo $lc_msg['ONFIRST'];?>:jscode:ONFIRST",
+		11:"<?php echo $lc_msg['ONLAST'];?>:jscode:ONLAST",		
+		50:"<?php echo $lc_msg['ONDECLARECLASS'];?>:phpcode:ONDECLARECLASS",
+		51:"<?php echo $lc_msg['ONBEFOREFLUSH'];?>:phpcode:ONBEFOREFLUSH",
+		52:"<?php echo $lc_msg['ONAFTERFLUSH'];?>:phpcode:ONAFTERFLUSH"
+	}
+})

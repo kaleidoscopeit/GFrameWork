@@ -1,0 +1,36 @@
+({
+	properties:{
+		1:"Id:text:::ID",
+		2:"Canale dati:text:::DSN",
+		3:"Campi coll.:text:::FIELDS",
+		4:"Etichette.:text:::CHLABEL",
+		5:"Larghezze:text:::CHWIDTH",
+		10:"Stile CSS:text:::STYLE",
+		11:"Stile Int col:text:::CHSTYLE",
+		12:"Stile Int Righe:text:::RHSTYLE",
+		13:"Largh Int Righe:text:::RHWIDTH",
+		14:"Altezza Righe:text:::ROWHEIGHT",
+		15:"Stile campi norm:text:::FLDSTYLE",
+		16:"Stile campi over:text:::OVERSTYLE",
+		17:"Stile campi select:text:::SELECTSTYLE",
+		18:"Modo evidenzizione:text:::OVERMODE",
+		19:"Abilita messaggi:bool:::VERBOSE",
+		51:"Sinistra (X):spin::0,x:GEOMETRY[0]",
+		52:"Alto (Y):spin::0,x:GEOMETRY[1]",
+		53:"Larghezza (W):spin::0,x:GEOMETRY[2]",
+		54:"Altezza (H):spin::0,x:GEOMETRY[3]",
+		55:"Decorazione:text:::THEME",
+	},
+	events:{
+		1:"Su dati corretti:jscode:ONDATAOK",
+		2:"Su mouse sopra:jscode:ONMOUSEOVER",
+		3:"Su mouse fuori:jscode:ONMOUSEOUT",
+		4:"Su click:jscode:ONCLICK",
+		5:"Su doppio click:jscode:ONDBLCLICK",
+		6:"Su premuto:jscode:ONMOUSEDOWN",
+		7:"Su rilasciato:jscode:ONMOUSEUP",
+		50:"Su dichiarazione:phpcode:ONDECLARECLASS",
+		51:"Su pre-disegno:phpcode:ONBEFOREFLUSH",
+		52:"Su post-disegno:phpcode:ONAFTERFLUSH"
+	}
+})

@@ -33,25 +33,21 @@
 {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
   color:white;
-  font-family: sans;
 }
 
+.font12 { font: 12px sans; }
+.font16 { font: 16px sans; }
+.font20 { font: 20px sans; }
+.italic { font-style:italic; }
+.bold   { font-weight:bold; }
 
 
-.font20
-{
-  font-size: 20px;
-}
 
-.italic
-{
-  font-style:italic;
-}
 
 .menuitem
 {
   background: linear-gradient(to bottom, #292929 0px, #252525 100%)
-    repeat scroll 0 0 #272727;
+  repeat scroll 0 0 #272727;
   border-bottom: 1px solid #1B1B1B;
   border-top: 1px solid #323232;
   color:#999999;
@@ -78,4 +74,14 @@
 {
   background: linear-gradient(to bottom, #292929 0px, #252525 100%)
     repeat scroll 0 0 #272727;
+}
+
+body{
+scrollbar-face-color: #000000;
+scrollbar-shadow-color: #2D2C4D;
+scrollbar-highlight-color:#7D7E94;
+scrollbar-3dlight-color: #7D7E94;
+scrollbar-darkshadow-color: #2D2C4D;
+scrollbar-track-color: #7D7E94;
+scrollbar-arrow-color: #C1C1D1;
 }

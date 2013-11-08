@@ -1,0 +1,28 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?>:text:::ID",
+		4:"<?php echo $lc_msg['FIELD'];?>:text:::FIELD",
+		5:"<?php echo $lc_msg['DESTDIR'];?>:text:::DESTDIR",
+		6:"<?php echo $lc_msg['TEMPDIR'];?>:text:::TEMPDIR",
+		7:"<?php echo $lc_msg['DELETEOLDS'];?>:bool:::DELETEOLDS",
+		8:"<?php echo $lc_msg['DEBUG'];?>:bool:::DEBUG",
+		9:"<?php echo $lc_msg['CUSTOMNAME'];?>:text:::CUSTOMNAME",
+		49:"<?php echo $lc_msg['TIP'];?>:text:::TIP",
+		50:"<?php echo $lc_msg['GEOMETRY0'];?>:spin::0,x:GEOMETRY[0]",
+		51:"<?php echo $lc_msg['GEOMETRY1'];?>:spin::0,x:GEOMETRY[1]",
+		53:"<?php echo $lc_msg['GEOMETRY3'];?>:spin::0,x:GEOMETRY[3]"
+	},
+	events:{
+		0:"<?php echo $lc_msg['ONVALIDATION'];?>:phpcode:ONVALIDATION",
+		1:"<?php echo $lc_msg['ONWRONGFILENAME'];?>:phpcode:ONWRONGFILENAME",
+		2:"<?php echo $lc_msg['ONMOUSEOVER'];?>:jscode:ONMOUSEOVER",
+		3:"<?php echo $lc_msg['ONMOUSEOUT'];?>:jscode:ONMOUSEOUT",
+		4:"<?php echo $lc_msg['ONCLICK'];?>:jscode:ONCLICK",
+		5:"<?php echo $lc_msg['ONMOUSEDOWN'];?>:jscode:ONMOUSEDOWN",
+		6:"<?php echo $lc_msg['ONMOUSEUP'];?>:jscode:ONMOUSEUP",
+		10:"<?php echo $lc_msg['ONFOCUS'];?>:jscode:ONFOCUS",
+		11:"<?php echo $lc_msg['ONBLUR'];?>:jscode:ONBLUR",
+		12:"<?php echo $lc_msg['ONCHANGE'];?>:jscode:ONCHANGE",
+		50:"<?php echo $lc_msg['ONDECLARECLASS'];?>:phpcode:ONDECLARECLASS"
+	}
+})

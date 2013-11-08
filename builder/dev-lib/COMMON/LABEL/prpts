@@ -1,0 +1,23 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?>:text:::ID",
+		2:"<?php echo $lc_msg['CAPTION'];?>:text:::CAPTION",
+		3:"<?php echo $lc_msg['NOWRAP'];?>:bool:::NOWRAP",
+		4:"<?php echo $lc_msg['STYLE'];?>:text:::STYLE",
+		5:"<?php echo $lc_msg['CSS'];?>:text:::CSS",
+		50:"<?php echo $lc_msg['GEOMETRY0'];?>:spin::0,x:GEOMETRY[0]",
+		51:"<?php echo $lc_msg['GEOMETRY1'];?>:spin::0,x:GEOMETRY[1]",
+		52:"<?php echo $lc_msg['GEOMETRY2'];?>:spin::0,x:GEOMETRY[2]",
+		53:"<?php echo $lc_msg['GEOMETRY3'];?>:spin::0,x:GEOMETRY[3]"
+	},
+	events:{
+		1:"<?php echo $lc_msg['ONMOUSEOVER'];?>:jscode:ONMOUSEOVER",
+		2:"<?php echo $lc_msg['ONMOUSEOUT'];?>:jscode:ONMOUSEOUT",
+		3:"<?php echo $lc_msg['ONCLICK'];?>:jscode:ONCLICK",
+		4:"<?php echo $lc_msg['ONMOUSEDOWN'];?>:jscode:ONMOUSEDOWN",
+		5:"<?php echo $lc_msg['ONMOUSEUP'];?>:jscode:ONMOUSEUP",
+		50:"<?php echo $lc_msg['ONDECLARECLASS'];?>:phpcode:ONDECLARECLASS",
+		51:"<?php echo $lc_msg['ONBEFOREFLUSH'];?>:phpcode:ONBEFOREFLUSH",
+		52:"<?php echo $lc_msg['ONAFTERFLUSH'];?>:phpcode:ONAFTERFLUSH"
+	}
+})

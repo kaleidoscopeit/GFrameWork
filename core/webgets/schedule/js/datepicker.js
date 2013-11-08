@@ -16,11 +16,13 @@ $_.js.reg['0400']={
 
       /* draw week cells */
       for(var col in n.sdays){
-        var nn=n.weekday_cell.cloneNode(true),
-            pp=n.weekday_cell.parentNode;
+        var nn=n.weekday_cell.cloneNode(true);
+            nn.pp=n.weekday_cell.parentNode;
         nn.wid=nn.getAttribute('wid');
+        nn.pp.appendChild(nn);
+
         if($$._wAttachJs(nn)) $$.js.reg[nn.wid].fs(nn);
-        pp.appendChild(nn);
+        
         with(nn.style){
           width  = (hdiv-vspc)+"%";
           left   = (hdiv*col+hspc/2)+"%";
@@ -102,20 +104,11 @@ $_.js.reg['0400']={
 	}},
 	
 	fs:function(n){with(n){
-		/* register sub webgets */
-    var subw = [
-      'week_cell',
-      'day_cell',
-      'weekday_cell'
-    ];
-      
-    subw.map(function(wbg){
-        if(typeof window[n.id][wbg]!='undefined')n[wbg]=window[n.id][wbg];
+		/* hide sub model webgets */
+    ['week_cell','day_cell','weekday_cell'].map(function(wbg){
         n[wbg].style.visibility="hidden";
     });
 
-    
-       		
     n.refresh();
 			
       

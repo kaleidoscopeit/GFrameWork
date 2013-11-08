@@ -1,0 +1,28 @@
+({
+	properties:{
+		1:"<?php echo $lc_msg['ID'];?>Id:text:::ID",
+		2:"<?php echo $lc_msg['STYLE'];?>Stile CSS:text:::STYLE",
+		3:"<?php echo $lc_msg['BARSTYLE'];?>Stile barra:text:::BARSTYLE",
+		4:"<?php echo $lc_msg['PROGRESS'];?>Avanz. predef.(%):spin::0,x:PROGRESS",
+		5:"<?php echo $lc_msg['VERTICAL'];?>Orient. verticale:bool:::VERTICAL",
+		6:"<?php echo $lc_msg['REVERSE'];?>Direz. invertita:bool:::REVERSE",
+		7:"<?php echo $lc_msg['SHOWLABEL'];?>Mostra etichetta.:bool:::SHOWLABEL",
+		8:"<?php echo $lc_msg['LABELTOP'];?>Distanza sup.:spin::0,x:LABELTOP",
+		9:"<?php echo $lc_msg['LABELSTYLE'];?>Style etichetta:text:::LABELSTYLE",
+		49:"<?php echo $lc_msg['TIP'];?>Suggerimento:text:::TIP",
+		50:"<?php echo $lc_msg['GEOMETRY0'];?>Sinistra (X):spin::0,x:GEOMETRY[0]",
+		51:"<?php echo $lc_msg['GEOMETRY1'];?>Alto (Y):spin::0,x:GEOMETRY[1]",
+		52:"<?php echo $lc_msg['GEOMETRY2'];?>Larghezza (W):spin::0,x:GEOMETRY[2]",
+		53:"<?php echo $lc_msg['GEOMETRY3'];?>Altezza (H):spin::0,x:GEOMETRY[3]"
+	},
+	events:{
+		1:"<?php echo $lc_msg['ONMOUSEOVER'];?>Su mouse sopra:jscode:ONMOUSEOVER",
+		2:"<?php echo $lc_msg['ONMOUSEOUT'];?>Su mouse fuori:jscode:ONMOUSEOUT",
+		3:"<?php echo $lc_msg['ONCLICK'];?>Su click:jscode:ONCLICK",
+		4:"<?php echo $lc_msg['ONMOUSEDOWN'];?>Su premuto:jscode:ONMOUSEDOWN",
+		5:"<?php echo $lc_msg['ONMOUSEUP'];?>Su rilasciato:jscode:ONMOUSEUP",
+		50:"<?php echo $lc_msg['ONDECLARECLASS'];?>Su dichiarazione:phpcode:ONDECLARECLASS",
+		51:"<?php echo $lc_msg['ONBEFOREFLUSH'];?>Su pre-disegno:phpcode:ONBEFOREFLUSH",
+		52:"<?php echo $lc_msg['ONAFTERFLUSH'];?>Su post-disegno:phpcode:ONAFTERFLUSH"
+	}
+})

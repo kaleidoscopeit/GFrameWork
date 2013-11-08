@@ -1,0 +1,5 @@
+Librerie DATABASE
+
+In tutti i dialoghi rivedere il match degli elementi, perchè ho notato che
+durante la riselezione dei campi se metto un campo gia selezionato è UID e nella
+lista sono presenti due cmapi ID e UID lui li segna tutti e due

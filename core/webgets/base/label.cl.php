@@ -58,7 +58,7 @@ class base_label
     $css_style = $_->ROOT->boxing($this->boxing)
                . $_->ROOT->style_registry_add($style)
                . $this->class;
-                 
+
     $css_style = 'class="w0010 '.$css_style.'" ';
 
     $_->buffer[] = '<div wid="0010" '
@@ -67,10 +67,9 @@ class base_label
                  . $cfields
                  . '>';
 
-    $_->buffer[] = '<span class="w0011" style="vertical-align:'
-                 . $this->valign.'">';
+    $_->buffer[] = '<span class="w0011" >';
 
-    $_->buffer[] = '<span>';
+    $_->buffer[] = '<span style="vertical-align:'. $this->valign.'">';
     $_->buffer[] = $caption;
     $_->buffer[] = '</span>';
     $_->buffer[] = '</span>';

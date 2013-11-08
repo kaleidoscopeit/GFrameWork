@@ -1,0 +1,6 @@
+({
+	properties:{
+		50:"<?php echo $lc_msg['WIDTH'];?>:spin::0,x:WIDTH",
+		51:"<?php echo $lc_msg['STYLE'];?>:text:::STYLE"
+	}
+})

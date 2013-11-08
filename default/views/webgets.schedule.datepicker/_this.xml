@@ -7,6 +7,14 @@
 
 <base:htmlview id="subdatepicker">
 
+	<base:image
+		src="images/text-xml.png"
+		boxing=",,right,top,-4px,4px"
+		class="fade"
+		tip="view source"
+		onclick="subv_cont.goto('view_source&amp;source=webgets.schedule.datepicker');$$.removeClass(view_source, 'diag_hidden');"
+		/>    
+	
 	<schedule:datepicker
   	id="&datePickerId;"
  		boxing="300px,300px"

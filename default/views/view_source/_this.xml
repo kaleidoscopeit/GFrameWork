@@ -3,7 +3,7 @@
 <base:htmlview
 	title="G-Framework Web3.0 Toolkit"
 	style="overflow:auto;"
-	id="view_source">
+	id="source">
 
 	<pack:vlayout>
 		<pack:vlaycell height="30">

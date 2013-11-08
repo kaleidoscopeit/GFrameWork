@@ -1,0 +1,2 @@
+nel webget label ho implementato il bordo autonomo in modo da rendere
+in form in costruzione il più simili a come verrà a runtime.
