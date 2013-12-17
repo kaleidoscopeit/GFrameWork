@@ -27,7 +27,7 @@ $$.js.reg['0310']={
     };
 
     n.clear = function(){
-      while(n.children.length!=0)n.removeChild(n.children[0]);
+      while(n.children.length!=1)n.removeChild(n.children[1]);
     };
  
 	},

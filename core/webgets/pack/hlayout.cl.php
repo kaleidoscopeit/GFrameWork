@@ -4,7 +4,8 @@ class pack_hlayout
   public $req_attribs = array(
     'style',
     'class',
-    'naked'
+    'naked',
+    'class'
   );
   
   function __define(&$_)
@@ -13,13 +14,6 @@ class pack_hlayout
   
   function __flush(&$_)
   {
-    /* builds syles */
-    @$css_style = $_->ROOT->boxing($this->boxing)
-               . $_->ROOT->style_registry_add($this->style)
-               . $this->class;
-                 
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
-
     /* children size definining */
     if(!isset($fixed_width)) $fixed_width = 0;
     
@@ -51,12 +45,17 @@ class pack_hlayout
             $fixed_height += $this->childs[$key]->minwidth;
         }      
       }
-    
+      
+    /* builds syles */
+    $this->attributes['class'] =
+        $_->ROOT->boxing($this->boxing)
+      . $_->ROOT->style_registry_add(
+        'min-width:' . $fixed_width . 'px;' . $this->style)
+      . (isset($this->class) ? $this->class : '');
+        
     /* builds code */
     if(!isset($this->naked))
       $_->buffer[] = '<div wid="0110" '
-                   . 'style="min-width:' . $fixed_width . 'px" '
-                   . $css_style
                    . $_->ROOT->format_html_attributes($this)
                    . '>';
                                     

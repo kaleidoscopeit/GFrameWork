@@ -40,6 +40,7 @@ data:table        0300
 data:tablecell    0301
 data:jtable       0310
 data:jtablecell   0311
+data:jtableheader 0312
 
 schedule:datepicker 0400
 schedule:calendar   0410

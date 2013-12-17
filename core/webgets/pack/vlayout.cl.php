@@ -48,7 +48,7 @@ class pack_vlayout
 
     /* builds syles */
     $this->attributes['class'] =
-        (isset($this->boxing) ? $_->ROOT->boxing($this->boxing) : '')
+        $_->ROOT->boxing($this->boxing)
       . $_->ROOT->style_registry_add(
         'min-height:' . $fixed_height . 'px;' . $this->style)
       . (isset($this->class) ? $this->class : '');
@@ -59,9 +59,7 @@ class pack_vlayout
                    . $_->ROOT->format_html_attributes($this)
                    . '>';
 
-    /* flushes children */    
-    foreach ((array) @$this->childs as  $child)
-      if (get_class($child)=='pack_vlaycell') $child->__flush($_);
+    gfwk_flush_children($this, 'pack_vlaycell');
       
     if(!isset($this->naked))
       $_->buffer[] = '</div>';

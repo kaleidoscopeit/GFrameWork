@@ -93,7 +93,7 @@ class base_htmlview
       case 'views' :
         $top_code = array(); 
         
-        $top_code[] = '<!DOCTYPE HTML5>';
+       // $top_code[] = '<!DOCTYPE html4>';
         $top_code[] = '<html>';
         $top_code[] = '<head>';
         $top_code[] = (isset($this->title) ? 

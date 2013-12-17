@@ -1,0 +1,254 @@
+MANUALE DI RIFERIMENTO
+FAMIGLIA WEBGET
+data.jtable*
+
+
+1.  INTRODUZIONE ...........................................................  1
+
+  1.1  Descrizione .........................................................  1
+  1.2  Caratteristiche ..................................................... 
+  1.3  Interfacce ..........................................................  3
+  1.4  Operatività .........................................................  3
+
+2.  SPECIFICHE FUNZIONALI .................................................. 15
+
+  2.1  Elementi del kit .................................................... 15
+  2.2  Composizione del contenuto........................................... 19
+  2.3  posizionamento ...................................................... 24
+
+3.  SPECIFICHE TECNICHE
+
+  3.1  Ciclo di vita  
+  3.2  Proprietà
+  3.3  Metodi
+  3.4  Eventi
+  3.4  
+  3.4  Establishing a connection ........................................... 30
+  3.5  Closing a Connection ................................................ 37
+  3.6  Precedence and Security ............................................. 40
+  3.7  Data Communication .................................................. 40
+  3.8  Interfaces .......................................................... 44
+  3.9  Event Processing .................................................... 52
+
+GLOSSARY ................................................................... 79
+
+REFERENCES ................................................................. 85
+
+
+                            1.  INTRODUZIONE
+                            
+jtable sta per JavascriptTable. Viene utilizzato per presentare dati dinamici
+ottenuti da sorgenti dati. Questo documento ne descrive il funzionamento e come
+utilizzarlo all'interno delle viste.
+
+
+1.1 Descrizione
+
+  jtable,jtablecell sono una serie di webgets correlati che soddisfano
+  l'esigenza di presentare informazioni strutturate in forma tabellare e
+  ottenute dinamicamente da sorgenti dati, principalemente asincrone.
+
+
+1.2 Funzionalità utente (front-end)
+
+  Il kit di webget consente di presentare dati tabellari in diverse modalità
+  in base ad una serie di parametri impostabili. Lo schema di organizzazione
+  predefinito dell'area dati prevede che essa venga riempita di un numero di
+  celle quanti sono i record ottenuti dalla sorgente dati. Quando l'area dati
+  viene riempita è previsto che si possa scorrere il contenuto per visualizzare
+  le restanti celle.
+  
+  Le celle sono organizzate in righe e colonne, con 2 tipi di orientamento :
+  in righe dall'altro al basso o in colonne da sinista verso destra.
+  
+  Le righe hanno una altezza fissa definibile.
+  
+  Le celle possono avere una larghezza variabile oppure larghezza fissa. Nel
+  caso della larghezza variabile lo spazio disponibile nella riga viene
+  suddiviso in parti un numero definibile di parti uguali.
+  
+  Nel caso della larghezza fissa valgono le seguenti possibilità :
+  
+  - Numero di celle per riga non definito - quando lo spazio sulla riga viene
+    esaurito la cella va a capo spostando tutto il contenuto di conseguenza.
+    
+  - Numero di celle per riga definito - il numero di celle per riga è fissato
+    quando lo spazio occupato dalla riga eccede lo spazio dati è necessario
+    scorrere il contenuto per vedere il resto della riga  
+  
+  È possibile abilitare il caricamento dinamico dei dati, man mano che il
+  contenuto diventa visibile nell'area dati, gazie ad una opportuna interazione
+  con la sorgente dati.
+
+     
+1.3 Interfacce
+
+  jtable si interfaccia da una parte ottenendo dati strutturati in un array e
+  dall'altro lato replicando il contenuto di jtablecell tante volte quante sono
+  il numero di 'records' nella sorgente dati. Ad ogni ciclo, jtable aggiorna il
+  contenuto dell'array interno 'current_record' definito come proprietà di se
+  stesso. Il contenuto di jtablecell, ogni volta che viene ridisegnato si occupa
+  di prelevare da 'current_record' i campi associati secondo il meccanismo
+  standardizzato di 'formattazione di campo' definito in un altro documento.     
+
+
+1.4 Operatività
+
+  Come indicato sopra lo scopo principale del kit jtable* si occupa di
+  presentare dati tabellari all'interno delle viste. Per svolgere questo lavoro
+  saranno necessari i seguenti strumenti forniti da G-Framework :
+
+  - Motore di costruzione delle viste
+  - Ambiente standard G-Framework lato client
+  - Chiamate AjaxRPC (non stretatmente necessario)
+  - Meccanismo di formattazione di campo
+
+  Gli strumenti definiti sopra sono descritti accuratamente in altri documenti.
+
+
+
+                      2.  SPECIFICHE FUNZIONALI
+
+2.1 Elementi costituenti
+
+  webget 'jtable' :
+
+    webget principale disegna l'intestazione e ne controlla l'ampiezza, disegna
+    le celle secondo la regola di composizione data (righe x colonne) e il
+    numero di record.
+    
+  webget 'jtablecell' :
+
+    webget contenitore che viene disegnato tante volte quanti sono i record
+    della sorgente dati. Ad ogni ciclo viene anche eseguito il fush in cascata
+    dei webget figlo.
+
+  Codice client e fogli di stile :
+  
+    Entrambi i webget possiedono codice client, jtable ha associato un foglio
+    di stile che interessa anche jtablecell.
+  
+    
+2.2 Composizione del contenuto
+
+  Per consentire una grande flessibilità sono disponibili diverse proprietà
+  che combinate opportunamente forniscono diversi schemi di composizione per
+  il contenuto. Di seguito vengono descritte le proprietà che agiscono sulla
+  composizione del contenuto e il comportamento quando vengono combinate fra di 
+  loro.
+
+  flusso :
+
+    Definisce il flusso di riempimento dei record. Il flusso predefinito è
+    verticale, questo comporta che lo spazio dati viene riempito con celle
+    disposte a righe disegnate da sinistra verso destra e dall'alto in basso.
+    Impostando il flusso in orizzontale lo spazio dati viene riempito di celle
+    disposte a colonne che partono dall'alto verso il basso e impacchettate da
+    sinistra vero desta. Nel caso di flusso orizzontale le proprietà sono
+    definite considerando le colonne come se fossero righe. 
+
+  dimensione cella :
+
+    Se NON impostato le celle riempiono la riga con dimensione proporzionale
+    variando la larghezza. Nel caso di flusso orizzontale variano l'altezza.
+    Se il parametro viene impostato il valore indica una dimensione in pixel,
+    le celle a questo punto avranno dimensione fissa nella riga.
+    Questo parametro è strettamente collegato al numero di celle per riga. 
+      
+  celle per riga :
+
+    Numero di celle per ogni riga.
+    
+    Se NON impostato il comportamento predefinito dipende dal dimensionamento
+    delle celle :
+    
+      Se la dimensione cella non è impostato si considera che il contenuto è
+      proporzionale e quindi il valore predefinito è 1 con la cella che riempie
+      tutta la riga.
+      
+      Se la dimensione della cella è impostato le celle per ogni riga dipendono
+      dalla larghezza dell'area dati, quando la cella va al di fuori dello
+      spazio, questa passa alla riga successiva spostando tutto il contenuto
+      in basso.
+
+    Se il valore è impostato il comportamento predefinito dipende dal
+    dimensionamento delle celle :     
+    
+      Se la dimensione cella non è impostata si considera che il contenuto è
+      proporzionale e quindi la riga viene suddivisa in parti uguali.
+      
+      Se la dimensione della cella è impostato, le celle per ogni riga vengono
+      forzate in base al valore specificato e l'eccedenza comporta che si debba
+      scorrere il contenuto per vedere il resto della riga.
+    
+  caricamento dinamico :
+  
+    Se impostato, è necessario definire una sorgente dati in grado di 
+    frazionare il contenuto in quanto ad ogni azione di scorrimento, viene
+    generato un evento di richiesta di un range di dati che verrano aggiunti
+    all'array interno.
+        
+    
+2.3 Posizionamento
+
+  Il posizionamento segue le seguenti regole :
+
+    Con boxing predefinito o presonalizzato il contenuto è delimitato dal
+    webget stesso e l'overflow è gestito con scorrimento.
+
+    Con il boxing impostato a 'false' il contenuto non è delimitato e spetta
+    al webget partent gestire l'overflow.
+
+    
+                            3.  CICLO DI VITA
+
+Da quando viene letto il codice all'interno della vista, jtable e jtablecell
+attraversano varie fasi dette ciclo di vita del webget. Nel seguente capitolo
+verranno trattati entrambi i cicli di vita dei due webget in quanto strettamente
+correlati fra loro. Non verrà trattato dettagliatament il ciclo di vita completo
+dei webjet in quanto comune a tutti gli altri webgets e già trattato in un 
+altro documento.
+
+
+3.1 Fasi base del ciclo di vita
+
+  jtable attraversa le seguenti fasi nel suo ciclo di vita :
+
+  Fasi comuni lato server :
+  Fasi comuni lato client :
+      
+    vedere documenti esterni
+    
+  Dispaccio dell'evento 'ready' :
+  
+    eseguito solo una volta quando il webget è stato correttamente disegnato ed
+    agganciato dall'ambiente standard G-Framework sul client.
+    
+  Dispaccio dell'evento 'getdata' :
+  
+    Eeseguito una volta se il caricamento dinamico non è attivo.
+    Eseguito ogni volta che si scorre il contenuto se vengono scoperte celle
+    non caricate quando il contenuto dinamico è attivo, con impostati come
+    parametri il range richiesto. 
+     
+  Ricezione della chiamata al metodo 'populate' :
+  
+    Il metodo accetta come parametro un array di tuple. L'array può essere
+    numerato e questo ne determina il posizionamento specifico all'interno del
+    buffer di tabella.
+    
+  Pulizia dell'area dati :
+  
+    Il contenuto dell'area dati viene ripulita da eventuali 
+  
+  Lettura iterata del contenuto 
+
+
+                         3.  SPECIFICHE TECNICHE
+
+3.1 Ciclo di vita
+
+  Dalla le
+  Fasi del ciclo di vita :
+  
+    
