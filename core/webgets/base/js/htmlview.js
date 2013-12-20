@@ -293,7 +293,7 @@ $$.bindEvent(window, "load", function(){with($$){
 }});
 
 // Extract "GET" parameters from a JS include query string
-var getParams =function() {
+var getParams = function() {
   // Find all script tags
   var URL = document.URL;
   var pa = URL.split("?").pop().split("&");

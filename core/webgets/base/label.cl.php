@@ -14,9 +14,6 @@ class base_label
 
   function __define(&$_)
   {
-    /* imports properties */
-/*    register_attributes($this, $attrs, array(
-      'style','class','field','field_format','caption','default','valign','halign'));*/
   }
   
   function __flush(&$_)
