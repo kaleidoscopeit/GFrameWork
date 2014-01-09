@@ -42,9 +42,9 @@ class pack_vlaycell
     if(isset($this->within)) 
       $_->buffer[] = '<div class="w0122 ' . $this->class . '" '
                    . (isset($this->style) ? 'style="' . $this->style.'" ' : '')
-                   . '>';
+                   . '>&nbsp;';
 
-    gfwk_flush_children($this);    
+    gfwk_flush_children($this);
 
     if(isset($this->within))
       $_->buffer[] = '</div>';

@@ -30,6 +30,7 @@ class data_jtable
 
     $_->buffer[] = '</div>';
 
+    $_->buffer[] = '<div></div>';
     $_->buffer[] = '</div>';
 
     $_->buffer[] = '<div>';
