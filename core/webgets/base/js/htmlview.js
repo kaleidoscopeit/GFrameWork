@@ -45,9 +45,10 @@ var $_={
     var r=this.js.reg[w.wid],a,f;
 
     for(a in r.a)w[r.a[a]]=w.getAttribute(r.a[a]);
-  
+
     for(f in r.f){
       f=r.f[f];
+        
       if(typeof(f) != 'function') w[f] = new Event(f);
       this.bindEvent(w, f, Function(w.getAttribute(f) || ''));
     }

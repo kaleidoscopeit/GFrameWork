@@ -3,61 +3,109 @@ $$.js.reg['0310']={
      'rowHeight',
      'cellsByRow',
      'cellSize'],
-  f:['ready'],
+  f:['ready','scrollend','datarequired'],
+  
   b:function(n){
     n.dataArea = n.children[1];
     n.rsObj = [];
+    n.recordSet = [];
     
-    n.populate = function(rs){
+    n.fillData = function(rs,range){
+      if(typeof rs.maxlength != 'undefined') {
+        n.dataSouceLength = rs.maxlength;
+        delete(rs.maxlength);
+      }
+
+      // populate recordset
+      if(range != null) {
+        for(var i = range[0];i<range[1];i++){
+          n.recordSet[i] = rs[i-range[0]];
+        }
+      }     
+
+      n.calcFillingParams();
+      
+      if(typeof n.finalRowSize != 'undefined')
+        n.dataArea.style.width = n.finalRowSize + "px";
+
+      if(n.filling == "p" && range != null) {
+        for(var i = range[0];i<range[1];i++){
+          n.current_record = n.recordSet[i];
+          $$.each(n.nextElementSibling.children,function(elm,ii){
+            var obj = elm.cloneNode(true);          
+            
+            n.dataArea.appendChild(obj);
+            obj.style.display = "block";
+            obj.style.height = n.rowHeight + "px";
+            obj.style.width = n.finalCellSize + n.cellSizing;
+            obj.index = i;
+            
+            $$.each($$.getPlainWebgets(obj), function(elm,i){
+              if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
+              if(elm.refresh)elm.refresh();
+            });
+            
+            n.rsObj[i] = obj;
+          });          
+
+        }        
+      }
+      
+      else {
+        n.clear();
+        $$.each(n.recordSet,function(row,i){
+          i=parseInt(i);
+          n.current_record = row;
+          $$.each(n.nextElementSibling.children,function(elm,ii){
+            var obj = elm.cloneNode(true);          
+            
+            n.dataArea.appendChild(obj);
+            obj.style.display = "block";
+            obj.style.height = n.rowHeight + "px";
+            obj.style.width = n.finalCellSize + n.cellSizing;
+            obj.index = i;
+            
+            $$.each($$.getPlainWebgets(obj), function(elm,i){
+              if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
+              if(elm.refresh)elm.refresh();
+            });
+            
+            n.rsObj[i] = obj;
+          });
+        });
+      }
+      return false;
+    };
+
+    n.calcFillingParams = function(){
       // Make the decision pattern
       var dPtCXR = "0",
-          dPtCS = "0",
-          realCellSize;
+          dPtCS = "0";
+
       if(n.cellsByRow != null) dPtCXR = "1";
       if(n.cellSize != null)   dPtCS  = "1";
 
       switch(dPtCXR+dPtCS){
         case "00":
-          realCellSize = "";
+          n.finalCellSize = "";
+          n.cellSizing = "";
           break;
         case "10":
-          realCellSize = Math.round(10000/n.cellsByRow)/100 + "%";
+          n.finalCellSize = Math.round(10000/n.cellsByRow)/100 ;
+          n.cellSizing = "%";
           break;
         case "01":
-          realCellSize = n.cellSize;
+          n.finalCellSize = n.cellSize;
+          n.cellSizing = "px";
           break;
         case "11":
-          realCellSize = n.cellSize + "px";
-          n.dataArea.style.width = n.cellsByRow*n.cellSize + "px";
+          n.finalCellSize = n.cellSize;
+          n.finalRowSize = n.cellsByRow*n.cellSize;
+          n.cellSizing = "px";
           break;      
-      }
-      
-      n.clear();n.recordSet=rs;
-
-      if(rs.length==null & $$.count(rs) == 0)return false;
-
-      $$.each(rs,function(row,i){
-        i=parseInt(i);
-        n.current_record = row;
-        $$.each(n.nextElementSibling.children,function(elm,ii){
-          n.rsObj[i] = elm.cloneNode(true);          
-
-          n.dataArea.appendChild(n.rsObj[i]);
-          n.rsObj[i].style.display = "block";
-          n.rsObj[i].style.height = n.rowHeight + "px";
-          n.rsObj[i].style.width = realCellSize;
-          n.rsObj[i].index = i;
-            
-          $$.each($$.getPlainWebgets(n.rsObj[i]), function(elm,i){
-            if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
-            if(elm.refresh)elm.refresh();
-          });
-        });
-      });
-      
-      return false;
+      }      
     };
-
+    
     n.clear = function(){
       n.dataArea.innerHTML = '';return;
       while(n.dataArea.children.length!=1)
@@ -65,21 +113,21 @@ $$.js.reg['0310']={
     };
 
     n.getExposedRecords = function(){
+      n.calcFillingParams();
+      
       var scroll = n.scrollTop,
           dAreaH = n.offsetHeight,
+          dAreaW = n.offsetWidth,
           stop = true,
           cXr = 0,
-          rh = this.dataArea.children[0].offsetHeight,
+          rh = n.rowHeight,
           vr = Math.ceil(dAreaH/rh),
           fvr = Math.floor(scroll/rh),
           lvr = vr+fvr;
-      
-      while(stop){
-        if(this.dataArea.children[cXr] == 'undefined') break;
-        if(this.dataArea.children[cXr].offsetTop > 0) break;
-        cXr++;
-      }
 
+      if(typeof n.finalRowSize != 'undefined') cXr = n.cellsByRow;
+      else cXr = Math.floor(dAreaW/n.finalCellSize);
+console.log(dAreaW); 
       // Calculate the first and the last visible record
       var fvrec = fvr*cXr;
       var lvrec = lvr*cXr-1;
@@ -88,37 +136,62 @@ $$.js.reg['0310']={
       // by default they are about 1 page before and after
       fvrec = ((fvrec-vr*cXr)<0 ? 0 : fvrec-vr*cXr);
       lvrec = lvrec+vr*cXr;
-      
-      return Array(fvrec,lvrec);
-      
+   
+      return Array(fvrec,lvrec);      
     };
     
     n.getNewlyExposedRecords = function(){
       var exp = this.getExposedRecords();
       var nexr = [], i, und = false;
- 
-      for(i=exp[0];i<exp[1];i++){
 
-        if(typeof this.recordSet[i] == 'undefined' && und == false){
-           nexr.push(i);
-          und = true; 
-        }
+      if(typeof this.recordSet != 'undefined') {
+      
+        for(i=exp[0];i<exp[1];i++){
+  
+          if(typeof this.recordSet[i] == 'undefined' && und == false){
+            nexr.push(i);
+            und = true; 
+          }
+          
+          else if(typeof this.recordSet[i] != 'undefined' && und == true){
+            nexr.push(i);
+            und = false;
+          }
+        };
         
-        else if(typeof this.recordSet[i] != 'undefined' && und == true){
-          nexr.push(i);
-          und = false;
-        }
-      }      
+        if(und == true) nexr.push(i);
+      }
       
-      if(und == true) nexr.push(i);
+      else nexr = exp;     
       
-      alert(nexr);
+      exp = [];      
+      while(nexr.length>1) exp.push(Array(nexr.shift(),nexr.shift()));
+      return exp;
+    };
+
+    n.scrollEndDispatcher = function(){
+      n.dispatchEvent(n.scrollend);
+      if(n.filling=="p"){        
+        var ner=n.getNewlyExposedRecords();
+        if(ner.length>0) n.dispatchEvent(n.datarequired);
+      }
+    };
+    
+    n.prefillExposedArea = function(){
+      
     };
   },
   
   fs:function(n){
+    $$.bindEvent(n, "scroll", function(){
+      clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = setTimeout(n.scrollEndDispatcher, 250);
+    });
+
     n.dispatchEvent(n.ready);
-    
+    n.prefillExposedArea();
+    n.dispatchEvent(n.datarequired);
+
   },
   
   getfields:function(f){

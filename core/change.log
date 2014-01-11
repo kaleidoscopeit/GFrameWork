@@ -7,6 +7,24 @@ Planned :
  - RPC CALLS better separation e interaction with STDIN STDOUT STDERR 
  - RPC CALLS better handling database transaction inheritance
 
+09-01-2014
+
+ - API V3.0 (major):
+ 
+   - Moved views organizations as package-views
+   - Moved RPC organization from tree to dotted naming
+   - Added Javascript file linked to each view
+   - Added client side javascript bind to webgets functions
+   - Completely reworked the server side webgets life cycle.
+   - define, preflush and flush server events handled centrally outside webgets
+   - External grabber for explicitly requested webget property
+   - Arbitrary webget properties inside the XML View are passed to the client
+
+ - new base:htmlview and base:subview
+ - base:webform declared obsolete
+ - Jtable dynamic loading and modification
+ - Removed call object 'report' and modified FPDF Webget family
+  
 23-01-2013
 
  - New webgets attributes acquisition

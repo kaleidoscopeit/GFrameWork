@@ -179,12 +179,20 @@ utilizzarlo all'interno delle viste.
       forzate in base al valore specificato e l'eccedenza comporta che si debba
       scorrere il contenuto per vedere il resto della riga.
     
-  caricamento progressivo :
+  caricamento progressivo o dinamico :
   
     Se impostato, è necessario definire una sorgente dati in grado di 
     frazionare il contenuto in quanto ad ogni azione di scorrimento, viene
     generato un evento di richiesta di un range di dati che verrano aggiunti
     all'array interno.
+    
+    Il caricamento progressivo prevede che i dati vengano aggiunti di volta in
+    volta in coda alla tabella aumentando progressivamente lo spazio occupato
+    dall'area dati.
+    
+    Il caricamento dinamico prevede che l'area dati venga predimensionata in
+    base al numero di record previsti dalla sorgente, ma vengano solo caricati
+    e visualizzati i records nella zona attualmente visualizzata. 
         
     
 2.3 Posizionamento
@@ -222,16 +230,18 @@ altro documento.
     eseguito solo una volta quando il webget è stato correttamente disegnato ed
     agganciato dall'ambiente standard G-Framework sul client.
     
-  Dispaccio dell'evento 'getdata' :
+  Dispaccio dell'evento 'dataRequired' :
   
     Eseguito una volta se il caricamento dinamico non è attivo.
     Eseguito ogni volta che si scorre il contenuto e si rende necessario
-    caricare nuovi dati. In tal caso la richiesta contiene il range di dati
-    richiesti come parametro. 
+    caricare nuovi dati. In tal caso la variabile 'this.NewlyExposedRecords'
+    contiene il range di dati richiesti. 
      
-  Ricezione della chiamata al metodo 'populate' :
+  Ricezione della chiamata al metodo 'fillData' :
   
-    Il metodo accetta come parametro un array di tuple. L'array può essere
+    Il metodo accetta come parametro un array contenente tuple numerate ed 
+    eventualmente il parametro 'maxlength' contente la dimensione teorica del
+    risultato nel caso venga scelto il riempimento dinamico. L'array può essere
     numerato e questo ne determina il posizionamento specifico all'interno del
     buffer di tabella quando il caricamento progressivo è abilitato.
     Se invece è impostato il caricamento statico, gli indici dell'array vengono
@@ -288,7 +298,7 @@ altro documento.
 
 4.1 Proprietà
 
-  {filling} (s|p)             Riempimento (s)tatico o (p)rogressivo
+  {filling} (s|p|d)           Riempimento (s)tatico,(p)rogressivo o (d)inamico. 
   {flow} (v|h)                Flusso di riempimento (v)erticale o (o)rizzontale.
   {cellSize} (number)         Dimensione della cella in pixel   
   {cellsByRow} (number)       Numero di celle per riga  
