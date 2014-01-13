@@ -1,3 +1,20 @@
+window.getImage = function(target,query){
+  var url={
+    'query' : query
+  }
+ 
+  $$.call('user.data.google.get_image', url,null,function(buffer){
+    target.src=buffer[0];
+  });
+
+
+};
+
+$$.bind('webget.icon.define', function()
+{
+  this.setAttribute("eval_field_command","getImage(this,'%s')");
+});
+
 $$.bind('webget.jtable.datarequired', function()
 {
   //$$.jsimport('system.phpjs.var_dump');
@@ -10,7 +27,7 @@ $$.bind('webget.jtable.datarequired', function()
     };
 
     $$.call('user.sakila.film', recordset);
-    
+    //console.log(recordset);
     //var_dump(recordset.items);
     //  $$.ajaxGet("test","foo");
     /*$$.each(recordset.items, function(item,i){
@@ -21,7 +38,3 @@ $$.bind('webget.jtable.datarequired', function()
   }
 });
 
-$$.bind('webget.icon.ready', function()
-{
-  alert('a');
-});

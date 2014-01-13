@@ -7,13 +7,13 @@
     boxing=",,right,top,-4px,4px"
     class="fade"
     tip="view source"
-    onclick="alert($$.gei('icon'));subv_cont.goto('view_source&amp;source=webgets.schedule.datepicker');$$.removeClass(view_source, 'diag_hidden');"
+    onclick="subv_cont.goto('view_source&amp;source=webgets.schedule.datepicker');$$.removeClass(view_source, 'diag_hidden');"
     />    
   
   
   <data:jtable
     id="jtable"
-    rowHeight="48"
+    rowHeight="100"
     cellsByRow="1"
     filling="p"     
     class="caption-item-middle "
@@ -23,11 +23,13 @@
     <data:jtablecell class="rowcell" >
       <pack:hlayout naked="true">
     
-        <pack:hlaycell width="60px">
+        <pack:hlaycell width="100px">
            <base:image
             id="icon"
-            boxing="42px,42px,,top"
-            field="jtable:title"/>
+            boxing="95%,95%,"
+            eval_field="jtable:title"
+            eval_field_command=""
+            src="images/loading.gif"/>
         </pack:hlaycell>
         
         <pack:hlaycell style="border-right:1px solid grey;">
@@ -36,24 +38,24 @@
             valign="middle" 
             field="jtable:title"
             field_format="%s"
-            class="caption-item-label" />
+            class="caption-item-label font20" />
     
           <base:label
-            boxing="5px,20px,5px,top,,24px"
-            class="label-bold grey"
-            valign="middle"
+            boxing="5px,30px,5px,5px"
+            class="caption-item-label font12"
+            valign="top"
             field="jtable:description" />
          
         </pack:hlaycell>
     
         <pack:hlaycell width="150px" style="border-right:1px solid grey;">         
           <base:label
-            boxing=",16px,,top,,8px"
-            class="label-bold"
+            boxing="5px,5px,5px,5px"
+            class="caption-item-label font16 bold"
             valign="middle"
             halign="center"
-            field_format="Anno : %s"
-            field="jtable:release_year"/> 
+            field_format="Year : %s&lt;br&gt;Durat. : %smin"
+            field="jtable:release_year,jtable:length"/> 
     
  
         </pack:hlaycell>

@@ -83,7 +83,7 @@ class _
         $flags       = isset($_POST['h']) ? $_POST['h'] : '';
         $path        = $this->CALL_URI;
         $response[0] = $this->call($path, $response[1], $flags);
-        echo           serialize($response);
+        echo           json_encode($response);
         break;
         
       case 'lib' :

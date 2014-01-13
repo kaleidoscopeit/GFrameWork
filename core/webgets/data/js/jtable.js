@@ -3,7 +3,7 @@ $$.js.reg['0310']={
      'rowHeight',
      'cellsByRow',
      'cellSize'],
-  f:['ready','scrollend','datarequired'],
+  f:['define','flush','scrollend','datarequired'],
   
   b:function(n){
     n.dataArea = n.children[1];
@@ -11,17 +11,11 @@ $$.js.reg['0310']={
     n.recordSet = [];
     
     n.fillData = function(rs,range){
+
       if(typeof rs.maxlength != 'undefined') {
         n.dataSouceLength = rs.maxlength;
         delete(rs.maxlength);
       }
-
-      // populate recordset
-      if(range != null) {
-        for(var i = range[0];i<range[1];i++){
-          n.recordSet[i] = rs[i-range[0]];
-        }
-      }     
 
       n.calcFillingParams();
       
@@ -31,7 +25,7 @@ $$.js.reg['0310']={
       if(n.filling == "p" && range != null) {
         
         for(var i = range[0];i<range[1];i++){
-            
+          n.recordSet[i] = rs[i-range[0]];  
           n.current_record = n.recordSet[i];
           $$.each(n.nextElementSibling.children,function(elm,ii){
             var obj = elm.cloneNode(true);          
@@ -56,7 +50,7 @@ $$.js.reg['0310']={
       
       else {
         n.clear();
-    
+        n.recordSet = rs;
         $$.each(n.recordSet,function(row,i){
           i=parseInt(i);
           n.current_record = row;
@@ -129,8 +123,9 @@ $$.js.reg['0310']={
           fvr = Math.floor(scroll/rh),
           lvr = vr+fvr;
 
-      if(typeof n.finalRowSize != 'undefined') cXr = n.cellsByRow;
+      if(n.cellsByRow != null) cXr = n.cellsByRow;
       else cXr = Math.floor(dAreaW/n.finalCellSize);
+      
 
       // Calculate the first and the last visible record
       var fvrec = fvr*cXr;
@@ -185,6 +180,8 @@ $$.js.reg['0310']={
     n.prefillExposedArea = function(){
       
     };
+    
+    n.dispatchEvent(n.define);
   },
   
   fs:function(n){
@@ -195,7 +192,7 @@ $$.js.reg['0310']={
             
     });
 
-    n.dispatchEvent(n.ready);
+    n.dispatchEvent(n.flush);
     n.prefillExposedArea();
     n.dispatchEvent(n.datarequired);
 

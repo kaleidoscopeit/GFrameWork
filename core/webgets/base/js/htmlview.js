@@ -21,7 +21,8 @@ var $_={
     if(id)eval("window."+id+"=w;");
     if(w.wid) {
       p.childWebgets.push(w);
-      w.parentWebget=p;      
+      w.parentWebget=p;
+      w.nameSpace=n;
       this.webgets[n].push(w);
       this._wAttachJs(w);
     }
@@ -116,12 +117,9 @@ var $_={
  
   // executes a remote call asynchronously, works similar the one at server side
   // eventually a string is returned, it will put in the default sub item '0'
-  call:function(m,b,h) {  
-    this.jsimport('system.phpjs.unserialize');
+  call:function(m,b,h,cbk) {  
     this.jsimport('system.phpjs.serialize');
-
-
-    var x=this.xhr(),f=-1,p='b='+serialize(b),c=1,i,o;
+    var f=-1,p='b='+serialize(b),c=1,i,o;
 
     // look-up for 'stack' flag in order to manage it locally 
     // avoiding unnecessary back and forth traffic. Sets f to 1
@@ -134,32 +132,39 @@ var $_={
       p+=h?'&h='+h:'';
     }  
 
-    x.open('POST', '?call/'+m.replace(/\./g,'/') , false);
-    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    x.setRequestHeader("Content-length", p.length);
-    x.setRequestHeader("Connection", "close");
-    x.send(p);
-    try{o=unserialize(x.responseText);}
-    catch(e){
-      alert('Parsing Call response failed (' + m + ') : '+x.responseText);
-      return false;}
-
-    // if response is a string put that in the default subitem '0'
-    for(var i in o[1])c++;if(c==1)o[1]={0:o[1]};
-
-    /* empty input buffer if 'stack' flag is not set */  
-    if(f==-1)for(p in b)delete b[p];
+    var callback = function(x){
+      try{o=eval('(' + x.responseText + ')');}
+      catch(e){
+        alert('Parsing Call response failed (' + m + ') : '+x.responseText);
+        return false;}
   
-    /* merges responses values */
-    for(p in o[1])b[p]=o[1][p];
+      // if response is a string put that in the default subitem '0'
+      for(var i in o[1])c++;if(c==1)o[1]={0:o[1]};
+  
+      /* empty input buffer if 'stack' flag is not set */  
+      if(f==-1)for(p in b)delete b[p];
+    
+      /* merges responses values */
+      for(p in o[1])b[p]=o[1][p];
+  
+      if(o[0] === null) {
+        this.jsimport('system.phpjs.var_export');
+        var_export(b,true);
+      }
 
-    if(o[0] === null) {
-      this.jsimport('system.phpjs.var_export');
-      var_export(b,true);
+      // returns the call status
+      if(cbk==null) return o[0];      
+      else cbk(b,o[0]);
     }
-
-    // returns the call status
-    return o[0];
+    
+    var x = this.ajax({
+      url:'?call/'+m.replace(/\./g,'/'),
+      post:p,
+      callback:(cbk!=null ? callback : null)
+    });
+    
+    if(cbk==null) return callback(x);
+    else return true;
   },
 
   // hotplug javascript code loader, l:library q:enqueue 
@@ -179,17 +184,23 @@ var $_={
     else{return false;} 
   },
 
-  importRawJs:function(l){
+  importRawJs:function(l,c){
     if(l=='')return false;
-    var xhr=this.xhr();
-    xhr.open('GET',l,false);
-    xhr.setRequestHeader('Content-Type', 'application/text');
-    xhr.send(null);
-    try{eval(xhr.responseText)} 
-    catch(e){
-      throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText);
-      return false
-    }
+    var x=this.xhr();
+    x.open('GET',l,false);
+    x.setRequestHeader('Content-Type', 'application/text');
+    x.onreadystatechange=function(){
+      if(x.readyState==4&&x.status==200){
+        try{eval(x.responseText);if(c)c(true);} 
+        catch(e){
+          if(c)c(false);
+          throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText);          
+        }
+      }
+      else if(c)c(false);
+    };
+    
+    x.send(null);
     return true
   },
 
@@ -199,31 +210,37 @@ var $_={
         x=this.xhr(),
         cbks = (args.callback != null ? true : false);
         
-    x.open(reqt,url,cbks);
-    x.setRequestHeader('Content-Type', 'application/text');
-    if(cbks)
-      x.onreadystatechange = function() {
-        if(http.readyState == 4 && http.status == 200) {
-         args.callback(x.responseText);
-        }
-      }
+    x.open(reqt,args.url,cbks);
+    if(cbks) x.onreadystatechange = function() {
+      if(x.readyState == 4 && x.status == 200)
+        args.callback(x);             
+    }
    
-    if(reqt = "POST"){
-      if(typeof args.post == 'object'){
-        x.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    if(reqt == "POST"){
+      x.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      if(typeof args.post == 'object'){        
         var p=[];
         $$.each(args.post, function(v,k){p.push(k+'='+v);});
         p.push.join('&');
       }
    
-      else {
-        x.setRequestHeader('Content-Type', 'application/text');
-        var p=args.post;
-      }
-      x.send(p);
+      else var p=args.post;
     }
     
-    return xhr.responseText;
+    else if(reqt == "GET"){
+      x.setRequestHeader('Content-Type', 'application/text');      
+      if(typeof args.get == 'object'){
+        var p=[];
+        $$.each(args.get, function(v,k){p.push(k+'='+v);});
+        p.push.join('&');
+      }   
+      else var p=args.get; 
+    }
+    
+    x.setRequestHeader("Content-length", p.length);    
+    x.send(p);
+    if(cbks) return true
+    else return x;
   },
   
   toggleClass:function(w,c,l,ll){

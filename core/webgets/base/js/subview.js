@@ -2,6 +2,8 @@ $_.js.reg['0070'] = {
   a : ['view'],
   f : ['onload'],
   b : function(n) {
+    n.injJsBuf={};
+    
     n.goto = function(v) {
       n.x = $_.xhr();
       n.x.onreadystatechange = n.xhrcbk;
@@ -40,24 +42,27 @@ $_.js.reg['0070'] = {
         }
 
 
-        if(typeof(c[1])!='undefined')n.injs(c[1]);
-
-        $$.flushBinds(n.id);
-        $$.webgets[n.id]=[];
-        $$._wInit(n,{childWebgets:[]},n.id);
-        $$.webgets[n.id].shift();
-        for(var s in $$.webgets[n.id]) {
-          if($$.js.reg[$$.webgets[n.id][s].wid])
-            $$.js.reg[$$.webgets[n.id][s].wid].fs($$.webgets[n.id][s]);
-        }
-     
-/*      $$.each($$.getPlainWebgets(n), function(elm,i){
-          if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
-        });*/
+        if(typeof(c[1])!='undefined')n.injJs(c[1]);
+        else n.initJs();
       }
       return true;
     };
 
+    n.initJs = function(){
+      $$.flushBinds(n.id);
+      $$.webgets[n.id]=[];
+      $$._wInit(n,{childWebgets:[]},n.id);
+      $$.webgets[n.id].shift();
+      for(var s in $$.webgets[n.id]) {
+        if($$.js.reg[$$.webgets[n.id][s].wid])
+          $$.js.reg[$$.webgets[n.id][s].wid].fs($$.webgets[n.id][s]);
+      }
+   
+/*      $$.each($$.getPlainWebgets(n), function(elm,i){
+          if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
+        });*/      
+    };
+    
     n.incss = function(u) {
       u=u.split('\n');
       for(var i in u){
@@ -72,13 +77,17 @@ $_.js.reg['0070'] = {
       }
     };
 
-    n.injs = function(u) {
+    n.injJs = function(u) {
       u=u.split('\n');
       for(var i in u){
-        i=u[i];
-        $$.importRawJs(i);
+        $$.importRawJs(u[i],function(){
+          u[i]="";
+          if(u.join('')=="")n.initJs();
+        });
       }
     };
+
+
   },
   fs : function(n) {
     if (n.view != '')

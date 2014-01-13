@@ -339,3 +339,17 @@ altro documento.
     Eseguito su click. Viene specificato inquanto dopo il click il valore
     sel_record viene modificato in base alla cella sotto il puntatore al momento
     del click.
+    
+POST
+
+Accedere ai webget contenuti nelle celle generate
+
+- prevedere nell'oggetto dataArea la possibilità di ottenere gli elementi in
+  base all'ID contenuti allo specifico record.
+
+  es. myTable.dataArea[n].getElementById('myImage');
+  
+- prevedere di poter ottenere una collezione di webget di ID specificato
+  contenuti all'interno dell'area dati
+  
+  es. myTable.dataArea.getCollection('myImage');
