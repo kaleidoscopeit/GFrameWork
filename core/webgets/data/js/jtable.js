@@ -27,9 +27,11 @@ $$.js.reg['0310']={
       
       if(typeof n.finalRowSize != 'undefined')
         n.dataArea.style.width = n.finalRowSize + "px";
-
+        
       if(n.filling == "p" && range != null) {
+        
         for(var i = range[0];i<range[1];i++){
+            
           n.current_record = n.recordSet[i];
           $$.each(n.nextElementSibling.children,function(elm,ii){
             var obj = elm.cloneNode(true);          
@@ -39,10 +41,11 @@ $$.js.reg['0310']={
             obj.style.height = n.rowHeight + "px";
             obj.style.width = n.finalCellSize + n.cellSizing;
             obj.index = i;
-            
+
             $$.each($$.getPlainWebgets(obj), function(elm,i){
               if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
               if(elm.refresh)elm.refresh();
+
             });
             
             n.rsObj[i] = obj;
@@ -53,6 +56,7 @@ $$.js.reg['0310']={
       
       else {
         n.clear();
+    
         $$.each(n.recordSet,function(row,i){
           i=parseInt(i);
           n.current_record = row;
@@ -127,7 +131,7 @@ $$.js.reg['0310']={
 
       if(typeof n.finalRowSize != 'undefined') cXr = n.cellsByRow;
       else cXr = Math.floor(dAreaW/n.finalCellSize);
-console.log(dAreaW); 
+
       // Calculate the first and the last visible record
       var fvrec = fvr*cXr;
       var lvrec = lvr*cXr-1;
@@ -170,6 +174,7 @@ console.log(dAreaW);
     };
 
     n.scrollEndDispatcher = function(){
+
       n.dispatchEvent(n.scrollend);
       if(n.filling=="p"){        
         var ner=n.getNewlyExposedRecords();
@@ -184,8 +189,10 @@ console.log(dAreaW);
   
   fs:function(n){
     $$.bindEvent(n, "scroll", function(){
+      
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(n.scrollEndDispatcher, 250);
+            
     });
 
     n.dispatchEvent(n.ready);

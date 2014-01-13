@@ -6,10 +6,10 @@
 include "../core/engine/main.php";
 
 error_reporting( E_ALL ); 
-error_reporting(!E_NOTICE);
+//error_reporting(!E_NOTICE);
 ini_set('log_errors', 1); 
 ini_set('error_log', 'temp/php_error.log'); 
-ini_set('display_errors',0);
+//ini_set('display_errors',1);
 
 
 ob_start("ob_gzhandler");

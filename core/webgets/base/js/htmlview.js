@@ -12,6 +12,7 @@ var $_={
     n=n||'root';
     var ch=w.childNodes,id,ln,r,a,f;
     w.wid=this.getAttribute(w,'wid');
+    if(w.wid==9990) return; 
     w.childWebgets=[];
     if(w.name) id=w.name;
     else if(typeof w.id == "string") id = w.id;
@@ -191,6 +192,39 @@ var $_={
     }
     return true
   },
+
+  /* aribtrary ajax request */
+  ajax:function(args){
+    var reqt = (args.post != null ? "POST" : "GET"),
+        x=this.xhr(),
+        cbks = (args.callback != null ? true : false);
+        
+    x.open(reqt,url,cbks);
+    x.setRequestHeader('Content-Type', 'application/text');
+    if(cbks)
+      x.onreadystatechange = function() {
+        if(http.readyState == 4 && http.status == 200) {
+         args.callback(x.responseText);
+        }
+      }
+   
+    if(reqt = "POST"){
+      if(typeof args.post == 'object'){
+        x.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        var p=[];
+        $$.each(args.post, function(v,k){p.push(k+'='+v);});
+        p.push.join('&');
+      }
+   
+      else {
+        x.setRequestHeader('Content-Type', 'application/text');
+        var p=args.post;
+      }
+      x.send(p);
+    }
+    
+    return xhr.responseText;
+  },
   
   toggleClass:function(w,c,l,ll){
     l=w.className.split(' ');
@@ -270,9 +304,9 @@ var openView=function(v){
 /* return a webget by name */
 var _w=function(w){with($$){
 	for(var i=0;i<webgets.length;i++)
-		if(webgets[i].id == w)
-			return webgets[i];
-			
+    if(webgets[i].id == w)
+    	return webgets[i];
+	
 	return false;
 }};
 

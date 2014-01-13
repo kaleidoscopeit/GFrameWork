@@ -140,7 +140,15 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
-
+                
+                <pack:stackelm>
+                  <base:label
+                    caption="data:jtable"
+                    halign="center"
+                    valign="middle"
+                    class="text-shadowed font20 italic"/>
+                </pack:stackelm>
+                
                 <pack:stackelm>
                   <base:label
                     caption="base:codesnippet"

@@ -50,6 +50,7 @@ $_.js.reg['0070'] = {
           if($$.js.reg[$$.webgets[n.id][s].wid])
             $$.js.reg[$$.webgets[n.id][s].wid].fs($$.webgets[n.id][s]);
         }
+     
 /*      $$.each($$.getPlainWebgets(n), function(elm,i){
           if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
         });*/

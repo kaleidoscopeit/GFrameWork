@@ -33,7 +33,7 @@ class data_jtable
     $_->buffer[] = '<div></div>';
     $_->buffer[] = '</div>';
 
-    $_->buffer[] = '<div>';
+    $_->buffer[] = '<div wid="9990">';
 
     gfwk_flush_children($this, 'data_jtablecell');
 

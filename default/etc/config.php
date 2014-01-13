@@ -77,9 +77,9 @@ $this->settings = array(
     'default' => array (
 
       'db_host' => "localhost",
-      'db_user' => "user",
-      'db_pass' => "password",
-      'db_name' => "default_db"
+      'db_user' => "gfwk",
+      'db_pass' => "gfwk", //password
+      'db_name' => "sakila"
     ),
     
     'alternate' => array (

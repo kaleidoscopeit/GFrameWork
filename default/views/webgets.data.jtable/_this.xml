@@ -1,0 +1,65 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<base:htmlview id="data_jtable" >
+
+  <base:image
+   src="images/text-xml.png"
+    boxing=",,right,top,-4px,4px"
+    class="fade"
+    tip="view source"
+    onclick="alert($$.gei('icon'));subv_cont.goto('view_source&amp;source=webgets.schedule.datepicker');$$.removeClass(view_source, 'diag_hidden');"
+    />    
+  
+  
+  <data:jtable
+    id="jtable"
+    rowHeight="48"
+    cellsByRow="1"
+    filling="p"     
+    class="caption-item-middle "
+    boxing=",40px,,0px">
+  
+ 
+    <data:jtablecell class="rowcell" >
+      <pack:hlayout naked="true">
+    
+        <pack:hlaycell width="60px">
+           <base:image
+            id="icon"
+            boxing="42px,42px,,top"
+            field="jtable:title"/>
+        </pack:hlaycell>
+        
+        <pack:hlaycell style="border-right:1px solid grey;">
+          <base:label
+            boxing="5px,20px,5px,top,,4px"
+            valign="middle" 
+            field="jtable:title"
+            field_format="%s"
+            class="caption-item-label" />
+    
+          <base:label
+            boxing="5px,20px,5px,top,,24px"
+            class="label-bold grey"
+            valign="middle"
+            field="jtable:description" />
+         
+        </pack:hlaycell>
+    
+        <pack:hlaycell width="150px" style="border-right:1px solid grey;">         
+          <base:label
+            boxing=",16px,,top,,8px"
+            class="label-bold"
+            valign="middle"
+            halign="center"
+            field_format="Anno : %s"
+            field="jtable:release_year"/> 
+    
+ 
+        </pack:hlaycell>
+
+      </pack:hlayout>
+    </data:jtablecell>
+
+  </data:jtable>
+</base:htmlview>

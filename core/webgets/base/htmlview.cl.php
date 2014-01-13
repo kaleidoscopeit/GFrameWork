@@ -142,6 +142,7 @@ class base_htmlview
                     . "\n?css/" . $_->CALL_PATH
                     . "\n\n"  
                     . implode("\n", array_keys((array)$js_includes))
+                    . "\nviews/".$_->CALL_URI.'/_this.js'
                     . "\n-->";                       
 
         $top_code[] = '<div wid="0071" '

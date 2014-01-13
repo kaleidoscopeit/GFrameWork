@@ -45,3 +45,5 @@ data:jtableheader 0312
 schedule:datepicker 0400
 schedule:calendar   0410
 schedule:gantt      0420
+
+specials:inhibit child registration 9990

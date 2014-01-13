@@ -25,6 +25,9 @@ $this->result_set=array(
          'type'=>'item',
          'view'=>'webgets/schedule/datepicker'),         
 
+   array('description'=>'data:jtable',
+         'type'=>'item',
+         'view'=>'webgets/data/jtable'),  
 
    array('description'=>'Codesnippet',
          'type'=>'item',
