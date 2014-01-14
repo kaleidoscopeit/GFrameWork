@@ -1,6 +1,6 @@
 window.getImage = function(target,query){
   var url={
-    'query' : query
+    'query' : query + "+poster+film",
   }
  
   $$.call('user.data.google.get_image', url,null,function(buffer){
@@ -23,7 +23,8 @@ $$.bind('webget.jtable.datarequired', function()
 
   while(ner.length>0) {
     var recordset = {
-      'range' : ner[0]
+      'range' : ner[0],
+      'filter' : record_filter
     };
 
     $$.call('user.sakila.film', recordset);
@@ -38,3 +39,17 @@ $$.bind('webget.jtable.datarequired', function()
   }
 });
 
+$$.bind('webget.infobutt.click', function()
+{
+  subv_cont.goto('view_source&source=webgets.data.jtable');
+  $$.removeClass(view_source, 'diag_hidden');
+});
+
+$$.bind('webget.cerca.keyup', function()
+{
+  record_filter = this.value;
+  jtable.clear();
+  jtable.dispatchEvent(jtable.datarequired);
+});
+
+record_filter="";

@@ -159,6 +159,14 @@
                 
                 
               </pack:stack>
+              
+              <base:image
+                src="images/text-xml.png"
+                boxing=",,right,middle,-10px"
+                class="fade"
+                tip="view source"
+                id="infobutt"
+                /> 
             </pack:vlaycell>
             
             <pack:vlaycell>

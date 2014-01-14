@@ -6,6 +6,15 @@
 
 $rpc = array(array(
 
+/* filter */
+
+'filter' => array (
+  'type'     => 'string',
+  'required' => false,
+  'origin'   => array (
+      'variable:$_STDIN["filter"]',
+)),
+
 /* required range */
 
 'range' => array (
@@ -32,6 +41,8 @@ $rpc = array(array(
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   $qs = "SELECT SQL_CALC_FOUND_ROWS * FROM sakila.film "
+       . (isset($_STDIN['filter']) ?
+          "WHERE `title` LIKE '%" . $_STDIN['filter'] . "%'" : "")
       . (isset($_STDIN['range']) ?
           "LIMIT " . $_STDIN['range'][0] . "," . $_STDIN['range'][1] : "");
 

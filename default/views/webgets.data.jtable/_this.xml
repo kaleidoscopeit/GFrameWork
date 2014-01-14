@@ -7,7 +7,7 @@
     boxing=",,right,top,-4px,4px"
     class="fade"
     tip="view source"
-    onclick="subv_cont.goto('view_source&amp;source=webgets.schedule.datepicker');$$.removeClass(view_source, 'diag_hidden');"
+    onclick="subv_cont.goto('view_source&amp;source=webgets.data.jtable');$$.removeClass(view_source, 'diag_hidden');"
     />    
   
   
@@ -17,13 +17,13 @@
     cellsByRow="1"
     filling="p"     
     class="caption-item-middle "
-    boxing=",40px,,0px">
+    boxing=",40px,,40px">
   
  
-    <data:jtablecell class="rowcell" >
+    <data:jtablecell class="caption-item-middle" >
       <pack:hlayout naked="true">
     
-        <pack:hlaycell width="100px">
+        <pack:hlaycell width="70px">
            <base:image
             id="icon"
             boxing="95%,95%,"
@@ -51,10 +51,10 @@
         <pack:hlaycell width="150px" style="border-right:1px solid grey;">         
           <base:label
             boxing="5px,5px,5px,5px"
-            class="caption-item-label font16 bold"
+            class="caption-item-label font12"
             valign="middle"
             halign="center"
-            field_format="Year : %s&lt;br&gt;Durat. : %smin"
+            field_format="&lt;strong&gt;Year :&lt;/strong&gt; %s&lt;br&gt;&lt;strong&gt;Durat. :&lt;/strong&gt; %smin"
             field="jtable:release_year,jtable:length"/> 
     
  
@@ -62,6 +62,12 @@
 
       </pack:hlayout>
     </data:jtablecell>
-
   </data:jtable>
+  <base:label
+    caption="Cerca :"
+    boxing="5px,20px,100px,bottom,,-10px" 
+    class="caption-item-label"/>
+  <form:entry
+    id="cerca"
+    boxing="110px,20px,5px,bottom,,-10px" />
 </base:htmlview>

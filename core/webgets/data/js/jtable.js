@@ -105,7 +105,9 @@ $$.js.reg['0310']={
     };
     
     n.clear = function(){
-      n.dataArea.innerHTML = '';return;
+      n.dataArea.innerHTML = '';
+      n.recordSet = [];
+      return;
       while(n.dataArea.children.length!=1)
         n.dataArea.innerHTML = '';
     };
@@ -142,7 +144,7 @@ $$.js.reg['0310']={
     n.getNewlyExposedRecords = function(){
       var exp = this.getExposedRecords();
       var nexr = [], i, und = false;
-
+ 
       if(typeof this.recordSet != 'undefined') {
       
         for(i=exp[0];i<exp[1];i++){
@@ -162,7 +164,7 @@ $$.js.reg['0310']={
       }
       
       else nexr = exp;     
-      
+     
       exp = [];      
       while(nexr.length>1) exp.push(Array(nexr.shift(),nexr.shift()));
       return exp;

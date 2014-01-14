@@ -280,7 +280,8 @@ var $_={
     if(tmp.jsBindsNS[n]){
       while (tmp.jsBindsNS[n][0]){
         var i=tmp.jsBindsNS[n].pop();
-        gei(i.on).removeEventListener(i.oa, i.hd);
+          try{gei(i.on).removeEventListener(i.oa, i.hd);}
+          catch (e) {}
       }
     }
     
