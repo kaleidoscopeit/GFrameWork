@@ -35,7 +35,7 @@ class _
     $this->APP_PATH = '//' . $_SERVER['HTTP_HOST']
                     . dirname($_SERVER['PHP_SELF']);
     $this->CORE_PATH    = '../core';
-    $this->WEBGETS_PATH = $this->CORE_PATH . '/webgets/';    
+    $this->WEBGETS_PATH = $this->CORE_PATH . '/webgets/';
   }  
 
   /* apply the security policy if required and act as hub for various 
@@ -95,16 +95,21 @@ class _
         //if (!$_->call('system.auth.check',$_buf)) die('Access Denied');
         require_once __DIR__ . '/css.php';
         _engine_css::init();
-        return _engine_css::build($this->CALL_SOURCE);
+        return _engine_css::build();
         break;
 
       case 'js' :
         //if (!$_->call('system.auth.check',$_buf)) die('Access Denied');
         require_once __DIR__ . '/js.php';
         _engine_js::init();
-        return _engine_js::build($this->CALL_SOURCE);
+        return _engine_js::build();
         break;
-        
+
+      case 'upload' :
+        require_once __DIR__ . '/upload.php';
+        _engine_upload::init();
+        return _engine_upload::build();        
+        break;
 
       case 'compile' :
         if (!$_->call('system.auth.check',$_buf)) die('Access Denied');
@@ -422,5 +427,14 @@ function _w($w)
 function _call($a, &$b, $c = NULL){
   global $_;
   return $_->call($a, $b, $c);
+}
+
+function uuidv4_gen(){
+  $data = openssl_random_pseudo_bytes(16);
+  
+  $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0010
+  $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+  
+  return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 }
 ?>

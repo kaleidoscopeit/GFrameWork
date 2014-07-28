@@ -28,8 +28,8 @@ class form_text
     if($css_style!="") $css_style = 'class="' . $css_style . '" ';
 
     /* builds code */
-    $_->buffer[] = '<div wid="0230" ' . $w_class . '>';
-    $_->buffer[] = '<textarea '
+    $_->buffer[] = '<div ' . $w_class . '>';
+    $_->buffer[] = '<textarea wid="0230" '
                  . $_->ROOT->format_html_attributes($this)
                  . $css_style . '>'
                  . $this->value

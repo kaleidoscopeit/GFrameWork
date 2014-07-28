@@ -2,6 +2,8 @@ $_.js.reg['0210'] = {
   a : ['field', 'field_format'],
   f : [],
   b : function(n) {
+    n.wstyle=n.parentElement.style;
+    
     with (n) {
       n.refresh = function() {
         var field = n.field.split(','), fs = [];

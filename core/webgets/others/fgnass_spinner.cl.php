@@ -1,5 +1,5 @@
 <?php
-class others_fgnass_spinner
+class fgnass_spin
 {
   public $req_attribs = array(
   );

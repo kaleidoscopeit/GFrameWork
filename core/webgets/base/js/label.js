@@ -1,6 +1,6 @@
 $$.js.reg['0010']={
 	a:['field','field_format','eval_field','eval_field_command'],
-	f:['change', 'ready'],
+	f:['change', 'define', 'ready'],
 	b:function(n){with(n){
     var f=n.children[0],
 	  	  ff=(f ? f.children[0] : null);
@@ -29,11 +29,14 @@ $$.js.reg['0010']={
 		n.refresh=function(){
 			$$.jsimport('system.phpjs.vsprintf');
       var fs = $$.js.reg['0310'].getfields(n.eval_field);
-			if(fs != false) eval(vsprintf(n.eval_field_command,fs));
-				
+			if(fs !== false) eval(vsprintf(n.eval_field_command,fs));
+			
+
 			var fs = $$.js.reg['0310'].getfields(n.field);
-			if(fs != false) n.caption(vsprintf(n.field_format,fs));
+			if(fs !== false) n.caption(vsprintf(n.field_format,fs));
 		};
+		
+		n.dispatchEvent(n.define);		
 	}},
 	
 	fs:function(n){

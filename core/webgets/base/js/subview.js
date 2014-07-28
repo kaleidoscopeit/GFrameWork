@@ -4,14 +4,8 @@ $_.js.reg['0070'] = {
   b : function(n) {
     n.injJsBuf={};
     
-    n.goto = function(v) {
-      n.x = $_.xhr();
-      n.x.onreadystatechange = n.xhrcbk;
-      n.x.open('GET', '?subview/' + v, true);
-      n.x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      //x.setRequestHeader("Content-length", p.length);
-      n.x.setRequestHeader("Connection", "close");
-      n.x.send();
+    n.goto = function(v,x) {
+      x = $$.ajax({url:'?subview/' + v, callback:n.xhrcbk});
     };
 
     n.back = function() {
@@ -23,7 +17,7 @@ $_.js.reg['0070'] = {
     };
 
     n.xhrcbk = function(x,c,i,t){
-      x=n.x,t=0;
+      t=0;
       if(x.readyState==4&&x.status==200){
         c = x.responseText
              .match(/<!--[\s\S]*?-->/g)[0]
@@ -31,7 +25,7 @@ $_.js.reg['0070'] = {
              .replace('\n-->', '')
              .split('\n\n');
   
-        if(typeof(c[0])!='undefined')n.incss(c[0]);
+        if(typeof(c[0])!='undefined')n.injcss(c[0]);
 
         try {
           n.innerHTML = x.responseText;
@@ -63,7 +57,7 @@ $_.js.reg['0070'] = {
         });*/      
     };
     
-    n.incss = function(u) {
+    n.injcss = function(u) {
       u=u.split('\n');
       for(var i in u){
         i=u[i];

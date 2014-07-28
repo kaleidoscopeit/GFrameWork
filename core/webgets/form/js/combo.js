@@ -1,7 +1,10 @@
-$_.js.reg['02A1'] = {
+$_.js.reg['02A0'] = {
   a : [],
   f : [],
   b : function(n) {
+    n.children[0].wstyle=n.style;
+    n = n.children[0];
+
     with (n) {
       n.items_insert = function(v, l, p) {
         var no = n.options;
@@ -26,7 +29,9 @@ $_.js.reg['02A1'] = {
         if (se > -1)
           no[se].selected = true;
         return 0;
-      }, n.items_remove = function(i) {
+      },
+      
+      n.items_remove = function(i) {
         with (this) {
           if (n.length == 0)
             return 0;
@@ -53,6 +58,23 @@ $_.js.reg['02A1'] = {
         }
       },
 
+      n.clear = function() {
+        while (this.length != 0)
+        this.items_remove(0);
+      },
+      
+      n.populate = function(v) {
+        console.log(v);
+        if (v.length == null & $_.count(v) == 0)
+          return false;
+        n.clear();
+        $_.tmp.n = n;
+        $_.each(v, function(v, i) {
+          $_.tmp.n.items_insert(v[0], (v[1] ? v[1] : v[0]));
+        });
+        return true;
+      },
+      
       // Reset to the original stack
       n.items_empty = function() {
         for (var i = n.options.length; i >= 0; i--) {

@@ -47,16 +47,14 @@ class base_htmlview
     /*                           Javascript stuff                             */
     /**************************************************************************/
     
-   //   if($_->CALL_OBJECT!='subview'){       
-        /* includes static js files */
-        if(is_file($library_js)) $js_includes[$library_js] = true;
-        
-        /* includes dynamic js files */
-        if(is_file($library_js.'.php')) require $library_js . ".php";
-    //  }
+      /* includes static js files */
+      if(is_file($library_js)) $js_includes[$library_js] = true;
+
+      /* includes dynamic js files */
+      if(is_file($library_js.'.php')) require $library_js . ".php";
     }
 
-   
+    $js_includes['?js/' . $_->CALL_PATH] = true;
 
     /**************************************************************************/
     /*                                CSS stuff                               */
@@ -116,6 +114,7 @@ class base_htmlview
                
 //        $top_code[] = '<script type="text/JavaScript" src="'
 //                    . 'views/'.$_->CALL_URI.'/'.$_->CALL_TARGET.'.js' . '"></script>';
+
         $top_code[] = '<script type="text/JavaScript" src="'
                     . 'views/'.$_->CALL_URI.'/_this.js' . '"></script>';
                     

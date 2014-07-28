@@ -31,7 +31,7 @@ class reports_dymo_continuoslabel
    }
  
     
-  function __flush (&$_)  
+  function __flush (&$_)
   {
     $orientation = ($this->orientation == "L" ? "Landscape" : "Portrait" );
 

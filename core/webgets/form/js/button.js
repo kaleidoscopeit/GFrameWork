@@ -1,23 +1,19 @@
 $_.js.reg['0250'] = {
-  a : ['eval_field', 'eval_field_command'],
-  f : [],
-  b : function(n) {
-    with (n) {
-      n.refresh = function() {
-        if (n.eval_field == null)
-          return;
-        var field = n.eval_field.split(','), fs = [];
-        $_.each(field, function(f, i) {
-          f = f.split(':');
-          eval('var row=' + f[0] + '.current_record');
-          fs.push(row[f[1]]);
-        });
+	a:['field','field_format','eval_field','eval_field_command'],
+	f:['define','flush'],
+  b:function(n) {
+		n.refresh=function(){
+			$_.jsimport('system.phpjs.vsprintf');
+      var fs = $_.js.reg['0310'].getfields(n.eval_field);
+			if(fs !== false) eval(vsprintf(n.eval_field_command,fs));
+				
+			var fs = $_.js.reg['0310'].getfields(n.field);
+			if(fs !== false) n.value = vsprintf(n.field_format,fs);
+		};
 
-        $_.jsimport('system.phpjs.vsprintf');
-        eval(vsprintf(n.field_format, fs));
-      };
-    }
+		n.dispatchEvent(n.define);
   },
-  fs : function(n) {
+  fs:function(n) {
+	  n.dispatchEvent(n.flush);
   }
 }; 

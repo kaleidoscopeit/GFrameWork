@@ -29,8 +29,8 @@ class data_table
   function __flush(&$_)
   {
     /* Sets an empty default record if the result_set is empty */
-    if(count($this->result_set) < 1)$this->result_set = array(false);
-    $this->max_records = count($this->result_set);  
+    if(count($this->result_set) < 1) $this->result_set = array('empty');
+    $this->max_records = count($this->result_set);
     $this->page_pointer = 0;
     
     /* If a specific row quantity is sets, the paging will be enabled */
@@ -40,6 +40,7 @@ class data_table
       $this->start_pointer = (($this->current_page - 1) * $this->page_records) ;
       $this->max_pages     = intval((count($this->result_set)/
                              $this->page_records)+.99);
+
     }
     
     else {
@@ -60,6 +61,7 @@ class data_table
                  . clean_xml(json_encode($this->result_set)).'" ':'')
                  . $_->ROOT->format_html_attributes($this)
                  . '>';
+
 
     /* Rows/columns iterator */
     while ($this->page_pointer < $this->page_records) {

@@ -2,7 +2,8 @@ $$.js.reg['0310']={
   a:['filling',
      'rowHeight',
      'cellsByRow',
-     'cellSize'],
+     'cellSize',
+     'fillBoundary'],
   f:['define','flush','scrollend','datarequired'],
   
   b:function(n){
@@ -18,13 +19,15 @@ $$.js.reg['0310']={
       }
 
       n.calcFillingParams();
-      
-      if(typeof n.finalRowSize != 'undefined')
+      if(typeof n.finalRowSize != 'undefined') {
         n.dataArea.style.width = n.finalRowSize + "px";
-        
+      }
+      
       if(n.filling == "p" && range != null) {
         
-        for(var i = range[0];i<range[1];i++){
+        var i = range[0];
+        
+        while(i<range[1]&&i<n.dataSouceLength){
           n.recordSet[i] = rs[i-range[0]];  
           n.current_record = n.recordSet[i];
           $$.each(n.nextElementSibling.children,function(elm,ii){
@@ -43,8 +46,9 @@ $$.js.reg['0310']={
             });
             
             n.rsObj[i] = obj;
-          });          
-
+          }); 
+                   
+          i++;
         }        
       }
       
@@ -72,7 +76,9 @@ $$.js.reg['0310']={
           });
         });
       }
-      return false;
+      
+      n.dReq = false;
+      return true;
     };
 
     n.calcFillingParams = function(){
@@ -93,7 +99,12 @@ $$.js.reg['0310']={
           n.cellSizing = "%";
           break;
         case "01":
-          n.finalCellSize = n.cellSize;
+          // Modificato il 2014-07-22 da 
+          // n.finalCellSize = n.cellSize;
+          // Non segnato in documentazione : vedere le incongruenze
+          n.finalCellSize = n.finalRowSize = n.cellSize;
+          
+          
           n.cellSizing = "px";
           break;
         case "11":
@@ -114,7 +125,8 @@ $$.js.reg['0310']={
 
     n.getExposedRecords = function(){
       n.calcFillingParams();
-      
+      this.fillBoundary=this.fillBoundary||1;
+       
       var scroll = n.scrollTop,
           dAreaH = n.offsetHeight,
           dAreaW = n.offsetWidth,
@@ -135,16 +147,17 @@ $$.js.reg['0310']={
 
       // Calculate exposed records plus extra boundaries 
       // by default they are about 1 page before and after
-      fvrec = ((fvrec-vr*cXr)<0 ? 0 : fvrec-vr*cXr);
-      lvrec = lvrec+vr*cXr;
-   
+      fvrec = (fvrec-vr*(cXr*this.fillBoundary)<0 ?
+        0 : fvrec-vr*(cXr*this.fillBoundary));
+      lvrec = lvrec+vr*(cXr*this.fillBoundary);
+
       return Array(fvrec,lvrec);      
     };
     
     n.getNewlyExposedRecords = function(){
       var exp = this.getExposedRecords();
       var nexr = [], i, und = false;
- 
+
       if(typeof this.recordSet != 'undefined') {
       
         for(i=exp[0];i<exp[1];i++){
@@ -175,7 +188,10 @@ $$.js.reg['0310']={
       n.dispatchEvent(n.scrollend);
       if(n.filling=="p"){        
         var ner=n.getNewlyExposedRecords();
-        if(ner.length>0) n.dispatchEvent(n.datarequired);
+        if(ner.length>0 && n.dReq == false) {
+          n.dReq = true;
+          n.dispatchEvent(n.datarequired);
+        }
       }
     };
     
@@ -196,19 +212,18 @@ $$.js.reg['0310']={
 
     n.dispatchEvent(n.flush);
     n.prefillExposedArea();
-    n.dispatchEvent(n.datarequired);
-
   },
   
   getfields:function(f){
-    if(f == null) return false;
+    if(f === null) return false;
     var field=f.split(','),fs=[];
     $$.each(field,function(f,i){
       f=f.split(':');
       eval('var row='+f[0]+'.current_record');
+//      console.log(f);
       fs.push(row[f[1]]);
     });
-    
+
     return fs;
   }
 };

@@ -3,7 +3,7 @@ $_.js.reg['0300']={
 	f:['ready'],
 	b:function(n){},
 	fs:function(n){
-		n.result_set=eval(n.result_set);
+		n.result_set=eval('(' + n.result_set + ')');
 		n.dispatchEvent(n.ready);
 	}
 };

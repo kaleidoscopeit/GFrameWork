@@ -6,7 +6,9 @@ class form_entry
     'class',
     'field',
     'field_format',
-    'value'
+    'value',
+    'wstyle',   // da implementare su tutti i webget compositi
+    'wclass'    // da implementare su tutti i webget compositi
   );
     
   function __define(&$_)
@@ -46,6 +48,8 @@ class form_entry
     /* builds syles */    
     $w_class   = 'class="w0210 '
                . $_->ROOT->boxing($this->boxing)
+               . $_->ROOT->style_registry_add($this->wstyle)
+               . $this->wclass
                . '" ';
                
     $css_style = $_->ROOT->style_registry_add($this->style)

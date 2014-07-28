@@ -35,6 +35,7 @@ form:radio        0280
 form:switch       0290
 form:combo        02A0      
 form:list         02B0
+form:upload       02C0
 
 data:table        0300
 data:tablecell    0301
@@ -45,5 +46,7 @@ data:jtableheader 0312
 schedule:datepicker 0400
 schedule:calendar   0410
 schedule:gantt      0420
+
+fgnass:spin         5000
 
 specials:inhibit child registration 9990

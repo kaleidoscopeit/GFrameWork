@@ -52,14 +52,17 @@ class _engine_views
     /* assign global scope javascript code in the root webget 
        ( TODO: has to be more abstract ) */
 
-    $_->static[$_->CALL_URI]['js']['raw'][] =
-      $this->codes['global']['javascript']['default'];
-
-    if (is_file($source_url.'.js'))
+    $_->static[$_->CALL_URI]['js']['raw'] = Array();
+    
+    if(isset($this->codes['global']))
       $_->static[$_->CALL_URI]['js']['raw'][] =
-        file_get_contents($source_url.'.js');    
+        $this->codes['global']['javascript']['default'];
+
+//    if (is_file($source_url.'.js'))
+//      $_->static[$_->CALL_URI]['js']['raw'][] =
+//        file_get_contents($source_url.'.js');    
       
-    /* the view php code in the global scope will be executed */
+    /* the php code of the view in the global scope will be executed */
     if(isset($this->codes['global']['php']['default']))
       eval($this->codes['global']['php']['default']);
                                               
@@ -247,7 +250,7 @@ class _engine_views
   function endelm($parser, $library_name)
   {
     /* go back to the parent webget */
-    if ($this->current_webget->parent)
+    if (isset($this->current_webget->parent))
       $this->current_webget = &$this->current_webget->parent;
   }
 }

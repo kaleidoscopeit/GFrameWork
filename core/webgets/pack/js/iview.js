@@ -10,6 +10,9 @@ $_.js.reg['0150']={
     n.appendChild(ifb);
     n.appendChild(ifc);
 
+    n.ifa.test = '1';
+    n.ifb.test = '2';
+    n.ifc.test = '3';
     n.ifprev='0';
     n.ifcurr='1';
     n.ifnext='2';
@@ -23,14 +26,17 @@ $_.js.reg['0150']={
       $_.toggleClass(ifc,tco);
       $_.toggleClass(ifa,tci);
     }
-      
+
+    n.count = 0;
+    
     ifa.parent=ifb.parent=ifc.parent=n;
     ifa.onload=ifb.onload=ifc.onload=
       function(e){
+        n.count ++;
         this.parent.show(this);
       };
     
-    n.goto=function(v){
+    n.goto=function(v){      
       this.history.stack.push(v);
       v='?views/'+v;
       $_.ade(n.children[n.ifnext], 'load', this.onload);
@@ -47,17 +53,18 @@ $_.js.reg['0150']={
     };
     
     n.show=function(i,o){
+      if(n.count<3)return true;
       $_.ade(n.children[ifcurr], 'webkitTransitionEnd', n.trans_end);
       $_.ade(n.children[ifcurr], 'oTransitionEnd', n.trans_end);
       $_.ade(n.children[ifcurr], 'transitionend', n.trans_end);
 
       if(tcn && tci && tco){
-        if(n.action=='next'){
+//        if(n.action=='next'){
           n.children[ifnext].style.left=n.children[ifnext].exleft;
           n.children[ifnext].className=tcn;
           n.children[ifcurr].className=tci+' '+tcn;
           n.children[ifprev].className=tco+' '+tcn;
-        }
+//        }
       }
 
       var prev=n.ifprev;
@@ -82,7 +89,7 @@ $_.js.reg['0150']={
     };
 
   }},
-  fs:function(n){  
+  fs:function(n){ 
     n.goto(n.view);
     
   }

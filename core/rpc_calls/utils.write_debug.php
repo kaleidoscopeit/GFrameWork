@@ -32,14 +32,14 @@ $rpc = array(array(
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   if(!$_->settings['debug']) return TRUE;
-  $message= explode("\n", $_STDIN['message']);
+  $message = explode("\n", $_STDIN['message']);
   
   date_default_timezone_set('Europe/Rome');
   
   foreach($message as $key=>$value) {
     $message[$key] = "[".date("Y-m-d H:i:s")."] ".
                      $_->CALL_OBJECT.":".
-                     $_->CALL_SOURCE." - ".
+                     $_->CALL_URI." - ".
                      $value."\n";
   }
   

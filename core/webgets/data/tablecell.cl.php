@@ -27,7 +27,9 @@ class data_tablecell
     $this->current_record = $this->parent->result_set[$this->index];
     $this->parent->current_record  = $this->current_record;
 
-    if(eval('return('.$this->show_if.');') != true) $this->nopaint = true;
+
+    if(eval('return(' . $this->show_if . ');') != true) $this->nopaint = true;
+    else unset($this->nopaint);
   }
   
   function __flush(&$_)

@@ -299,7 +299,7 @@ altro documento.
 4.1 Proprietà
 
   {filling} (s|p|d)           Riempimento (s)tatico,(p)rogressivo o (d)inamico. 
-  {flow} (v|h)                Flusso di riempimento (v)erticale o (o)rizzontale.
+  {flow} (v|h)                Flusso di riempimento (v)erticale o (h)orizzontale.
   {cellSize} (number)         Dimensione della cella in pixel   
   {cellsByRow} (number)       Numero di celle per riga  
   {incremental} (true|false)  Attiva il caricmento progressivo

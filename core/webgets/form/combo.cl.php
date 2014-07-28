@@ -6,7 +6,9 @@ class form_combo
     'class',
     'values',
     'labels',
-    'default'
+    'default',
+    'wstyle',   // da implementare su tutti i webget compositi
+    'wclass'    // da implementare su tutti i webget compositi
   );
     
   function __define(&$_)
@@ -28,8 +30,10 @@ class form_combo
     
     $w_class         = 'class="w02A0 '
                      . $_->ROOT->boxing($this->boxing)
+                     . $_->ROOT->style_registry_add($this->wstyle)
+                     . $this->wclass
                      . '" ';
-                     
+
     $css_style       = $_->ROOT->style_registry_add($this->style)
                      . $this->class;
     

@@ -9,7 +9,8 @@ class base_label
     'caption',
     'default',
     'valign',
-    'halign'
+    'halign',
+    'send_field'
   );
 
   function __define(&$_)
@@ -26,8 +27,10 @@ class base_label
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
 
-        /* if no record on server resultset send fields definition to client */
-        if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
+        /* if no record on server resultset or forcing sending field to client 
+         * send fields definition to client */
+        if(!$_->webgets[$param[0]]->current_record || isset($this->send_field))
+          $cfields[] = $field[$key];
 
         $field[$key] = &array_get_nested
                        ($_->webgets[$param[0]]->current_record, $param[1]);           

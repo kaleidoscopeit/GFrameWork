@@ -98,5 +98,6 @@ $_.js.reg['02B0'] = {
   },
 
   fs : function(n) {
+    console.log('aaaa');
   }
 }; 

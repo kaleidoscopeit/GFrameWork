@@ -29,7 +29,7 @@
 
 
 //?webget.sample_code.code
-
+/*
 <pack:stack id="stack">
 		<pack:stackelm>
 			<pack:vlayout>
@@ -56,6 +56,6 @@
 				</pack:vlaycell>
 			</pack:vlayout>
 		</pack:stackelm>
-		
+*/		
 //?webget.sample_codae.code
 ?>

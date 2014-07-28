@@ -5,7 +5,7 @@ var $_={
   lib:{},
   js:{reg:[]},
   tmp:{jsBindsFiFo:[],jsBindsNS:[]},
-  webgets:[],
+  webgets:{},
   
   /* main loop */
   _wInit:function(w,p,n){
@@ -101,6 +101,14 @@ var $_={
     return true;
   },
 
+  // TODO : this function is not recursive
+  objConcat:function(o1,o2) {
+    for (var key in o2) {
+      o1[key] = o2[key];
+    }
+    return o1;
+  },
+
   inArray:function(n,h){
     for(var i=0;i<h.length;i++)if(n==h[i])return i;
     return -1;
@@ -155,6 +163,7 @@ var $_={
       // returns the call status
       if(cbk==null) return o[0];      
       else cbk(b,o[0]);
+      return true;
     }
     
     var x = this.ajax({
@@ -177,7 +186,7 @@ var $_={
     xhr.send(null);
     try{eval('window.'+xhr.responseText);} 
     catch(e){
-      alert(xhr.responseText);er=1;
+      console.log(xhr.responseText);er=1;
       throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText);
     }
     if(!er){this.tmp.jsimport[l]=1;return true;}
@@ -225,19 +234,19 @@ var $_={
       }
    
       else var p=args.post;
+      x.setRequestHeader("Content-length", p.length);  
     }
     
     else if(reqt == "GET"){
       x.setRequestHeader('Content-Type', 'application/text');      
-      if(typeof args.get == 'object'){
+/*      if(typeof args.get == 'object'){
         var p=[];
         $$.each(args.get, function(v,k){p.push(k+'='+v);});
         p.push.join('&');
       }   
-      else var p=args.get; 
+      else var p=args.get;*/ 
     }
-    
-    x.setRequestHeader("Content-length", p.length);    
+  
     x.send(p);
     if(cbks) return true
     else return x;
@@ -320,11 +329,15 @@ var openView=function(v){
 };
 
 /* return a webget by name */
-var _w=function(w){with($$){
-	for(var i=0;i<webgets.length;i++)
-    if(webgets[i].id == w)
-    	return webgets[i];
-	
+var _w=function(w,r){with($$){
+  $$.each(webgets, function(o,v){
+    for(var i=0;i<o.length;i++)
+      if(o[i].id == w)
+        w = o[i];
+
+  })
+
+  if(typeof w == 'object') return w;
 	return false;
 }};
 
@@ -354,7 +367,7 @@ var getParams = function() {
   var p = {};
   for(var j=0; j<pa.length; j++) {
     var kv = pa[j].split("=");
-    p[kv[0]] = kv[1];
+    p[kv[0]] = kv.length > 1 ? decodeURIComponent(kv[1]) : "";
   }
   return p;
   

@@ -1,37 +1,54 @@
 $_.js.reg['0290']={
-  a:[],
-  f:['onchange'],
+  a:['field', 'eval_field', 'eval_field_command'],
+  f:['change', 'define', 'flush'],
   b:function(n){with(n){
+          
     n.lever=children[2].children[0];
     n.input=children[0];
     n.mask=children[3];
     mask.n=n;
     n.value=input.value;
+
+    n.set=function(v){
+      if(v===null)return;
+      v=(v?1:0)
+      input.value=v;
+      n.upd();
+    };
+    
+    n.upd=function(){
+      if(input.value==0)lever.className="";  
+      else lever.className="w0291";
+      this.value=input.value;
+      this.dispatchEvent(this.change);    
+    };
+    
     mask.onmousedown=function(){
       this.n.input.focus();
-      return false;
+      return false;      
     };
     
     mask.onmouseup=function(){
-      this.n.set('on') 
+      if(input.value==1)input.value=0;
+      else input.value=1;
+      this.n.upd() 
     };
     
     input.onkeypress=function(){
       return false;
     };
-    
-    n.set = function(status){with(this){
-      if(input.value==1){
-        input.value=0;
-        lever.className="";  
-      } else {
-        input.value=1;
-        lever.className="w0291";
-      }
 
-      this.value=input.value;
-      this.onchange();
-    }}
+		n.refresh=function(){
+			$$.jsimport('system.phpjs.vsprintf');
+      var fs = $$.js.reg['0310'].getfields(n.eval_field);
+			if(fs !== false) eval(vsprintf(n.eval_field_command,fs));
+			
+			var fs = $$.js.reg['0310'].getfields(n.field);
+			if(fs !== false) n.set(fs[0]);
+		};
+		n.dispatchEvent(n.define);
   }},
-  fs:function(n){}
+  fs : function(n){
+    n.dispatchEvent(n.flush);
+  }
 };
