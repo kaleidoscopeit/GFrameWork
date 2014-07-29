@@ -10,8 +10,8 @@ $_.js.reg['0290']={
     n.value=input.value;
 
     n.set=function(v){
-      if(v===null)return;
-      v=(v?1:0)
+      if(v===null || typeof v == 'string')return;
+      v=(v?1:0);
       input.value=v;
       n.upd();
     };
@@ -20,7 +20,6 @@ $_.js.reg['0290']={
       if(input.value==0)lever.className="";  
       else lever.className="w0291";
       this.value=input.value;
-      this.dispatchEvent(this.change);    
     };
     
     mask.onmousedown=function(){
@@ -31,7 +30,8 @@ $_.js.reg['0290']={
     mask.onmouseup=function(){
       if(input.value==1)input.value=0;
       else input.value=1;
-      this.n.upd() 
+      this.n.upd();
+      mask.n.dispatchEvent(mask.n.change);
     };
     
     input.onkeypress=function(){

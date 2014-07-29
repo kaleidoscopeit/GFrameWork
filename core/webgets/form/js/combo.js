@@ -1,9 +1,9 @@
 $_.js.reg['02A0'] = {
   a : [],
-  f : [],
+	f:['define','flush'],
   b : function(n) {
-    n.children[0].wstyle=n.style;
-    n = n.children[0];
+    n.firstChild.wstyle=n.style;
+    n = n.firstChild;
 
     with (n) {
       n.items_insert = function(v, l, p) {
@@ -82,7 +82,9 @@ $_.js.reg['02A0'] = {
         }
       };
     }
+		n.dispatchEvent(n.parentElement.define);
   },
   fs : function(n) {
+	  n.dispatchEvent(n.flush);
   }
 }; 

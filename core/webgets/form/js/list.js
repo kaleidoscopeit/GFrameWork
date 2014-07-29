@@ -1,7 +1,7 @@
 $_.js.reg['02B0'] = {
-  a : ['optclass'],
-  f : [],
-  b : function(n) {
+  a:['optclass','field','field_format','eval_field','eval_field_command'],
+	f:['define','flush','cut','paste'],
+  b:function(n) {
     n = n.firstChild;
 
     with (n) {
@@ -27,12 +27,14 @@ $_.js.reg['02B0'] = {
       },
       
       n._refresh = function(obj) {
+        $_.jsimport('system.phpjs.vsprintf');
         this.values = [];
         this.captions = [];
         $_.each(this.options, function(o) {
           p = o.parentNode;
           p.values.push(o.value);
           p.captions.push(o.text);
+          o.dispatchEvent(o.update);
         });
       },
       
@@ -43,10 +45,7 @@ $_.js.reg['02B0'] = {
           out.push(opt.shift());
         }
         this._refresh();
-        try {
-          oncut();
-        } catch(e) {
-        };
+        n.dispatchEvent(n.parentElement.cut);
         return out;
       },
       
@@ -54,11 +53,10 @@ $_.js.reg['02B0'] = {
         while (o[0])
           this.add(o.shift());          
         this._refresh();
-        try {
-          onpaste();
-        } catch(e) {
-        };
-      }, n.clear = function() {
+        n.dispatchEvent(n.parentElement.paste);
+      },
+      
+      n.clear = function() {
         while (this.length != 0)
         this.remove(0);
       },
@@ -73,13 +71,23 @@ $_.js.reg['02B0'] = {
         });
         this._refresh();
         return true;
-      }, n.item_push = function(v, l) {
+      },
+      
+      n.item_push = function(v, l) {
         var no = $_.cre('option');
+        no.update = new Event('update');
+        $$.bindEvent(no,'update', function() {
+          $_.jsimport('system.phpjs.vsprintf');
+          eval(vsprintf(this.parentElement.getAttribute('item_eval_command'),
+            this.value));              
+        });
         no.className = n.parentNode.optclass;
         n.appendChild(no);
         no.value = v;
         no.text = ( l ? l : v);
-      }, n.sort = function() {
+      },
+      
+      n.sort = function() {
         var out = [], i, opt = this.options;
         for ( i = 0; i < opt.length; i++)
           out.push(opt[i]);
@@ -92,12 +100,15 @@ $_.js.reg['02B0'] = {
           return z;
         });
         this.clear();
-        this.paste(out);
+        while (out[0])
+          this.add(out.shift());          
+        this._refresh();
       };
     }
+		n.dispatchEvent(n.parentElement.define);
   },
 
   fs : function(n) {
-    console.log('aaaa');
+	  n.dispatchEvent(n.flush);
   }
 }; 

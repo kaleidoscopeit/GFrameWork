@@ -130,3 +130,26 @@ p :	Position where the new item will be put, all remaining items will be shifted
   
   
   .remove_item      : remove an item
+  
+  
+  
+  
+  
+Proposed new properties 2014-07-29 :
+
+
+      <form:list
+       id="device_from"
+       style="border-width:0px;"
+       item_class="caption-item-label"
+       item_style="padding:5px;text-align:center;
+        border-bottom:1px solid grey"
+       source_type="rs"
+       labels_field=""
+       labels_field_format=""
+       values_field=""       
+       item_eval_field=""
+       item_eval_field_command="" >
+
+       <base:label field="">       
+      </form:list>

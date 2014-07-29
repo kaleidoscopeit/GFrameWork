@@ -4,6 +4,8 @@ class form_combo
   public $req_attribs = array(
     'style',
     'class',
+    'field',
+    'field_format',
     'values',
     'labels',
     'default',
@@ -27,7 +29,8 @@ class form_combo
       if (count($this->items['labels']) != count($this->items['values']))
           $this->items['labels'] = $this->items['values'];
     }
-    
+ 
+    /* builds syles */   
     $w_class         = 'class="w02A0 '
                      . $_->ROOT->boxing($this->boxing)
                      . $_->ROOT->style_registry_add($this->wstyle)
@@ -37,7 +40,7 @@ class form_combo
     $css_style       = $_->ROOT->style_registry_add($this->style)
                      . $this->class;
     
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+    if($css_style!="") $css_style = 'class="' . $css_style . '" ';
     
     $_->buffer[] = '<div wid="02A0" ' . $w_class . '>';
 

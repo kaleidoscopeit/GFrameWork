@@ -1,0 +1,2 @@
+La funzione set accetta solo valori numerici o booleiani ovvero 1 o 0 o true
+o false. 

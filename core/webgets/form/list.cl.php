@@ -6,9 +6,11 @@ class form_list
     'class',
     'field',
     'field_format',
-    'labels',
     'values',
+    'labels',
     'default',
+    'wstyle',
+    'wclass',
     'item_style',
     'item_class'
   );
@@ -25,29 +27,35 @@ class form_list
     if ($this->values) {
       $this->items['values'] = explode('|', $this->values);
       $this->items['labels'] = explode('|', $this->labels);
+      
       if (count($this->items['labels']) != count($this->items['values']))
-        $this->items['labels'] = $this->items['values'];
+          $this->items['labels'] = $this->items['values'];
     }
 
     /* builds syles */
-    $wclass    = 'class="w02B0 '.$_->ROOT->boxing($this->boxing).'" ';
-                 
-    $css_style = $_->ROOT->style_registry_add($this->style)
-               . $this->class;
+    $w_class         = 'class="w02B0 '
+                     . $_->ROOT->boxing($this->boxing)
+                     . $_->ROOT->style_registry_add($this->wstyle)
+                     . $this->wclass
+                     . '" ';
 
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+    /* -- */
+    $css_style       = $_->ROOT->style_registry_add($this->style)
+                     . $this->class;
+
+    if($css_style!="") $css_style = 'class="' . $css_style . '" ';
 
 
+    /* -- */
     $item_style = $_->ROOT->style_registry_add($this->item_style)
                 . $this->item_class;
                   
-    if($item_style!="") $item_style = 'class="'.$item_style.'" ';
-
+    if($item_style!="") $item_style = 'class="' . $item_style . '" ';
 
     /* builds code */    
-    $_->buffer[] = '<div wid="02B0" ' . $wclass . ' opt' . $item_style . '>'
+    $_->buffer[] = '<div wid="02B0" ' . $w_class . ' opt' . $item_style . '>'
                  . '<select '
-                 . $_->ROOT->format_html_attributes($this).' '
+                 . $_->ROOT->format_html_attributes($this) . ' '
                  . 'multiple ' . $css_style . '>';
 
 
