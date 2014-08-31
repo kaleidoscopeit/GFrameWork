@@ -315,7 +315,7 @@ class base_htmlview
     global $_;
     $_->system_error_queue[] = 
       '<div style="text-align:center;border:5px solid red;'.
-      'background-color:pink;'.$this->boxing('50%,50%,center,middle,root').'">'.
+      'background-color:pink;" class="'.$this->boxing('50%,50%').'">'.
       '<div align="center" valign="top" style="position:absolute;top:0;'.
       'right:0;left:0;bottom:50px;overflow:auto;"><br>ERROR!!<br><br>'.
       $message.'</div>'.

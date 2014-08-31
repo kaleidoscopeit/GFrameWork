@@ -5,6 +5,7 @@ class reports_fpdf_document
     'geometry',
     'offset',
     'author',
+    'creator',
     'title',
     'fonts',
  
@@ -40,6 +41,10 @@ class reports_fpdf_document
     
   function __flush (&$_)  
   {
+    $this->fpdf->setAuthor($this->author,1);
+    $this->fpdf->setTitle($this->title,1);
+    $this->fpdf->setCreator($this->creator,1);
+    
     /* default offset if not specified */
     $this->offset = explode(',', $this->offset);
     if(!isset($this->offset[0]))$this->offset[0] = '10';

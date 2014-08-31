@@ -1,6 +1,6 @@
 $_.js.reg['02B0'] = {
   a:['optclass','field','field_format','eval_field','eval_field_command'],
-	f:['define','flush','cut','paste'],
+	f:['define','flush','cut','paste','update'],
   b:function(n) {
     n = n.firstChild;
 
@@ -34,7 +34,7 @@ $_.js.reg['02B0'] = {
           p = o.parentNode;
           p.values.push(o.value);
           p.captions.push(o.text);
-          o.dispatchEvent(o.update);
+          o.dispatchEvent(n.parentElement.update);
         });
       },
       
@@ -78,8 +78,9 @@ $_.js.reg['02B0'] = {
         no.update = new Event('update');
         $$.bindEvent(no,'update', function() {
           $_.jsimport('system.phpjs.vsprintf');
-          eval(vsprintf(this.parentElement.getAttribute('item_eval_command'),
-            this.value));              
+          if(this.parentElement.hasAttribute('item_eval_command'))
+            eval(vsprintf(this.parentElement.getAttribute('item_eval_command')),
+              this.value);              
         });
         no.className = n.parentNode.optclass;
         n.appendChild(no);
@@ -109,6 +110,7 @@ $_.js.reg['02B0'] = {
   },
 
   fs : function(n) {
+    n.firstChild._refresh();
 	  n.dispatchEvent(n.flush);
   }
 }; 
