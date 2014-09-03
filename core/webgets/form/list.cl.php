@@ -52,9 +52,21 @@ class form_list
                   
     if($item_style!="") $item_style = 'class="' . $item_style . '" ';
 
+    /* builds special webget attributes list to be passed at the 'div' which
+     * acts as envelope */     
+/*    $envelope_attriubtes->attributes = array(
+      'define'        => $this->attributes['ondefine'],
+      'contentchange' => $this->attributes['oncontentchange'],
+      'ready'         => $this->attributes['ready'],
+    );
+    
+    unset($this->attributes['ondefine']);
+    unset($this->attributes['oncontentchange']);
+    unset($this->attributes['ready']);*/
+     
     /* builds code */    
-    $_->buffer[] = '<div wid="02B0" ' . $w_class . ' opt' . $item_style . '>'
-                 . '<select '
+    $_->buffer[] = '<div  ' . $w_class . '>'
+                 . '<select wid="02B0" opt' . $item_style 
                  . $_->ROOT->format_html_attributes($this) . ' '
                  . 'multiple ' . $css_style . '>';
 

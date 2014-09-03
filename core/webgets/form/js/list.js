@@ -1,8 +1,8 @@
 $_.js.reg['02B0'] = {
   a:['optclass','field','field_format','eval_field','eval_field_command'],
-	f:['define','flush','cut','paste','update'],
+	f:['ready','cut','paste','update','contentchange'],
   b:function(n) {
-    n = n.firstChild;
+//    n = n.firstChild;
 
     with (n) {
 
@@ -34,7 +34,7 @@ $_.js.reg['02B0'] = {
           p = o.parentNode;
           p.values.push(o.value);
           p.captions.push(o.text);
-          o.dispatchEvent(n.parentElement.update);
+          o.dispatchEvent(n.update);
         });
       },
       
@@ -45,20 +45,21 @@ $_.js.reg['02B0'] = {
           out.push(opt.shift());
         }
         this._refresh();
-        n.dispatchEvent(n.parentElement.cut);
+        n.dispatchEvent(n.contentchange);
         return out;
       },
       
       n.paste = function(o) {
         while (o[0])
-          this.add(o.shift());          
+          this.add(o.shift());
         this._refresh();
-        n.dispatchEvent(n.parentElement.paste);
+        n.dispatchEvent(n.contentchange);
       },
       
       n.clear = function() {
         while (this.length != 0)
         this.remove(0);
+        n.dispatchEvent(n.contentchange);
       },
       
       n.populate = function(v) {
@@ -82,7 +83,7 @@ $_.js.reg['02B0'] = {
             eval(vsprintf(this.parentElement.getAttribute('item_eval_command')),
               this.value);              
         });
-        no.className = n.parentNode.optclass;
+        no.className = n.optclass;
         n.appendChild(no);
         no.value = v;
         no.text = ( l ? l : v);
@@ -106,11 +107,10 @@ $_.js.reg['02B0'] = {
         this._refresh();
       };
     }
-		n.dispatchEvent(n.parentElement.define);
   },
 
   fs : function(n) {
-    n.firstChild._refresh();
-	  n.dispatchEvent(n.flush);
+    n._refresh();
+	  n.dispatchEvent(n.ready);
   }
 }; 

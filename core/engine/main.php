@@ -83,7 +83,9 @@ class _
         $flags       = isset($_POST['h']) ? $_POST['h'] : '';
         $path        = $this->CALL_URI;
         $response[0] = $this->call($path, $response[1], $flags);
-        echo           json_encode($response);
+        echo           json_encode($response,JSON_PARTIAL_OUTPUT_ON_ERROR);
+
+        //echo JSON_ERROR_UNSUPPORTED_TYPE;
         break;
         
       case 'lib' :
@@ -207,7 +209,7 @@ class _
     /* call the RPC */
     $rpc_status = $function($this, $_STDIN, $rpc_response);
 
-    /* FAILURE BEHAVIOUR */
+    /* ON FAILURE BEHAVIOUR */
 
     /* in case of FAILURE do following dependig by choosen output option */
     if ($rpc_status == false) {
@@ -218,20 +220,21 @@ class _
 
       /* try to use default error dialog */
       if (in_array('dialog',$options) && $_->ROOT)
-        $_->ROOT->system_error(print_r($rpc_response['error']));
+        $_->ROOT->system_error(print_r($rpc_response['STDERR']));
 
       /* else prints the error to the stdout (default behaviour)*/          
-      else print_r($rpc_response['error']);
+      //else print_r($rpc_response['STDERR']);
     }
 
 
     /* OUTPUT OPTIONS */
-
+    
     /* put results in a custom labeled array */    
     if (in_array('label',$options)) {
       $label = array_search('label',$options);
       $output_buffer[$options[$label+1]] = $rpc_response;
     }
+
 
     /* put results in a labeled array with the class name as label */      
     if (in_array('path',$options))

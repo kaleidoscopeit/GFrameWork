@@ -1,0 +1,64 @@
+MANUALE DI RIFERIMENTO
+CHIAMATE A PROCEDURE REMOTE (RPCs)
+INDICE
+
+
+1.  INTRODUZIONE
+
+  1.1  Descrizione
+  1.2  Caratteristiche
+  1.x  Contesto (sistema, utente)
+  1.x  Overload (da implementare)
+  
+X.  STRUTTURA
+
+  X.x  Introduzione
+  X.x  Parametri in ingresso
+  X.x  Paramteri in uscita
+  X.x  Codice operativo
+
+   
+X.  PUNTI DI ARRESTO
+
+  X.x  Introduzione
+  X.x  Esempi di punti di arresto
+    X.x.x  predefinito
+    X.x.x  database
+      
+      
+X.  NIDIFICAZIONE
+
+  X.x  Introduzione
+  X.x  Esempio di nidificazione
+  X.x  Database : riutilizzo della connessione
+  X.x  Database : transazioni
+
+
+X.  ESEMPI DI UTILIZZO
+
+  X.x  Server
+  X.x  Client
+  
+  
+X.  CONVENZIONI E STILE DI PROGRAMMAZIONE
+
+  X.x  Formattazione della RPC
+  X.x  Formattazione del codice operativo
+  X.x  Valore di ritorno
+  X.x  Codici di errore
+  
+
+X.  SUGGERIMENTI
+
+  X.x  Database : log delle queries 
+     
+      /* enable mysql logging */ 
+      mysql_query("SET global log_output = 'FILE';");
+      mysql_query("SET global general_log_file='/tmp/mysql_general.log';");
+      mysql_query("SET global general_log = 1;");
+      
+      ...
+      
+      mysql_query("SET global general_log = 0;");
+      
+      

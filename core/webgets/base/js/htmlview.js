@@ -46,6 +46,7 @@ var $_={
     if(typeof this.js.reg[w.wid]=='undefined')return false; 
     var r=this.js.reg[w.wid],a,f;
 
+    /* properties */
     for(a in r.a)w[r.a[a]]=w.getAttribute(r.a[a]);
 
     for(f in r.f){
@@ -61,7 +62,7 @@ var $_={
   // space saving wrappers for common functions
   getAttribute:function(n,a){
     if(n.attributes)return n.getAttribute(a);
-    return false},
+    return false;},
   cre:function(n){return document.createElement(n);},
   gei:function(n){return document.getElementById(n);},
 
