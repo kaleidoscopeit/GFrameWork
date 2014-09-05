@@ -11,8 +11,8 @@ $_.js.reg['0290']={
 
     n.set=function(v){
       if(v===null || typeof v == 'string')return;
-      v=(v?1:0);
-      input.value=v;
+      v=(v>0?1:0);
+      input.value=v;      
       n.upd();
     };
     

@@ -2,13 +2,13 @@ $_.js.reg['02A0'] = {
   a : [],
 	f:['define','flush'],
   b : function(n) {
-    n.firstChild.wstyle=n.style;
-    n = n.firstChild;
+    n.firstElementChild.wstyle=n.style;
+    n = n.firstElementChild;
 
     with (n) {
       n.items_insert = function(v, l, p) {
         var no = n.options;
-        var nl = n.length;
+        var nl = n.options.length;
         var se = no.selectedIndex;
         p = p ? p : nl + '';
         if (p.search(/ac/i) > -1)
@@ -33,7 +33,7 @@ $_.js.reg['02A0'] = {
       
       n.items_remove = function(i) {
         with (this) {
-          if (n.length == 0)
+          if (n.options.length == 0)
             return 0;
           // no items -> returns false
 
@@ -50,7 +50,7 @@ $_.js.reg['02A0'] = {
               }
             }
 
-          if (n.length > i || n.length < 0)
+          if (n.options.length > i || n.options.length < 0)
             return 0;
           // if there's not index match -> returns false
           return 0;
@@ -60,7 +60,7 @@ $_.js.reg['02A0'] = {
 
       n.clear = function() {
         while (this.length != 0)
-        this.items_remove(0);
+          this.remove(0);
       },
       
       n.populate = function(v) {

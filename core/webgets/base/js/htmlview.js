@@ -139,14 +139,14 @@ var $_={
       if(f>-1)h.splice(f,1);
       h=h.join(',');
       p+=h?'&h='+h:'';
-    }  
+    }
 
     var callback = function(x){
       try{o=eval('(' + x.responseText + ')');}
       catch(e){
         alert('Parsing Call response failed (' + m + ') : '+x.responseText);
         return false;}
-  
+//console.log(o);  
       // if response is a string put that in the default subitem '0'
       for(var i in o[1])c++;if(c==1)o[1]={0:o[1]};
   
@@ -165,7 +165,7 @@ var $_={
       if(cbk==null) return o[0];      
       else cbk(b,o[0]);
       return true;
-    }
+    };
     
     var x = this.ajax({
       url:'?call/'+m.replace(/\./g,'/'),
@@ -211,7 +211,7 @@ var $_={
     };
     
     x.send(null);
-    return true
+    return true;
   },
 
   /* aribtrary ajax request */
@@ -224,7 +224,7 @@ var $_={
     if(cbks) x.onreadystatechange = function() {
       if(x.readyState == 4 && x.status == 200)
         args.callback(x);             
-    }
+    };
    
     if(reqt == "POST"){
       x.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -249,7 +249,7 @@ var $_={
     }
   
     x.send(p);
-    if(cbks) return true
+    if(cbks) return true;
     else return x;
   },
   
@@ -336,7 +336,7 @@ var _w=function(w,r){with($$){
       if(o[i].id == w)
         w = o[i];
 
-  })
+  });
 
   if(typeof w == 'object') return w;
 	return false;
