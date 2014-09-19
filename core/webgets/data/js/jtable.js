@@ -198,6 +198,11 @@ $$.js.reg['0310']={
     n.prefillExposedArea = function(){
       
     };
+
+    /* sort by comma separated fields name */
+    n.sort = function(f){
+      
+    };
     
     n.dispatchEvent(n.define);
   },

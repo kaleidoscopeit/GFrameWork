@@ -146,7 +146,7 @@ var $_={
       catch(e){
         alert('Parsing Call response failed (' + m + ') : '+x.responseText);
         return false;}
-//console.log(o);  
+
       // if response is a string put that in the default subitem '0'
       for(var i in o[1])c++;if(c==1)o[1]={0:o[1]};
   
