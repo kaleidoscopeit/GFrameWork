@@ -100,6 +100,7 @@ var $_={
     return true;
   },
 
+ 
   inArray:function(n,h){
     for(var i=0;i<h.length;i++)if(n==h[i])return i;
     return -1;
