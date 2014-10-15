@@ -11,8 +11,7 @@ class reports_fpdf_body
     'fill_color',
     'font_family',
     'font_style',
-    'font_size',
-    'line_width'
+    'font_size'
   );
   
   function __define(&$_)
@@ -37,16 +36,9 @@ class reports_fpdf_body
   function __flush(&$_)  
   {
     /* apply local styles */
-    $_->ROOT->set_local_style('text_color',@$this->text_color);
-    $_->ROOT->set_local_style('draw_color',@$this->draw_color);
-    $_->ROOT->set_local_style('fill_color',@$this->fill_color);
-    $_->ROOT->set_local_style('font_family',@$this->font_family);
-    $_->ROOT->set_local_style('font_style',@$this->font_style);
-    $_->ROOT->set_local_style('font_size',@$this->font_size);
-    $_->ROOT->set_local_style('line_width',@$this->line_width);
+    $_->ROOT->set_local_style($this);
     
 		/* Setup local coordinates */
-
     $this->left += $this->parent->left;  
     $this->top  += $this->parent->top;
 
@@ -68,7 +60,7 @@ class reports_fpdf_body
     $rec_pointer  = 0;
 
     /* Starts page/rows/columns iterator */
-    while($pag_pointer < $num_pages){    
+    while($pag_pointer < $num_pages){
       $this->parent->NewPage($_);           // Starts a new page
       $cel_pointer       = 0;               // reset record pointer
       $this->offset_y    = $this->top;      // reset subcell reference offset y
@@ -92,14 +84,8 @@ class reports_fpdf_body
       $pag_pointer++;                       // set next page
     }
 
-    // restore previous styles
-    $_->ROOT->restore_style('text_color');
-    $_->ROOT->restore_style('draw_color');
-    $_->ROOT->restore_style('fill_color');
-    $_->ROOT->restore_style('font_family');
-    $_->ROOT->restore_style('font_style');
-    $_->ROOT->restore_style('font_size');
-    $_->ROOT->restore_style('line_width');
+    /* restore parent styles */
+    $_->ROOT->restore_style();
   }
 }
 ?>

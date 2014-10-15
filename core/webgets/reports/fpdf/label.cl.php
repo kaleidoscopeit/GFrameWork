@@ -2,10 +2,10 @@
 class reports_fpdf_label
 {
   public $req_attribs = array(
-    'geometry',
-    'text_color',
-    'draw_color',
-    'fill_color',
+    'geometry',                                                                    // position
+    'text_color',                                                                  // foreground text color
+    'draw_color',                                                                  // border color
+    'fill_color',                                                                  // line background color
     'font_family',
     'font_style',
     'font_size',
@@ -20,7 +20,7 @@ class reports_fpdf_label
   
   function __define(&$_)
   {
-    if(!isset($this->rotation))$this->rotation       = 0;
+    if(!isset($this->rotation))$this->rotation = 0;
     
     // webget geometry
     $this->geometry = explode(',',$this->geometry);
@@ -31,17 +31,17 @@ class reports_fpdf_label
   }
   
   
-  function __flush (&$_)  
+  function __flush (&$_)
   {
     /* apply local styles */
-    $_->ROOT->set_local_style('text_color',@$this->text_color);
-    $_->ROOT->set_local_style('draw_color',@$this->draw_color);
-    $_->ROOT->set_local_style('fill_color',@$this->fill_color);
-    $_->ROOT->set_local_style('font_family',@$this->font_family);
-    $_->ROOT->set_local_style('font_style',@$this->font_style);
-    $_->ROOT->set_local_style('font_size',@$this->font_size);
-    $_->ROOT->set_local_style('line_width',@$this->line_width);
-    $_->ROOT->update_styles();
+    $_->ROOT->set_local_style($this);
+
+    /* sets locally the fill color */
+    if(isset($this->fill_color)){
+      $fill_color = explode(',', $this->fill_color);
+      $_->ROOT->fpdf->SetFillColor($fill_color[0], @$fill_color[1],
+                                @$fill_color[2]);
+    }
     
     /* set caption depending by the presence of 'field' property */
     if(isset($this->field)){
@@ -64,7 +64,7 @@ class reports_fpdf_label
   	$top	= $this->top  + $this->parent->top;
     $_->ROOT->fpdf->SetXY($left,$top);                                          
 
-    /* sets toration */
+    /* sets rotation */
     if($this->rotation != 0) $_->ROOT->fpdf->Rotate($this->rotation);
 
     /* paints multicell label */
@@ -72,21 +72,14 @@ class reports_fpdf_label
       $this->width,
       $this->height,
       utf8_decode($caption),
-      ($_->ROOT->get_local_style('line_width')>0 ? '1' : '0'),
+      (@$this->line_width>0 ? '1' : '0'),
       $this->align,
-      (isset($this->fill_color) ? true : false)
+      (isset($this->fill_color) ? '1' : '0')
     );
 
-    // restore previous styles
-    $_->ROOT->restore_style('text_color');
-    $_->ROOT->restore_style('draw_color');
-    $_->ROOT->restore_style('fill_color');
-    $_->ROOT->restore_style('font_family');
-    $_->ROOT->restore_style('font_style');
-    $_->ROOT->restore_style('font_size');
-    $_->ROOT->restore_style('line_width');
+    /* restore parent styles, Void locally set styles */
+    $_->ROOT->restore_style();
     $_->ROOT->fpdf->Rotate(0);
-    $_->ROOT->update_styles();
   }
 }
 ?>

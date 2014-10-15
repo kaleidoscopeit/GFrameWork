@@ -1,0 +1,41 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<reports_fpdf:document
+    fonts="FreeSans,FreeSans B,FreeSans I">
+    
+  <reports_fpdf:chapter
+      font_family="FreeSans"
+      font_style="B"
+      font_size="12">
+    <reports_fpdf:mask>
+        
+  		<reports_fpdf:label         
+  		    geometry="10,10,29,4"
+  		    align="C"
+          caption="This label has inherited its font style."/>
+      <reports_fpdf:label         
+          geometry="50,10,29,4"
+          align="C"
+          font_size="8"
+          caption="This label has inherited its font style, but not the size"/>
+      
+      <!-- groups let to define a nested styled environment -->
+      <reports_fpdf:group
+          geometry="0,20"
+          font_style="I">
+	      <reports_fpdf:label         
+	          geometry="10,10,29,4"
+	          align="C"
+	          caption="This label has inherited its font style."/>
+	      <reports_fpdf:label         
+	          geometry="50,10,29,4"
+	          align="C"
+	          font_size="8"
+	          caption="This label has inherited its font style, but not the size"/>
+          
+      </reports_fpdf:group>
+    </reports_fpdf:mask>
+    
+    <reports_fpdf:body/>
+	</reports_fpdf:chapter>
+</reports_fpdf:document>

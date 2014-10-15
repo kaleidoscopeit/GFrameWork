@@ -1,0 +1,21 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<reports_fpdf:document
+    fonts="petitformalscript"
+    fontpath="fonts">
+    
+  <reports_fpdf:chapter
+      font_family="petitformalscript"
+      font_size="12">
+    <reports_fpdf:mask>
+        
+      <reports_fpdf:label         
+          geometry="00,10,200"
+          align="C"
+          caption="This report uses fonts from a custom directory in the current project."/>
+
+      </reports_fpdf:mask>
+    
+    <reports_fpdf:body/>
+  </reports_fpdf:chapter>
+</reports_fpdf:document>

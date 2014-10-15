@@ -20,10 +20,7 @@ class reports_fpdf_line
   function __flush (&$_)  
   {
     /* apply local styles */
-    $_->ROOT->set_local_style('draw_color',@$this->draw_color);
-    $_->ROOT->set_local_style('fill_color',@$this->fill_color);
-    $_->ROOT->set_local_style('line_width',@$this->line_width);
-    $_->ROOT->update_styles();
+    $_->ROOT->set_local_style($this);
     
     /* setup local coordinates */
     $start_x = $this->start_x + $this->parent->left;
@@ -35,10 +32,7 @@ class reports_fpdf_line
     $_->ROOT->fpdf->Line($start_x, $start_y, $end_x, $end_y);
 
     /* restore parent styles */
-    $_->ROOT->restore_style('draw_color');
-    $_->ROOT->restore_style('fill_color');
-    $_->ROOT->restore_style('line_width');
-    $_->ROOT->update_styles();
+    $_->ROOT->restore_style();
   }
 }
 ?>

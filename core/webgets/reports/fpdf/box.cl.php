@@ -21,24 +21,18 @@ class reports_fpdf_box
 	
 	function __flush (&$_)	
 	{
-		/* apply local styles */
-    $_->ROOT->set_local_style('draw_color',$this->draw_color);
-    $_->ROOT->set_local_style('fill_color',$this->fill_color);
-    $_->ROOT->set_local_style('line_width',$this->line_width);
-    $_->ROOT->update_styles();
-    
+    /* apply local styles */
+    $_->ROOT->set_local_style($this, array('fill_color'));
+
     /* setup local coordinates */
 		$left	= $this->left + $this->parent->left;
 		$top	= $this->top  + $this->parent->top;
 
 		/* paint the rectangle */
-		$_->ROOT->fpdf->Rect($left,$top,$this->width,$this->height,$this->style);
+		$_->ROOT->fpdf->Rect($left,$top,$this->width,$this->height,@$this->style);
 
-		/* restore parent styles */
-		$_->ROOT->restore_style('draw_color');
-		$_->ROOT->restore_style('fill_color');
-		$_->ROOT->restore_style('line_width');
-    $_->ROOT->update_styles();
+    /* restore parent styles */
+    $_->ROOT->restore_style(array('fill_color'));
 	}
 }
 ?>

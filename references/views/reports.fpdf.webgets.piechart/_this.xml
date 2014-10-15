@@ -1,0 +1,29 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<reports_fpdf:document
+    fonts="FreeSans,FreeSans B,FreeSans I"
+    offset="0,0">
+    
+  <reports_fpdf:chapter
+      font_family="FreeSans"
+      font_style="B"
+      font_size="12">
+    <reports_fpdf:mask>
+        
+      <reports_fpdf:label         
+          geometry="0,10,200,4"
+          align="C"
+          caption="This is a simple pie-chart"/>
+      <reports_fpdf:piechart
+          id="mypie" 
+          geometry="100,100,100"
+          line_width="0.1"
+          font_size="8"
+          labels_position="1.1"/>
+      
+    </reports_fpdf:mask>
+    
+    <reports_fpdf:body/>
+    
+  </reports_fpdf:chapter>
+</reports_fpdf:document>
