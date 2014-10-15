@@ -1,5 +1,5 @@
 var $_={
-  copyright:"(c)2005-2012 Gabriele Rossetti",
+  copyright:"(c)2005-2014 Gabriele Rossetti",
   licence:"GPL",
   env:{},
   lib:{},
