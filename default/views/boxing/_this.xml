@@ -2,8 +2,7 @@
 
 <base:htmlview
 	title="G-Framework Web3.0 Toolkit"
-	css="dialog captions"
-	id="boxing">
+	css="dialog captions">
 	<pack:vlayout>
 		<pack:vlaycell height="50px" style="background-color:#6A6A6A;">
 			<base:label

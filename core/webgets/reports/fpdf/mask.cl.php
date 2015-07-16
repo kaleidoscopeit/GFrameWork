@@ -11,43 +11,46 @@ class reports_fpdf_mask
     'font_size',
     'line_width'
   );
-  
+
   function __define(&$_)
   {
-    $this->left   = 0;
-    $this->top    = 0;
-    $this->width  = 0;
-    $this->height = 0;
-
     // webget geometry
-    if(isset($this->geometry)){
-      $this->geometry = explode(',',$this->geometry);
-      $this->left     += (isset($this->geometry[0]) ? $this->geometry[0] : 0);
-      $this->top      += (isset($this->geometry[1]) ? $this->geometry[0] : 0);
-      $this->width    += (isset($this->geometry[2]) ? $this->geometry[0] : 0);
-      $this->height   += (isset($this->geometry[3]) ? $this->geometry[0] : 0);
-    }
+    $this->geometry = explode(',',$this->geometry);
+    $this->left     = $this->geometry[0];
+    $this->top      = $this->geometry[1];
+    $this->width    = $this->geometry[2];
+    $this->height   = $this->geometry[3];
+
+    /* Set default values */
+    $default               = array();
+    $default['left'][]     = "0";
+    $default['top'][]      = "0";
+    $default['width'][]    = "100%";
+    $default['height'][]   = "100%";
+
+    foreach ($default as $key => $value)
+      foreach ($value as $local)
+        if ($local != null && !$this->$key) $this->$key=$local;
   }
-  
-  
-  function __flush(&$_)  
+
+
+  function __flush(&$_)
   {
     /* apply local styles */
     $_->ROOT->set_local_style($this);
-    
-    /* setup local coordinates */
-    $this->left += $this->parent->left;  
-    $this->top  += $this->parent->top;
+
+    /* calculate local geometry */
+    $_->ROOT->calc_real_geometry($this);
+
+    /* setup local offset */
+    $this->offsetLeft = $this->parent->marginLeft;
+    $this->offsetTop  = $this->parent->marginTop;
 
     gfwk_flush_children($this);
 
-    /* restore parent coordinates */
-    $this->left -= $this->parent->left;  
-    $this->top  -= $this->parent->top;
-
     /* restore parent styles */
     $_->ROOT->restore_style();
-  }  
+  }
 }
 
 ?>

@@ -1,11 +1,13 @@
 $_.js.reg['0070'] = {
-  a : ['view'],
-  f : ['onload'],
+  a : ["view"],
+  f : ["load"],
   b : function(n) {
     n.injJsBuf={};
-    
-    n.goto = function(v,x) {
-      x = $$.ajax({url:'?subview/' + v, callback:n.xhrcbk});
+
+    n.goto = function(v) {
+      if (v.indexOf("&ns=") > 1)
+        console.log("Use of 'ns' in subview '" + n.id + "'");
+      var x = $$.ajax({url:"?subview/" + v + "&ns=" + n.id, callback:n.xhrcbk});
     };
 
     n.back = function() {
@@ -24,59 +26,69 @@ $_.js.reg['0070'] = {
              .replace('<!--\n', '')
              .replace('\n-->', '')
              .split('\n\n');
-  
+
         if(typeof(c[0])!='undefined')n.injcss(c[0]);
-
-        try {
-          n.innerHTML = x.responseText;
-
-        } catch(e) {
-          alert('Parsing Call response failed (' + this + ') : ' + x.responseText);
-          return false;
-        }
-
-
-        if(typeof(c[1])!='undefined')n.injJs(c[1]);
+        n.innerHTML = x.responseText;
+        if(typeof(c[1])!='undefined') n.injJs(c[1]);
         else n.initJs();
+        n.dispatchEvent(n.load);
       }
       return true;
     };
 
     n.initJs = function(){
-      $$.flushBinds(n.id);
+      $$._flushBinds(n.id);
       $$.webgets[n.id]=[];
-      $$._wInit(n,{childWebgets:[]},n.id);
-      $$.webgets[n.id].shift();
+      $$.each(n.childNodes,function(v,i){
+        $$._wInit(v,n,n.id);
+      });
+
+
+      //$$._wInit(n,{childWebgets:[]},n.id);
+      //$$.webgets[n.id].shift();
       for(var s in $$.webgets[n.id]) {
         if($$.js.reg[$$.webgets[n.id][s].wid])
           $$.js.reg[$$.webgets[n.id][s].wid].fs($$.webgets[n.id][s]);
       }
-   
-/*      $$.each($$.getPlainWebgets(n), function(elm,i){
+
+/*      $$.each($$._wGetPlain(n), function(elm,i){
           if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
-        });*/      
+        });*/
     };
-    
+
     n.injcss = function(u) {
+      /* remove previous styles */
+      var a = document.getElementsByTagName('link')
+      var h = document.getElementsByTagName("head")[0];
+
+      for(var i = a.length-1;i>-1;i--){
+        if(a[i].id == n.id) {
+          h.removeChild(a[i]);
+        }
+      };
+
       u=u.split('\n');
+
       for(var i in u){
-        i=u[i];
-        var h = document.getElementsByTagName("head")[0];
-        var l = $_.cre('link');
+        var l = $$.cre('link');
         l.type = 'text/css';
+        l.id = n.id;
         l.rel = 'stylesheet';
-        l.href = i;
+        l.href = u[i];
         l.media = 'screen';
         h.appendChild(l);
       }
     };
 
-    n.injJs = function(u) {
-      u=u.split('\n');
-      for(var i in u){
-        $$.importRawJs(u[i],function(){
-          u[i]="";
-          if(u.join('')=="")n.initJs();
+    /* load javascript libraries */
+    n.injJs = function(u)
+    {
+      var u=u.split('\n');
+      var i=u.length;
+      while(u.length > 0){
+        $$.importRawJs(u.pop(),function(){
+          i--;
+          if(i==0) n.initJs();
         });
       }
     };
@@ -87,4 +99,4 @@ $_.js.reg['0070'] = {
     if (n.view != '')
       n.goto(n.view);
   }
-}; 
+};

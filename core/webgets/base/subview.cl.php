@@ -1,11 +1,11 @@
 <?php
 class base_subview
-{  
+{
   public $req_attribs = array(
     'style',
     'class'
   );
-  
+
   function __define(&$_)
   {
   }
@@ -13,8 +13,11 @@ class base_subview
   function __flush(&$_)
   {
     /* builds syles */
-    $css_style = $_->ROOT->boxing($this->boxing)
-               . $_->ROOT->style_registry_add($this->style)
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+
+    $css_style = $_->ROOT->boxing($boxing)
+               . $_->ROOT->style_registry_add($style)
                . $this->class;
 
     if($css_style!="") $css_style = 'class="'.$css_style.'" ';
@@ -23,12 +26,7 @@ class base_subview
     $_->buffer[] = '<div wid="0070" '
                  . $_->ROOT->format_html_attributes($this)
                  . $css_style . '> ';
-
-    /* flushes children */
-    gfwk_flush_children($this);
-
     $_->buffer[] = '</div>';
-  }  
-
+  }
 }
 ?>

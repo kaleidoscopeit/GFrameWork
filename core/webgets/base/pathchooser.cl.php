@@ -7,19 +7,22 @@ class base_pathchooser
     'field',
     'field_format'
   );
-  
+
   function __define(&$_)
   {
   }
- 
+
   function __flush(&$_)
   {
-    /* builds syles */  
-    $css_style = 'class="w0060 '
-               . $_->ROOT->boxing($this->boxing)
-               . $_->ROOT->style_registry_add($this->style)
-               . $this->class
-               . '" ';
+    /* builds syles */
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+
+    $css_style  = 'class="w0060 '
+                . $_->ROOT->boxing($boxing)
+                . $_->ROOT->style_registry_add($style)
+                . $this->class
+                . '" ';
 
     /* building code */
     $_->buffer[] = '<div wid="0060" '
@@ -31,9 +34,9 @@ class base_pathchooser
     $_->buffer[] = '<div>';
     $_->buffer[] = '</div>';
     $_->buffer[] = '<button type="button" style="float:right;">';
-    $_->buffer[] = '</button>';      
+    $_->buffer[] = '</button>';
     $_->buffer[] = '</div>';
   }
- 
+
 }
 ?>

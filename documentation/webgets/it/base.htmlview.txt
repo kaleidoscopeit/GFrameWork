@@ -1,0 +1,141 @@
+MANUALE DI RIFERIMENTO
+WEBGET
+base.htmlview
+
+
+1.  INTRODUZIONE
+
+  1.1  Descrizione
+  1.2  Caratteristiche
+  1.3  Interfacce
+  1.4  Operatività
+
+2.  SPECIFICHE FUNZIONALI
+
+  2.1  Elementi del kit
+  2.2  Composizione del contenuto
+  2.3  posizionamento
+  2.x  Gesitione eventi
+
+    2.x.1 Tipi di evento
+    2.x.2 Assegnazione
+    2.x.3 Compatibilità
+
+3.  CICLO DI VITA
+
+  3.1 Fasi base del ciclo di vita
+
+4.  SPECIFICHE TECNICHE
+
+  4.1  Proprietà
+  4.2  Metodi
+  4.3  Eventi
+
+
+GLOSSARY ................................................................... 79
+
+REFERENCES ................................................................. 85
+
+
+
+                         2.  SPECIFICHE FUNZIONALI
+
+2.x Gestione eventi
+
+  Gli eventi rivestono un ruolo fondamentale nel ciclo di vita di ogni vista.
+  Questo webget, in quanto componente cardine responsabile della creazione delle
+  viste per client Web, deve fornire il supporto alla manipolazione degli eventi
+  proprio dal lato client secondo i principi generali riguardanti il modello
+  "event-driven" adotatto da G-Framework. (rif. core/it/eventi.txt)
+
+2.x.1 Concetti base
+
+  Gli eventi ai quali può reagire ogni webget sono di tre tipi :
+
+  - Nativi (eventi dell'HTML)
+  - Comuni (eventi relativi al ciclo di vita del webget)
+  - Specifici (eventi presonalizzati del webget)
+
+  Nativi :
+
+  Gli eventi nativi sono i classici eventi che normalmente possiedono gli ele-
+  menti HTML. es onclick, onmouseover, onfocus, ecc... E' bene compredere che
+  possono variare in base al reale scopo del webget. Infatti esistono webgets
+  come il "form:button", basato sul TAG "button", che risponderà sicuramente
+  all'evento "[on]click", ma non ad eventi come "[on]change". Un'altra conside-
+  razione va fatta su webgets complessi come "form:switch" i quali non sono un
+  semplice adattemento di TAG comuni, ma hanno al loro interno una struttura
+  complessa; in questi webgets gli eventi nativi sono comunque disponibili, ma
+  possono essere "simulati". Dal punto di vista dello siluppatore comunuque non
+  cambia nulla.
+
+  Comuni :
+
+  Tutti i webgets hanno eventi comuni, questi rispondono a specifiche convenzio-
+  ni del framework. Questi eventi sono "[on]define" e "[on]flush". Questi eventi
+  sono anche disponibili lato server, ovviamente per accanciarsi alla parte del
+  ciclo di vita del webget che si svolge sul client è necessario definire la
+  funzione che si intende eseguire, nel codice client.
+
+  Specifici :
+
+  Questi eventi sono specifici, completamente personalizzati e dipendono dallo
+  scopo specifico del webget. Il webget "data:table" ha eventi come
+  "datarequired" e "scrollend" che servono ad interagire correttamente con
+  alcune funzioni specifiche.
+
+
+2.x.2 Assegnazione e rimozione
+
+  Esistono due metodi per assegnare eventi :
+
+  - Bind
+  - XML (assolutamente sconsigliato)
+
+  Bind :
+
+  Questo metodo è assolutamente da preferire. Ha innumerevoli vantaggi ed
+  assolve pienamente alle logiche di manipolazione degli eventi all'interno del
+  framework. Utilizzare il bind di eventi porta i seguenti vantaggi :
+
+  - Funzioni multiple su singolo evento
+  - Collegare e scollegare funzioni secondo necessità
+  - Bind e unBind dinamici dalle sotto-viste
+  - Maggior chiarezza e flessibilità nel codice
+
+
+  XML :
+
+  Tramite questo metodo si definisce l'evento come proprietà in-line all'interno
+  del file XML che definisce la vista. Questo metodo non è stato esplicitamente
+  rimosso in quanto è conseguenza della logica del framework secondo cui le
+  proprietà che non sono "catturate" durante il ciclo di vita lato server del
+  webget, vengono riportate nel TAG contenitore del webget lato client.
+  Questo metodo è assolutamente sconsigliato non comporta nessun vantaggio e
+  va utilizzato solo per operazioni di test.
+
+
+                          4.  SPECIFICHE TECNICHE
+
+4.2 Metodi
+
+  Questa sezione descrive due tipi di metodi : quelli utilizzabili durante lo
+  sviluppo di applicazioni e quelli utilizzati dal webget stesso o da altri
+  webget per interagire a livello framework. Questi due tipi di metodi li chia-
+  meremo rispettivamente 'esterni' e 'interni'.
+
+4.2.1 Metodi esterni
+
+4.2.2 Metodi interni
+
+  ._wInit(w,p,n)
+
+  Questo è il metodo che inizializza la regstrazione dei webget
+
+  4.x Eventi
+
+  La registrazione degli eventi avviene prevalentemente utilizzanto il meccanis-
+  mo nativo del javascript. Per quanto concerne gli eventi standard è sempre
+  utilizzato in tutti i browser compatibili, per gli eventi non nativi HTLM
+  viene adottato un meccanismo di registrazione e lancio degli eventi utilizzan-
+  do funzioni di supporto.

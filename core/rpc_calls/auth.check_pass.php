@@ -37,25 +37,25 @@ $rpc = array (array (
 ),
 
 /* rpc function */
- 
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   $user   = $_STDIN['user'];
   $pass   = $_STDIN['pass'];
   $domain = $_STDIN['domain'];
 
-  /* check authentication  credentials */  
-  if(!$_->call("system.auth.engine."
+  /* check authentication  credentials */
+  if(!_call("auth.engine."
               . $_STDIN["auth_engine"]
               . ".ckuser", $_STDIN)) {
-                
+
     $_STDOUT = $_STDIN;
     $_STDOUT['STDERR']['call'][] = $self['name'];
- 
-    return FALSE;   
+
+    return FALSE;
   }
-  
-  return TRUE;  
-});  
+
+  return TRUE;
+});
 
 ?>

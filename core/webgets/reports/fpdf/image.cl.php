@@ -5,9 +5,9 @@ class reports_fpdf_image
     'geometry',
     'url',
   );
-  
+
 	function __define(&$_)
-  { 		
+  {
     // webget geometry
     $this->geometry = explode(',',$this->geometry);
     $this->left     = $this->geometry[0];
@@ -15,12 +15,12 @@ class reports_fpdf_image
     $this->width    = $this->geometry[2];
     $this->height   = $this->geometry[3];
 	}
-	
-	function __flush(&$_)	
+
+	function __flush(&$_)
 	{
     /* setup local coordinates */
-		$left	= $this->left + $this->parent->left;
-		$top	= $this->top  + $this->parent->top;
+		$left	= $this->left + $this->parent->offsetLeft;
+		$top	= $this->top  + $this->parent->offsetTop;
 
 		// Paint image
 		$_->ROOT->fpdf->Image($this->url,$left,$top,$this->width,$this->height);

@@ -1,23 +1,19 @@
 $_.js.reg['0210'] = {
   a : ['field', 'field_format'],
-  f : [],
+  f : ['flush'],
   b : function(n) {
     n.wstyle=n.parentElement.style;
-    
+
     with (n) {
       n.refresh = function() {
-        var field = n.field.split(','), fs = [];
-        $_.each(field, function(f, i) {
-          f = f.split(':');
-          eval('var row=' + f[0] + '.current_record');
-          fs.push(row[f[1]]);
-        });
-
-        $_.jsimport('system.phpjs.vsprintf');
-        n.value = vsprintf(n.field_format, fs);
+        fs = $$._getFormattedFields(n.eval_field,n.eval_field_command);
+        if(fs !== false) eval(fs);
+        fs = $$._getFormattedFields(n.field,n.field_format);
+        if(fs !== false) n.value=fs;
       };
     }
   },
   fs : function(n) {
+    n.dispatchEvent(n.flush);
   }
-}; 
+};

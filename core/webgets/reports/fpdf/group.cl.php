@@ -11,7 +11,7 @@ class reports_fpdf_group
     'font_size',
     'scale'                              // let to scale its nested webgets
   );
-  
+
   function __define(&$_)
   {
     // webget geometry
@@ -19,23 +19,23 @@ class reports_fpdf_group
     $this->left     = $this->geometry[0];
     $this->top      = $this->geometry[1];
   }
-  
-  function __flush (&$_)  
+
+  function __flush (&$_)
   {
     /* apply local styles */
     $_->ROOT->set_local_style($this);
-    
-    /* setup local coordinates */
-    $this->left += $this->parent->left;  
-    $this->top  += $this->parent->top;
 
-    
+    /* setup local coordinates */
+    $this->offsetLeft = $this->left + $this->parent->offsetLeft;
+    $this->offsetTop  = $this->top + $this->parent->offsetTop;
+
+    $this->pxleft = $this->left;
+    $this->pxtop = $this->top;
+    $this->pxwidth = $this->parent->pxwidth;
+    $this->pxheight = $this->parent->pxheight;
+
     /* paint contained webgets */
     gfwk_flush_children($this);
-
-    /* restore parent coordinates */
-    $this->left -= $this->parent->left;  
-    $this->top  -= $this->parent->top;
 
     /* restore parent styles, Void locally set styles */
     $_->ROOT->restore_style();

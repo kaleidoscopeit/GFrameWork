@@ -11,14 +11,14 @@
 ** LOGO
 ********************************************************************************
   -->
-    
+
     <pack:vlaycell height="70px">
       <pack:hlayout>
-      
+
         <pack:hlaycell width="454px">
           <base:image src="images/logo.png" />
         </pack:hlaycell>
-        
+
         <pack:hlaycell />
 
       </pack:hlayout>
@@ -30,7 +30,7 @@
 ** PAGE
 ********************************************************************************
   -->
- 
+
     <pack:vlaycell class="radius10" style="background-color:white;">
       <pack:hlayout>
 
@@ -40,10 +40,10 @@
         ** SIDE MENU
         ************************************************************************
           -->
-        
+
         <pack:hlaycell width="200px">
           <pack:vlayout >
-         
+
             <pack:vlaycell height="50px" style="background-color:#6A6A6A;">
               <base:label
                 id="refer"
@@ -52,13 +52,13 @@
                 valign="middle"
                 class="text-shadowed font20 italic"/>
             </pack:vlaycell>
-            
+
             <pack:vlaycell style="background-color:#262626;">
               <data:table
                   id="table"
                   rowheight="30px"
                   send_to_client="true">
-                  
+
                 <data:tablecell
                   class="menuitem"
                   onclick="mainpane.goto(table.result_set[this.index].view);
@@ -78,11 +78,11 @@
                     halign="center"
                     valign="middle"/>
                 </data:tablecell>
-                
+
               </data:table>
             </pack:vlaycell>
-            
-          </pack:vlayout>      
+
+          </pack:vlayout>
         </pack:hlaycell>
 
 
@@ -91,10 +91,10 @@
         ** MAIN PANE
         ************************************************************************
           -->
-          
+
         <pack:hlaycell style="border-left:2px groove grey" >
           <pack:vlayout>
-         
+
             <pack:vlaycell
                 height="50px"
                 style="background-color:#6A6A6A;">
@@ -105,7 +105,7 @@
 
 								<pack:stackelm>
                 </pack:stackelm>
-                
+
                 <pack:stackelm>
                   <base:label
                     caption="Framework Structure"
@@ -113,7 +113,7 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
-                
+
                 <pack:stackelm>
                   <base:label
                     caption="Installation"
@@ -121,7 +121,7 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
-                
+
                 <pack:stackelm>
                   <base:label
                     caption="Boxing"
@@ -132,7 +132,7 @@
 
                 <pack:stackelm>
                 </pack:stackelm>
-                
+
                 <pack:stackelm>
                   <base:label
                     caption="schedule:datepicker"
@@ -140,7 +140,7 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
-                
+
                 <pack:stackelm>
                   <base:label
                     caption="data:jtable"
@@ -148,7 +148,7 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
-                
+
                 <pack:stackelm>
                   <base:label
                     caption="base:codesnippet"
@@ -156,19 +156,19 @@
                     valign="middle"
                     class="text-shadowed font20 italic"/>
                 </pack:stackelm>
-                
-                
+
+
               </pack:stack>
-              
+
               <base:image
                 src="images/text-xml.png"
                 boxing=",,right,middle,-10px"
                 class="fade"
                 tip="view source"
                 id="infobutt"
-                /> 
+                />
             </pack:vlaycell>
-            
+
             <pack:vlaycell>
               <base:subview
                   id="mainpane"
@@ -176,30 +176,30 @@
                   style="overflow:auto;"/>
             </pack:vlaycell>
 
-          </pack:vlayout>            
+          </pack:vlayout>
         </pack:hlaycell>
-        
-      </pack:hlayout>                  
+
+      </pack:hlayout>
     </pack:vlaycell>
-    
+
     <pack:vlaycell height="20px" />
   </pack:vlayout>
-  
+
 
   <!--
   ******************************************************************************
   ** VIEW SOURCE BUTTON
   ******************************************************************************
     -->
-    
+
   <base:image
     src="images/text-xml.png"
     boxing=",,right,top,-4px,4px"
     class="fade"
     tip="view source"
     onclick="subv_cont.goto('view_source&amp;source=main');$_.removeClass(view_source, 'diag_hidden');" />
- 
-    
+
+
 <!--
 ********************************************************************************
 ** VIEW SOURCE DIALOG
@@ -208,21 +208,21 @@
 
   <pack:area
     id="view_source"
-    class="diag_visible diag_hidden" 
+    class="diag_visible diag_hidden"
     onclick="$_.addClass(this, 'diag_hidden');">
-       
+
     <pack:area
       class="round-box"
       style="background:rgba(0,0,0,0.3);"/>
-      
+
     <pack:area
       class="mebox"
       boxing="600px,80%"
       onclick="event.stopPropagation();">
       <pack:vlayout boxing="584px">
-       
+
         <pack:vlaycell height="5px"/>
-        
+
         <pack:vlaycell height="20px">
           <base:label
             class="caption-title"
@@ -234,7 +234,7 @@
 
         <pack:vlaycell class="caption-item round-box" >
           <base:subview id="subv_cont" view="view_source"/>
-        </pack:vlaycell> 
+        </pack:vlaycell>
 
         <pack:vlaycell height="5px"/>
 

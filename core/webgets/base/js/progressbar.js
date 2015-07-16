@@ -5,7 +5,7 @@ $_.js.reg['0030'] = {
     with (n) {
       n.setProgress = function(p) {
         if(p == isNaN) return false;
-        
+
         switch (n.ornt) {
           case 'LR':
             n.bar.style.width = p + "%";
@@ -27,13 +27,10 @@ $_.js.reg['0030'] = {
       },
 
       n.refresh = function() {
-        $_.jsimport('system.phpjs.vsprintf');
-        
-        var fs = $_.js.reg['0310'].getfields(n.eval_field);
-        if(fs != false) eval(vsprintf(n.eval_field_command,fs));
-        
-        var fs = $_.js.reg['0310'].getfields(n.field);
-        if(fs != false) n.setProgress(vsprintf(n.field_format,fs));
+        fs = $$._getFormattedFields(n.eval_field,n.eval_field_command);
+        if(fs !== false) eval(fs);
+        fs = $$._getFormattedFields(n.field,n.field_format);
+        if(fs !== false) n.setProgress(fs);
       };
     }
   },

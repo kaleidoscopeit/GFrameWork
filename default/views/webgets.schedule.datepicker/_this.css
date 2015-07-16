@@ -5,62 +5,76 @@
   border-radius:10px;
   background-color:#262626;
   color: #D3D3D3;
+  cursor:default;
 }
 
-#datepicker\.active_bar {
+#datepicker_active_bar {
   background-color: #ADD8E6;
   border-bottom: 1px solid #1B1B1B;
 }
 
-#datepicker\.weekday_bar {
+#datepicker_weekday_bar {
   border-bottom: 1px solid #1B1B1B;
 
   background-color: #6A6A6A;
 }
 
-
-#datepicker\.week_cell {
+#datepicker_week_cell {
   border-bottom: 1px solid #1B1B1B;
   border-top: 1px solid #323232;
 }
 
-#datepicker\.month_area {
+#datepicker_month_area {
   background-color:white;
 }
 
-
-#datepicker\.day_cell {
+#datepicker_day_cell {
   color: grey;
+  border-bottom: 1px solid lightgrey;
   border-right:1px solid lightgrey;
-  border-bottom:1px solid lightgrey;
   -moz-box-sizing: content-box;
-  box-sizing:content-box
+  box-sizing:content-box;
+  z-index:0;
+  cursor:pointer;
 }
 
-#datepicker\.day_cell:hover {
-  background-color:blue;
+#datepicker_day_cell::before {
+  bottom: 4;
+  content: "";
+  display: block;
+  left: 4;
+  position: absolute;
+  right: 4;
+  top: 4;
+  z-index: -1;
+  border-radius: 5px;
 }
 
-#datepicker\.month_prev,#datepicker\.month_next {
+#datepicker_day_cell[daytype=""]:hover::before,
+#datepicker_day_cell[daytype=today]:hover::before {
+  background-color:lightgrey;
+}
+
+#datepicker_day_cell[daytype=offday] {
+  color: lightgrey;
+  cursor:default;
+}
+
+#datepicker_day_cell[daytype=today] {
+  color: lightblue;
+}
+
+#datepicker_month_prev,#datepicker_month_next {
   background-color: rgba(0,0,0,0.4);
   border-radius:10px;
+  cursor:pointer;
 }
 
-#datepicker\.month_prev:hover,#datepicker\.month_next:hover {
+#datepicker_month_prev:hover,#datepicker_month_next:hover {
   background-color: rgba(0,0,0,0.6);
   border-radius:10px;
 }
 
-.day_cell_disabled {
-  text-shadow: 1.5px -.5px #aaaaaa, 2.5px 0.5px white;
-}
-
-
-
-.day_cell_today {
-  
-}
-
-.day_cell_selected {
-  
+#datepicker_month_label {
+  color:black;
 }

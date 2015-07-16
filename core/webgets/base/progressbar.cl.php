@@ -19,7 +19,7 @@ class base_progressbar
     'bar_style',
     'orientation'
   );
-  
+
   function __define(&$_)
   {
     /* sets the default values */
@@ -37,30 +37,36 @@ class base_progressbar
     /* set progress depending by the presence of 'field' property */
     if($this->field){
       $field        = explode(',', $this->field);
-      $field_format = ($this->field_format ? $this->field_format : '%s');
-    
+      $field_format = ($this->field_format ? $this->field_format : '');
+
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
-    
+
         /* if no record on server resultset send fields definition to client */
         if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
-    
+
         $field[$key] = &array_get_nested
         ($_->webgets[$param[0]]->current_record, $param[1]);
       }
-    
-      $progress = vsprintf($field_format, $field);
+
+      $progress = preg_replace_callback(
+        '/\{(\d+)\}/',
+        function($match) use ($field) {
+          return ($field[$match[1]] != null ? $field[$match[1]] : $match[0]);
+        },
+        $field_format
+      );
     }
-    
+
     else $progress = $this->progress;
-    
+
     /* enable client field definition */
     if($cfields) $cfields = 'field="' . implode(',', $cfields) .
     '" field_format="' . $field_format . '" ';
-    
+
     else $cfields = "";
-    
-    
+
+
     /* Orientation */
     switch($this->orientation){
       case 'LR':
@@ -88,27 +94,30 @@ class base_progressbar
         break;
     }
 
-    
-   
-    if (!strpos($bar_style,'background-color'))
-      $bar_style = ''.$bar_style;
+
+
+    if (!strpos($bar_style,'background-color')) $bar_style = '' . $bar_style;
 
     /* builds syles */
-    $css_style_bar = ($bar_style!="" ? 'class="'
-                   . $_->ROOT->style_registry_add($bar_style).'" ' : '');
-     
-    $css_style     = 'class="w0030 '
-                   . $_->ROOT->boxing($this->boxing)
-                   . $_->ROOT->style_registry_add($this->style)
-                   . $this->class.'" ';
-     
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+
+    $css_style_bar  = ($bar_style != "" ? 'class="'
+                    . $_->ROOT->style_registry_add($bar_style) . '" ' : '');
+
+    $css_style  = 'class="w0030 '
+                . $_->ROOT->boxing($boxing)
+                . $_->ROOT->style_registry_add($style)
+                . $this->class
+                . '" ';
+
     /* builds code */
     $_->buffer[] = '<div wid="0030" ' . $css_style
                  . $_->ROOT->format_html_attributes($this)
                  . ' ornt="' . $this->orientation . '" '
                  . $cfields
                  . '>';
-    
+
     $_->buffer[] =  '<div ' . $css_style_bar . '></div>';
 
     gfwk_flush_children($this);

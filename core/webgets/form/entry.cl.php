@@ -10,61 +10,72 @@ class form_entry
     'wstyle',   // da implementare su tutti i webget compositi
     'wclass'    // da implementare su tutti i webget compositi
   );
-    
+
   function __define(&$_)
   {
     if(isset($this->attributes['id']))
       $this->attributes['name'] = $this->attributes['id'];
   }
-  
+
   function __flush(&$_)
-  {   
+  {
     /* set value depending by the presence of 'field' property */
-    if($this->field){
+    if(isset($this->field)){
       $field        = explode(',', $this->field);
-      $field_format = ($this->field_format ? $this->field_format : '%s');
+      $field_format = ($this->field_format ? $this->field_format : '{0}');
 
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
-        
+
         if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
-          
+
         $field[$key] = &array_get_nested
-                       ($_->webgets[$param[0]]->current_record, $param[1]);           
+                       ($_->webgets[$param[0]]->current_record, $param[1]);
       }
 
-      $value = vsprintf($field_format, $field); 
+      $value = preg_replace_callback(
+        '/\{(\d+)\}/',
+        function($match) use ($field) {
+          return ($field[$match[1]] != null ? $field[$match[1]] : $match[0]);
+        },
+        $field_format
+      );
     }
-    
-    else $value = $this->value;
+
+    else if(isset($this->value)) $value = $this->value;
 
     /* enable client field definition */
-    if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields)  
+    if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields)
                                  . '" field_format="' . $field_format . '" ';
 
     else $cfields = "";
 
+    /* builds syles */
+    $style   = (isset($this->style) ? $this->style : '');
+    $class   = (isset($this->class) ? $this->class : '');
+    $wstyle  = (isset($this->wstyle) ? $this->wstyle : '');
+    $wclass  = (isset($this->wclass) ? $this->wclass : '');
+    $boxing  = (isset($this->boxing) ? $this->boxing : '');
 
-    /* builds syles */    
     $w_class   = 'class="w0210 '
-               . $_->ROOT->boxing($this->boxing)
-               . $_->ROOT->style_registry_add($this->wstyle)
-               . $this->wclass
+               . $_->ROOT->boxing($boxing)
+               . $_->ROOT->style_registry_add($wstyle)
+               . $wclass
                . '" ';
-               
-    $css_style = $_->ROOT->style_registry_add($this->style)
-               . $this->class;
-                              
+
+    $css_style = $_->ROOT->style_registry_add($style)
+               . $class;
+
     if($css_style!="") $css_style = 'class="' . $css_style . '" ';
 
-    /* builds code */    
+    /* builds code */
     $_->buffer[] = '<div ' . $w_class . '>';
     $_->buffer[] = '<input type="text" wid="0210" '
                  . $cfields
                  . (isset($value) ? ' value="'.$value.'" ' : '')
                  . $_->ROOT->format_html_attributes($this)
                  . $css_style . '>';
-                 
+
     $_->buffer[] = '</div>';
   }
 }

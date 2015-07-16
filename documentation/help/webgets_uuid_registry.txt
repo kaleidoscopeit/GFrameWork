@@ -21,7 +21,6 @@ pack:hpane        0160
 pack:hpaned       0161
 pack:vpane        0170
 pack:vpaned       0171
-pack:modal        0180
 
 form:simple       0200
 form:entry        0210
@@ -33,7 +32,7 @@ form:togglebutton 0260
 form:checkbox     0270
 form:radio        0280
 form:switch       0290
-form:combo        02A0      
+form:combo        02A0
 form:list         02B0
 form:upload       02C0
 
@@ -47,6 +46,10 @@ schedule:datepicker 0400
 schedule:calendar   0410
 schedule:gantt      0420
 
+wman:window       0500
+wman:dialog       0510
+
 fgnass:spin         5000
+
 
 specials:inhibit child registration 9990

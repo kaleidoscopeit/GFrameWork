@@ -2,36 +2,35 @@
 
 <base:htmlview
 	title="G-Framework Web3.0 Toolkit"
-	style="overflow:auto;"
-	id="source">
+	style="overflow:auto;">
 
 	<pack:vlayout>
 		<pack:vlaycell height="30">
 		</pack:vlaycell>
-		
+
 		<pack:vlaycell id="tast">
 
 			<pack:stack default="0">
-				
+
 
 				<pack:stackelm >
  				  <base:codesnippet
 				    id="xml_code"
-				    hilight="xml" 
+				    hilight="xml"
 				    style="border:1px dashed #B0BEC7;font:10px mono;background-color:#F1F5F6;"/>
-				</pack:stackelm>				
+				</pack:stackelm>
 
 
-				<pack:stackelm >							
+				<pack:stackelm >
  				  <base:codesnippet
 				    id="php_code"
-				    hilight="xml" 
+				    hilight="xml"
 				    style="border:1px dashed #B0BEC7;font:10px mono;background-color:#F1F5F6;"/>
 				</pack:stackelm>
 			</pack:stack>
-			
 
-	
+
+
 		</pack:vlaycell>
 
 	</pack:vlayout>

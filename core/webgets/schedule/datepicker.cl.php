@@ -5,7 +5,7 @@ class schedule_datepicker
     'style',
     'class'
   );
-  
+
   function __define(&$_)
   {
   }
@@ -13,10 +13,13 @@ class schedule_datepicker
   function __flush(&$_)
   {
     /* builds syles */
-    $this->attributes['class'] = $_->ROOT->boxing($this->boxing)
-                               . $_->ROOT->style_registry_add($this->style)
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+
+    $this->attributes['class'] = $_->ROOT->boxing($boxing)
+                               . $_->ROOT->style_registry_add($style)
                                . $this->class;
-                 
+
     /* builds code */
     $_->buffer[] = '<div wid="0400" '
                  . $_->ROOT->format_html_attributes($this)
@@ -25,7 +28,7 @@ class schedule_datepicker
     gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
-  }  
+  }
 
 }
 ?>

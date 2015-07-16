@@ -12,19 +12,20 @@ class data_table
     'columns',
     'rows'
   );
-  
+
   function __define (&$_)
   {
     /* Set default values */
     $default                   = array();
     $default['columns'][]      = "1";
-    $default['current_page'][] = $_->GET[$this->id.'Ofst'];
+    $default['current_page'][] =
+      isset($_->GET[$this->id.'Ofst']) ? $_->GET[$this->id.'Ofst'] : null;
     $default['current_page'][] = "1";
-    
+
     foreach ($default as $key => $value)
       foreach ($value as $local)
-        if ($local != null && !$this->$key) $this->$key=$local;
-  }  
+        if ($local != null && !isset($this->$key)) $this->$key=$local;
+  }
 
   function __flush(&$_)
   {
@@ -32,32 +33,36 @@ class data_table
     if(count($this->result_set) < 1) $this->result_set = array('empty');
     $this->max_records = count($this->result_set);
     $this->page_pointer = 0;
-    
+
     /* If a specific row quantity is sets, the paging will be enabled */
-    if($this->rows) {
-      $this->page_records  = ($this->max_records < $this->rows * $this->columns? 
+    if(isset($this->rows)) {
+      $this->page_records  = ($this->max_records < $this->rows * $this->columns?
                              $this->max_records : $this->rows * $this->columns);
       $this->start_pointer = (($this->current_page - 1) * $this->page_records) ;
       $this->max_pages     = intval((count($this->result_set)/
                              $this->page_records)+.99);
 
     }
-    
+
     else {
       $this->page_records  = $this->max_records;
       $this->start_pointer = 0;
       $this->max_pages     = 1;
-    }    
+    }
 
     /* builds syles */
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+    $class  = (isset($this->class) ? $this->class : '');
+
     $this->attributes['class'] = 'w0300 '
-                               . $_->ROOT->boxing($this->boxing)
-                               . $_->ROOT->style_registry_add($this->style)
-                               . $this->class;
-                               
+                               . $_->ROOT->boxing($boxing)
+                               . $_->ROOT->style_registry_add($style)
+                               . $class;
+
     /* builds code */
-    $_->buffer[] = '<div wid="0300" ' 
-                 . ($this->send_to_client ? 'result_set="'
+    $_->buffer[] = '<div wid="0300" '
+                 . (isset($this->send_to_client) ? 'result_set="'
                  . clean_xml(json_encode($this->result_set)).'" ':'')
                  . $_->ROOT->format_html_attributes($this)
                  . '>';
@@ -66,11 +71,11 @@ class data_table
     /* Rows/columns iterator */
     while ($this->page_pointer < $this->page_records) {
       for ($icol=0;$icol<$this->columns;$icol++){
-        if ($this->page_pointer < $this->page_records){          
+        if ($this->page_pointer < $this->page_records){
           foreach ((array) @$this->childs as $child){
             if (get_class($child) == 'data_tablecell') {
               gfwk_flush($child);
-            } 
+            }
           }
         }
 
@@ -78,8 +83,8 @@ class data_table
         $this->page_pointer++;
       }
     }
-  
+
     $_->buffer[] = '</div>';
-  }  
+  }
 }
 ?>

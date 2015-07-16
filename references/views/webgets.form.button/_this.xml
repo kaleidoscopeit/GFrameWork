@@ -1,0 +1,7 @@
+<?xml version='1.0'?>
+
+<base:htmlview>
+  <form:button id="button">
+  </form:button>
+
+</base:htmlview>

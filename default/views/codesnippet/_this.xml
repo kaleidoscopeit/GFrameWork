@@ -2,8 +2,7 @@
 
 <base:htmlview
   title="G-Framework Web3.0 Toolkit"
-  style="overflow:auto;"
-  id="codesnippet">
+  style="overflow:auto;">
 	<base:image
 		src="images/text-xml.png"
 		boxing=",,right,top,-4px,4px"
@@ -12,7 +11,7 @@
 		onclick="subv_cont.goto('view_source&amp;source=codesnippet');$_.removeClass(view_source, 'diag_hidden');" />
   <base:codesnippet
     id="sample_code"
-    hilight="xml" 
+    hilight="xml"
     style="border:1px dashed #B0BEC7;font:10px mono;background-color:#F1F5F6;"
     boxing="500,200"/>
 </base:htmlview>

@@ -6,13 +6,13 @@ $_.js.reg['02B0'] = {
 
     with (n) {
 
-      $_.ade(n, 'change', function() {
+      $$.bindEvent(n, 'change', function() {
         var opt = this.copy(), i;
         this.selected = [];
         for (i in opt)
         this.selected.push(opt[i].value);
       }, false),
-      
+
       n.copy = function() {
         var out = [], opt = this.options, i;
         for (i in opt) {
@@ -25,9 +25,8 @@ $_.js.reg['02B0'] = {
         };
         return out;
       },
-      
+
       n._refresh = function(obj) {
-        $_.jsimport('system.phpjs.vsprintf');
         this.values = [];
         this.captions = [];
         $_.each(this.options, function(o) {
@@ -37,7 +36,7 @@ $_.js.reg['02B0'] = {
           o.dispatchEvent(n.update);
         });
       },
-      
+
       n.cut = function() {
         var out = [], opt = this.copy(), i;
         while (opt[0]) {
@@ -48,20 +47,20 @@ $_.js.reg['02B0'] = {
         n.dispatchEvent(n.contentchange);
         return out;
       },
-      
+
       n.paste = function(o) {
         while (o[0])
           this.add(o.shift());
         this._refresh();
         n.dispatchEvent(n.contentchange);
       },
-      
+
       n.clear = function() {
         while (this.length != 0)
         this.remove(0);
         n.dispatchEvent(n.contentchange);
       },
-      
+
       n.populate = function(v) {
         if (v.length == null & $_.count(v) == 0)
           return false;
@@ -73,22 +72,21 @@ $_.js.reg['02B0'] = {
         this._refresh();
         return true;
       },
-      
+
       n.item_push = function(v, l) {
         var no = $_.cre('option');
         no.update = new Event('update');
         $$.bindEvent(no,'update', function() {
-          $_.jsimport('system.phpjs.vsprintf');
           if(this.parentElement.hasAttribute('item_eval_command'))
-            eval(vsprintf(this.parentElement.getAttribute('item_eval_command')),
-              this.value);              
+            eval(this.parentElement.getAttribute('item_eval_command')
+              .format(this.value));
         });
         no.className = n.optclass;
         n.appendChild(no);
         no.value = v;
         no.text = ( l ? l : v);
       },
-      
+
       n.sort = function() {
         var out = [], i, opt = this.options;
         for ( i = 0; i < opt.length; i++)
@@ -103,7 +101,7 @@ $_.js.reg['02B0'] = {
         });
         this.clear();
         while (out[0])
-          this.add(out.shift());          
+          this.add(out.shift());
         this._refresh();
       };
     }
@@ -113,4 +111,4 @@ $_.js.reg['02B0'] = {
     n._refresh();
 	  n.dispatchEvent(n.ready);
   }
-}; 
+};

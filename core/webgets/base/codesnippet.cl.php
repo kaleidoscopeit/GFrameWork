@@ -19,10 +19,13 @@ class base_codesnippet
 	function __flush(&$_)
 	{
 		/* builds syles */
-		$css_style = 'class="w0050 '
-							 . $_->ROOT->boxing($this->boxing)
-							 . $_->ROOT->style_registry_add($this->style)
-							 . $this->class . '" ';
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+
+		$css_style  = 'class="w0050 '
+		            . $_->ROOT->boxing($boxing)
+		            . $_->ROOT->style_registry_add($style)
+		            . $this->class . '" ';
 
 		/* hilights */
 		switch($this->hilight) {
@@ -69,7 +72,7 @@ class base_codesnippet
 				$this->code = nl2br($s);
 				break;
 		}
-	
+
 		/* builds code */
 		$_->buffer[] = '<div wid="0050" '
 		             . $css_style
@@ -78,7 +81,7 @@ class base_codesnippet
 
 		$_->buffer[] = $this->code;
 		$_->buffer[] = '</div>';
-	}  
+	}
 
 }
 ?>

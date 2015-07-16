@@ -17,7 +17,7 @@ $$.js.reg['0010']={
 			n.dispatchEvent(change);
 			return true;
 		}};
-		
+
 		n.valign=function(a){with(n){
 
 		}};
@@ -25,20 +25,17 @@ $$.js.reg['0010']={
 		n.halign=function(a){with(n){
 
 		}};
-		
-		n.refresh=function(){
-			$$.jsimport('system.phpjs.vsprintf');
-      var fs = $$.js.reg['0310'].getfields(n.eval_field);
-			if(fs !== false) eval(vsprintf(n.eval_field_command,fs));
-			
 
-			var fs = $$.js.reg['0310'].getfields(n.field);
-			if(fs !== false) n.caption(vsprintf(n.field_format,fs));
+		n.refresh=function(){
+			fs = $$._getFormattedFields(n.eval_field,n.eval_field_command);
+			if(fs !== false) eval(fs);
+			fs = $$._getFormattedFields(n.field,n.field_format);
+			if(fs !== false) n.caption(fs);
 		};
-		
-		n.dispatchEvent(n.define);		
+
+		n.dispatchEvent(n.define);
 	}},
-	
+
 	fs:function(n){
     n.dispatchEvent(n.ready);
 	}

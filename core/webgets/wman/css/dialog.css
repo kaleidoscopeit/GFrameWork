@@ -1,0 +1,8 @@
+.w0510 {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: visibility 0.2s 0.2s, opacity 0.2s 0.2s;
+  -moz-transition: visibility 0.2s 0.2s, opacity 0.2s 0.2s;
+  -o-transition: visibility 0.2s 0.2s, opacity 0.2s 0.2s;
+  transition: visibility 0.2s 0.2s, opacity 0.2s 0.2s;
+}

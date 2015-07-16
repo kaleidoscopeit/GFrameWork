@@ -5,7 +5,7 @@ class pack_area
     'style',
     'class'
   );
-  
+
   function __define(&$_)
   {
   }
@@ -13,10 +13,14 @@ class pack_area
   function __flush(&$_)
   {
     /* builds syles */
-    $this->attributes['class'] = $_->ROOT->boxing($this->boxing)
-                               . $_->ROOT->style_registry_add($this->style)
-                               . $this->class;
-                 
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+    $class = (isset($this->class) ? $this->class : '');    
+
+    $this->attributes['class'] = $_->ROOT->boxing($boxing)
+                               . $_->ROOT->style_registry_add($style)
+                               . $class;
+
     /* builds code */
     $_->buffer[] = '<div wid="0100" '
                  . $_->ROOT->format_html_attributes($this)
@@ -25,7 +29,7 @@ class pack_area
     gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
-  }  
+  }
 
 }
 ?>

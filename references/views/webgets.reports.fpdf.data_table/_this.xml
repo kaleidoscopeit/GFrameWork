@@ -1,0 +1,116 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<reports_fpdf:document
+    fonts="FreeSans,FreeSans B,FreeSans I">
+    
+  <reports_fpdf:chapter
+      orientation="l"
+      font_family="FreeSans"
+      font_size="7">
+    <reports_fpdf:mask>
+
+      <reports_fpdf:datagrid
+          id="test_table"
+          geometry="10,10,200,200">
+
+        <!-- first left/top cell -->
+        <reports_fpdf:cell
+            geometry="70,7"
+            show_if="_w(test_table)->curr_row == 0 &amp; _w(test_table)->curr_col == 0">
+
+          <reports_fpdf:label
+              geometry="0,0,70,7"
+              align="C"
+              field="test_table:value"
+              line_width="1"
+              fill_color="50,50,50"
+              draw_color="100,100,100"
+              text_color="255,255,255"/>
+
+        </reports_fpdf:cell>
+
+        <!-- second left/top cell -->
+        <reports_fpdf:cell
+            geometry="150,7"
+            show_if="_w(test_table)->curr_row == 0 &amp; _w(test_table)->curr_col == 1">
+
+          <reports_fpdf:label
+              geometry="0,0,150,7"
+              align="C"
+              field="test_table:value"
+              line_width="1"
+              fill_color="50,50,50"
+              draw_color="100,100,100"
+              text_color="255,255,255"/>
+
+        </reports_fpdf:cell>
+
+        <!-- others top cells -->
+        <reports_fpdf:cell
+            geometry="25,7"
+            show_if="_w(test_table)->curr_row == 0 &amp; _w(test_table)->curr_col > 1">
+
+          <reports_fpdf:label
+              geometry="0,0,25,7"
+              align="C"
+              field="test_table:value"
+              line_width="1"
+              fill_color="50,50,50"
+              draw_color="100,100,100"
+              text_color="255,255,255"/>
+
+        </reports_fpdf:cell>
+
+        <!-- first column -->
+        <reports_fpdf:cell
+            geometry="70,5"
+            show_if="_w(test_table)->curr_row > 0 &amp; _w(test_table)->curr_col == 0">
+
+          <reports_fpdf:label
+              geometry="0,0,70,5"
+              align="C"
+              field="test_table:value"
+              line_width="1"
+              fill_color="219,239,248"
+              draw_color="193,221,245"
+              text_color="50,50,50"/>
+
+        </reports_fpdf:cell>
+
+        <!-- second column -->
+        <reports_fpdf:cell
+            geometry="150,5"
+            show_if="_w(test_table)->curr_row > 0 &amp; _w(test_table)->curr_col == 1">
+
+          <reports_fpdf:label
+              geometry="0,0,150,5"
+              align="C"
+              field="test_table:value"
+              line_width="1"
+              draw_color="193,221,245"
+              text_color="50,50,50"/>
+
+        </reports_fpdf:cell>
+
+        <!-- others column -->
+        <reports_fpdf:cell
+            geometry="25,5"
+            show_if="_w(test_table)->curr_row > 0 &amp; _w(test_table)->curr_col > 1">
+
+          <reports_fpdf:label
+              geometry="0,0,25,5"
+              align="C"
+              field="test_table:value"
+              line_width="1"
+              draw_color="193,221,245"
+              text_color="50,50,50"/>
+
+        </reports_fpdf:cell>
+
+      </reports_fpdf:datagrid>
+
+    </reports_fpdf:mask>
+    
+    <reports_fpdf:body/>
+  </reports_fpdf:chapter>
+</reports_fpdf:document>

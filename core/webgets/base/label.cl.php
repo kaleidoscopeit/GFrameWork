@@ -16,48 +16,62 @@ class base_label
   function __define(&$_)
   {
   }
-  
+
   function __flush(&$_)
   {
     /* set caption depending by the presence of 'field' property */
     if(isset($this->field)){
       $field        = explode(',', $this->field);
-      $field_format = ($this->field_format ? $this->field_format : '%s');
+      $field_format = (isset($this->field_format) ? $this->field_format : '{0}');
 
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
 
-        /* if no record on server resultset or forcing sending field to client 
+        /* if no record on server resultset or forcing sending field to client
          * send fields definition to client */
-        if(!$_->webgets[$param[0]]->current_record || isset($this->send_field))
+        if(!isset(_w($param[0])->current_record) || isset($this->send_field))
           $cfields[] = $field[$key];
 
-        $field[$key] = &array_get_nested
-                       ($_->webgets[$param[0]]->current_record, $param[1]);           
+        $field[$key] = array_get_nested
+                       (_w($param[0])->current_record, $param[1]);
+
       }
 
-      $caption = vsprintf($field_format, $field); 
+      $caption = preg_replace_callback(
+        '/\{(\d+)\}/',
+        function($match) use ($field) {
+          return $field[$match[1]];
+        },
+        $field_format
+      );
     }
-    
-    else $caption = $this->caption;
 
-    if($caption == "" && $this->default != "") $caption = $this->default;
+    else if(isset($this->caption)) {
+      $caption = $this->caption;
+    }
+
+    else {
+      $caption = '';
+    }
+
+    if($caption == "" && isset($this->default)) $caption = $this->default;
 
     /* enable client field definition */
-    if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields) . 
+    if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields) .
                                    '" field_format="' . $field_format . '" ';
 
     else $cfields = "";
-    
-    $boxing = explode(',', @$this->boxing);
 
     /* builds syles */
-    $style     = $this->style.
-                 ($this->halign ? 'text-align:'.$this->halign : '');
+    $boxing    = (isset($this->boxing) ? $this->boxing : '');
+    $class     = (isset($this->class) ? $this->class : '');
 
-    $css_style = $_->ROOT->boxing($this->boxing)
+    $style     = @$this->style.
+                 (isset($this->halign) ? 'text-align:'.$this->halign : '');
+
+    $css_style = $_->ROOT->boxing($boxing)
                . $_->ROOT->style_registry_add($style)
-               . $this->class;
+               . $class;
 
     $css_style = 'class="w0010 '.$css_style.'" ';
 
@@ -69,7 +83,10 @@ class base_label
 
     $_->buffer[] = '<span class="w0011" >';
 
-    $_->buffer[] = '<span style="vertical-align:'. $this->valign.'">';
+    $_->buffer[] = '<span '
+                . (isset($this->valign) ? 'style="vertical-align:'
+                . $this->valign . '"' : '')
+                . '>';
     $_->buffer[] = $caption;
     $_->buffer[] = '</span>';
     $_->buffer[] = '</span>';

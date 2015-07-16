@@ -1,0 +1,4 @@
+Properties :
+
+modal : blow     -> click out of the dialog area or pres ESC will close it
+        enforce  -> the dialog will close only by call [dialog].close() funtion

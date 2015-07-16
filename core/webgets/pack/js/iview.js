@@ -1,6 +1,6 @@
 $_.js.reg['0150']={
   a:['view','tcn','tci','tco','tct'],
-  f:['onload'],  
+  f:['onload'],
   b:function(n){with(n){
     //alert('a');
     n.ifa=$_.cre('iframe');
@@ -18,7 +18,7 @@ $_.js.reg['0150']={
     n.ifnext='2';
 
     n.history={stack:[]};
-    
+
     if(tcn && tci && tco){
       $_.toggleClass(ifa,tcn);
       $_.toggleClass(ifb,tcn);
@@ -28,18 +28,18 @@ $_.js.reg['0150']={
     }
 
     n.count = 0;
-    
+
     ifa.parent=ifb.parent=ifc.parent=n;
     ifa.onload=ifb.onload=ifc.onload=
       function(e){
         n.count ++;
         this.parent.show(this);
       };
-    
-    n.goto=function(v){      
+
+    n.goto=function(v){
       this.history.stack.push(v);
       v='?views/'+v;
-      $_.ade(n.children[n.ifnext], 'load', this.onload);
+      $$.bindEvent(n.children[n.ifnext], 'load', this.onload);
       n.children[n.ifnext].src=v;
       n.action='next';
     };
@@ -51,12 +51,12 @@ $_.js.reg['0150']={
       }
       this.goto(v);
     };
-    
+
     n.show=function(i,o){
       if(n.count<3)return true;
-      $_.ade(n.children[ifcurr], 'webkitTransitionEnd', n.trans_end);
-      $_.ade(n.children[ifcurr], 'oTransitionEnd', n.trans_end);
-      $_.ade(n.children[ifcurr], 'transitionend', n.trans_end);
+      $$.bindEvent(n.children[ifcurr], 'webkitTransitionEnd', n.trans_end);
+      $$.bindEvent(n.children[ifcurr], 'oTransitionEnd', n.trans_end);
+      $$.bindEvent(n.children[ifcurr], 'transitionend', n.trans_end);
 
       if(tcn && tci && tco){
 //        if(n.action=='next'){
@@ -76,12 +76,12 @@ $_.js.reg['0150']={
       n.children[ifcurr].id='curr';
       n.children[ifprev].id='prev';
       n.children[ifnext].id='next';
-      
+
       //i.style.display='block';
       return true;
     };
-    
-    n.trans_end=function(e){      
+
+    n.trans_end=function(e){
       if(n.children[ifcurr]!=e.target){
         e.target.exleft=e.target.style.left;
         e.target.style.left='-100%';
@@ -89,8 +89,7 @@ $_.js.reg['0150']={
     };
 
   }},
-  fs:function(n){ 
+  fs:function(n){
     n.goto(n.view);
-    
   }
 };

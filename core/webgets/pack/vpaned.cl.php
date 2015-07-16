@@ -7,19 +7,22 @@ class pack_vpaned
     'handle',
     'vsize'
   );
-    
+
   function __define(&$_)
   {
   }
-  
+
   function __flush(&$_)
   {
     /* builds syles */
-    $this->attributes['class'] = $_->ROOT->boxing($this->boxing)
-                               . $_->ROOT->style_registry_add($this->style)
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+
+    $this->attributes['class'] = $_->ROOT->boxing($boxing)
+                               . $_->ROOT->style_registry_add($style)
                                . $this->class;
-               
-    /* builds code */    
+
+    /* builds code */
     $_->buffer[] = '<div wid="0171" '
                  . $_->ROOT->format_html_attributes($this)
                  . '>';
@@ -28,6 +31,6 @@ class pack_vpaned
 
     $_->buffer[] = '</div>';
   }
-  
+
 }
 ?>

@@ -4,13 +4,12 @@ $$.js.reg['0310']={
      'cellsByRow',
      'cellSize',
      'fillBoundary'],
-  f:['define','flush','scrollend','datarequired'],
-  
+  f:['define','flush','scrollend','datarequired','fillcomplete'],
+
   b:function(n){
-    n.dataArea = n.children[1];
     n.rsObj = [];
     n.recordSet = [];
-    
+
     n.fillData = function(rs,range){
 
       if(typeof rs.maxlength != 'undefined') {
@@ -20,38 +19,39 @@ $$.js.reg['0310']={
 
       n.calcFillingParams();
       if(typeof n.finalRowSize != 'undefined') {
-        n.dataArea.style.width = n.finalRowSize + "px";
+        n.style.width = n.finalRowSize + "px";
       }
-      
+
       if(n.filling == "p" && range != null) {
-        
+
         var i = range[0];
-        
+
         while(i<range[1]&&i<n.dataSouceLength){
-          n.recordSet[i] = rs[i-range[0]];  
+          n.recordSet[i] = rs[i-range[0]];
           n.current_record = n.recordSet[i];
           $$.each(n.nextElementSibling.children,function(elm,ii){
-            var obj = elm.cloneNode(true);          
-            
-            n.dataArea.appendChild(obj);
-            obj.style.display = "block";
-            obj.style.height = n.rowHeight + "px";
-            obj.style.width = n.finalCellSize + n.cellSizing;
-            obj.index = i;
+            if(elm.show_if==null || eval(elm.show_if) == true) {
+              var obj = elm.cloneNode(true);
 
-            $$.each($$.getPlainWebgets(obj), function(elm,i){
-              if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
-              if(elm.refresh)elm.refresh();
+              n.appendChild(obj);
+              obj.style.display = "block";
+              obj.style.height = n.rowHeight + "px";
+              obj.style.width = n.finalCellSize + n.cellSizing;
+              obj.index = i;
 
-            });
-            
-            n.rsObj[i] = obj;
-          }); 
-                   
+              $$.each($$._wGetPlain(obj), function(elm,i){
+                if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
+                if(elm.refresh)elm.refresh();
+              });
+
+              n.rsObj[i] = obj;
+            }
+          });
+
           i++;
-        }        
+        }
       }
-      
+
       else {
         n.clear();
         n.recordSet = rs;
@@ -59,25 +59,29 @@ $$.js.reg['0310']={
           i=parseInt(i);
           n.current_record = row;
           $$.each(n.nextElementSibling.children,function(elm,ii){
-            var obj = elm.cloneNode(true);          
-            
-            n.dataArea.appendChild(obj);
-            obj.style.display = "block";
-            obj.style.height = n.rowHeight + "px";
-            obj.style.width = n.finalCellSize + n.cellSizing;
-            obj.index = i;
-            
-            $$.each($$.getPlainWebgets(obj), function(elm,i){
-              if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
-              if(elm.refresh)elm.refresh();
-            });
-            
-            n.rsObj[i] = obj;
+            if(elm.show_if==null || eval(elm.show_if) == true) {
+              var obj = elm.cloneNode(true);
+
+              n.appendChild(obj);
+              obj.style.display = "block";
+              obj.style.height = n.rowHeight + "px";
+              obj.style.width = n.finalCellSize + n.cellSizing;
+              obj.index = i;
+
+              $$.each($$._wGetPlain(obj), function(elm,i){
+                if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
+                if(elm.refresh)elm.refresh();
+
+              });
+
+              n.rsObj[i] = obj;
+            }
           });
         });
       }
-      
+
       n.dReq = false;
+      n.dispatchEvent(n.fillcomplete);
       return true;
     };
 
@@ -99,34 +103,32 @@ $$.js.reg['0310']={
           n.cellSizing = "%";
           break;
         case "01":
-          // Modificato il 2014-07-22 da 
+          // Modificato il 2014-07-22 da
           // n.finalCellSize = n.cellSize;
           // Non segnato in documentazione : vedere le incongruenze
           n.finalCellSize = n.finalRowSize = n.cellSize;
-          
-          
           n.cellSizing = "px";
           break;
         case "11":
           n.finalCellSize = n.cellSize;
           n.finalRowSize = n.cellsByRow*n.cellSize;
           n.cellSizing = "px";
-          break;      
-      }      
+          break;
+      }
     };
-    
+
     n.clear = function(){
-      n.dataArea.innerHTML = '';
+      n.innerHTML = '';
       n.recordSet = [];
       return;
-      while(n.dataArea.children.length!=1)
-        n.dataArea.innerHTML = '';
+      while(n.children.length!=1)
+        n.innerHTML = '';
     };
 
     n.getExposedRecords = function(){
       n.calcFillingParams();
       this.fillBoundary=this.fillBoundary||1;
-       
+
       var scroll = n.scrollTop,
           dAreaH = n.offsetHeight,
           dAreaW = n.offsetWidth,
@@ -139,46 +141,46 @@ $$.js.reg['0310']={
 
       if(n.cellsByRow != null) cXr = n.cellsByRow;
       else cXr = Math.floor(dAreaW/n.finalCellSize);
-      
+
 
       // Calculate the first and the last visible record
       var fvrec = fvr*cXr;
       var lvrec = lvr*cXr-1;
 
-      // Calculate exposed records plus extra boundaries 
+      // Calculate exposed records plus extra boundaries
       // by default they are about 1 page before and after
       fvrec = (fvrec-vr*(cXr*this.fillBoundary)<0 ?
         0 : fvrec-vr*(cXr*this.fillBoundary));
       lvrec = lvrec+vr*(cXr*this.fillBoundary);
 
-      return Array(fvrec,lvrec);      
+      return Array(fvrec,lvrec);
     };
-    
+
     n.getNewlyExposedRecords = function(){
       var exp = this.getExposedRecords();
       var nexr = [], i, und = false;
 
       if(typeof this.recordSet != 'undefined') {
-      
+
         for(i=exp[0];i<exp[1];i++){
-  
+
           if(typeof this.recordSet[i] == 'undefined' && und == false){
             nexr.push(i);
-            und = true; 
+            und = true;
           }
-          
+
           else if(typeof this.recordSet[i] != 'undefined' && und == true){
             nexr.push(i);
             und = false;
           }
         };
-        
+
         if(und == true) nexr.push(i);
       }
-      
-      else nexr = exp;     
-     
-      exp = [];      
+
+      else nexr = exp;
+
+      exp = [];
       while(nexr.length>1) exp.push(Array(nexr.shift(),nexr.shift()));
       return exp;
     };
@@ -186,7 +188,7 @@ $$.js.reg['0310']={
     n.scrollEndDispatcher = function(){
 
       n.dispatchEvent(n.scrollend);
-      if(n.filling=="p"){        
+      if(n.filling=="p"){
         var ner=n.getNewlyExposedRecords();
         if(ner.length>0 && n.dReq == false) {
           n.dReq = true;
@@ -194,41 +196,28 @@ $$.js.reg['0310']={
         }
       }
     };
-    
+
     n.prefillExposedArea = function(){
-      
+
     };
 
     /* sort by comma separated fields name */
     n.sort = function(f){
-      
+
     };
-    
+
     n.dispatchEvent(n.define);
   },
-  
+
   fs:function(n){
     $$.bindEvent(n, "scroll", function(){
-      
+
       clearTimeout(this.scrollTimeout);
       this.scrollTimeout = setTimeout(n.scrollEndDispatcher, 250);
-            
+
     });
 
     n.dispatchEvent(n.flush);
     n.prefillExposedArea();
   },
-  
-  getfields:function(f){
-    if(f === null) return false;
-    var field=f.split(','),fs=[];
-    $$.each(field,function(f,i){
-      f=f.split(':');
-      eval('var row='+f[0]+'.current_record');
-//      console.log(f);
-      fs.push(row[f[1]]);
-    });
-
-    return fs;
-  }
 };

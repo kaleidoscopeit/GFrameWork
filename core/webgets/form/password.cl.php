@@ -5,28 +5,40 @@ class form_password
     'style',
     'class'
   );
-  
+
   function __define(&$_)
   {
     if(isset($this->attributes['id']))
       $this->attributes['name'] = $this->attributes['id'];
   }
-  
+
   function __flush(&$_)
-  {  
-    $w_class   = 'class="w0240 '
-               . $_->ROOT->boxing($this->boxing)
-               . '" ';
-               
-    $css_style = $_->ROOT->style_registry_add($this->style)
-               . $this->class;
-                   
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
-    
-    $_->buffer[] = '<div wid="0240" wbg ' . $w_class . '>';
-    $_->buffer[] = '<input type="password" '
-                 . $_->ROOT->format_html_attributes($this).' '
+  {
+
+    /* builds syles */
+    $style  = (isset($this->style) ? $this->style : '');
+    $wstyle = (isset($this->wstyle) ? $this->wstyle : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+    $class  = (isset($this->class) ? $this->class : '');
+    $wclass = (isset($this->wclass) ? $this->wclass : '');
+
+    $w_class  = 'class="w0240 '
+              . $_->ROOT->boxing($boxing)
+              . $_->ROOT->style_registry_add($wstyle)
+              . $wclass
+              . '" ';
+
+    $css_style  = $_->ROOT->style_registry_add($style)
+                . $class;
+
+    if($css_style!="") $css_style = 'class="' . $css_style . '" ';
+
+    /* builds code */
+    $_->buffer[] = '<div ' . $w_class . '>';
+    $_->buffer[] = '<input type="password" wid="0240" '
+                 . $_->ROOT->format_html_attributes($this)
                  . $css_style . '>';
+
     $_->buffer[] = '</div>';
   }
 }

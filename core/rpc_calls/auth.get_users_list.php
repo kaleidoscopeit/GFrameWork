@@ -6,7 +6,7 @@
 $rpc = array (array (
 
 /* group name filter */
- 
+
 'filter' => array (
   'type'     => 'array',
   'required' => false,
@@ -32,16 +32,14 @@ $rpc = array (array (
 ),
 
 /* rpc function */
- 
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-  /* check authentication  credentials */  
-  $_->call(
-    "system.auth.engine.".$_STDIN["auth_engine"].".getulist",
-    $_STDIN);
+  /* check authentication  credentials */
+  _call("auth.engine." . $_STDIN["auth_engine"] . ".getulist", $_STDIN);
 
   $_STDOUT = $_STDIN;
   return TRUE;
-});  
+});
 
 ?>

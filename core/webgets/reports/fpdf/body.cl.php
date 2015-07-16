@@ -13,7 +13,7 @@ class reports_fpdf_body
     'font_style',
     'font_size'
   );
-  
+
   function __define(&$_)
   {
     // webget geometry
@@ -24,31 +24,26 @@ class reports_fpdf_body
     $this->height   = $this->geometry[3];
 
     // Set default values
-    $t = array();
-    $t['columns'][] = 1;
-    $t['rows'][] = 1;
+    $default               = array();
+    $default['columns'][]  = 1;
+    $default['rows'][]     = 1;
+    $default['left'][]     = "0";
+    $default['top'][]      = "0";
+    $default['width'][]    = "100%";
+    $default['height'][]   = "100%";
 
-    foreach ($t as $key => $value)
+    foreach ($default as $key => $value)
       foreach ($value as $local)
         if ($local != null && !isset($this->$key)) $this->$key=$local;
   }
 
-  function __flush(&$_)  
+  function __flush(&$_)
   {
     /* apply local styles */
     $_->ROOT->set_local_style($this);
-    
-		/* Setup local coordinates */
-    $this->left += $this->parent->left;  
-    $this->top  += $this->parent->top;
 
     /* fake result set in order to output at least one page */
     if(!isset($this->result_set)) $this->result_set[] = '';
-
-    /* cell width and cell height based upon columns/rows number 
-       and body width/height */
-    $cell_width   = $this->width/$this->columns;
-    $line_height  = $this->height/$this->rows;              
 
     /* count records, record per page, number of pages */
     $num_records  = count($this->result_set);
@@ -61,11 +56,26 @@ class reports_fpdf_body
 
     /* Starts page/rows/columns iterator */
     while($pag_pointer < $num_pages){
-      $this->parent->NewPage($_);           // Starts a new page
-      $cel_pointer       = 0;               // reset record pointer
-      $this->offset_y    = $this->top;      // reset subcell reference offset y
-      $this->offset_x    = $this->left;     // reset subcell reference offset x      
+      // Starts a new page
+      $this->parent->NewPage($_);
 
+      /* calculate local geometry */
+      $_->ROOT->calc_real_geometry($this);
+
+      /* setup local coordinates */
+      $this->offsetLeft = $this->pxleft + $this->parent->marginLeft;
+      $this->offsetTop  = $this->pxtop  + $this->parent->marginTop;
+
+      /* cell width and cell height based upon columns/rows number
+      and body width/height */
+      $cell_width   = $this->pxwidth/$this->columns;
+      $line_height  = $this->pxheight/$this->rows;
+
+      $cel_pointer          = 0;                 // reset record pointer
+      $this->cellOffsetLeft = $this->offsetLeft; // reset subcell reference offset x
+      $this->cellOffsetTop  = $this->offsetTop;  // reset subcell reference offset y
+
+      /* single record iterator */
       while ($cel_pointer < $pag_records) {
         for ($icol=0;$icol<$this->columns;$icol++){
           foreach ((array) @$this->childs as $child){
@@ -74,14 +84,15 @@ class reports_fpdf_body
           }
           $rec_pointer++;                   // set next record pointer
           $cel_pointer++;                   // set next cell
-          $this->offset_x += $cell_width;         // set cell reference offset x
+          $this->cellOffsetLeft += $cell_width;         // set cell reference offset x
         }
 
-        $this->offset_x  = $this->left;           // reset cell reference offset x
-        $this->offset_y += $line_height;          // set cell reference offset y
+        $this->cellOffsetLeft  = $this->offsetLeft;     // reset cell reference offset x
+        $this->cellOffsetTop  += $line_height;          // set cell reference offset y
       }
-      
+
       $pag_pointer++;                       // set next page
+
     }
 
     /* restore parent styles */

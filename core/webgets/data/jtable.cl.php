@@ -1,11 +1,11 @@
 <?php
 class data_jtable
-{ 
+{
   public $req_attribs = array(
     'style',
     'class'
   );
-   
+
   function __define(&$_)
   {
   }
@@ -13,24 +13,21 @@ class data_jtable
   function __flush(&$_)
   {
     /* builds syles */
-   $css_style = $_->ROOT->boxing($this->boxing).
-                $_->ROOT->style_registry_add($this->style).
-                $this->class;
+    $style  = (isset($this->style) ? $this->style : '');
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+    $class     = (isset($this->class) ? $this->class : '');
 
-    if($css_style!="") $css_style = 'class="w0310 '.$css_style.'" ';
+    $css_style  = $_->ROOT->boxing($boxing)
+                . $_->ROOT->style_registry_add($style)
+                . $class;
+
+    if($css_style!="") $css_style = 'class="w0310 ' . $css_style . '" ';
 
     /* builds code */
     $_->buffer[] = '<div wid="0310" '
                  . $_->ROOT->format_html_attributes($this) . ' '
                  . $css_style.'>';
 
-    $_->buffer[] = '<div>';
-
-    gfwk_flush_children($this, 'data_jtableheader');
-
-    $_->buffer[] = '</div>';
-
-    $_->buffer[] = '<div></div>';
     $_->buffer[] = '</div>';
 
     $_->buffer[] = '<div>';
@@ -40,7 +37,7 @@ class data_jtable
     $_->buffer[] = '</div>';
 
 
-  }  
+  }
 
 }
 ?>

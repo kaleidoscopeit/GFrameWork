@@ -37,29 +37,28 @@ $rpc = array (array (
 ),
 
 /* rpc function */
- 
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-  $user   = $_STDIN['user'];
-  $pass   = $_STDIN['pass'];
-  $domain = $_STDIN['domain'];
+//  $user   = $_STDIN['user'];
+//  $pass   = $_STDIN['pass'];
+//  $domain = $_STDIN['domain'];
 
-  /* check authentication  credentials */  
-  if(!$_->call("system.auth.engine."
+  /* check authentication  credentials */
+  if(!_call("auth.engine."
               . $_STDIN["auth_engine"]
               . ".ckuser", $_STDIN)) {
-                
+
     $_STDOUT = $_STDIN;
     $_STDOUT['STDERR']['call'][] = $self['name'];
- 
-    return FALSE;   
-  }
-  
-  
-  if($_STDIN['STDERR']['signal'] == 'AUTH_CHECKUSER_ACCEPTED') {
 
+    return FALSE;
+  }
+
+
+  if($_STDIN['STDERR']['signal'] == 'AUTH_CHECKUSER_ACCEPTED') {
     $_->static['auth']['user'] = $_STDIN[1];
-   
+
     /* calls login custom function */
     if (is_callable($_->settings['auth_login_event'])) {
       /* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
@@ -67,20 +66,20 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
         $_STDOUT['STDERR'] = array(
           'call'          => array($self['name']),
           'signal'        => 'AUTH_LOGINSTACK_ERROR');
-    
-        return FALSE;    
+
+        return FALSE;
       }
     }
 
     $_STDOUT['STDERR'] = array(
       'call'          => array($self['name']),
-      'signal'        => $_STDIN[0]['signal']);
-    
+      'signal'        => $_STDIN['STDERR']['signal']);
+
     return TRUE;
   }
-  
 
 
-});  
+
+});
 
 ?>

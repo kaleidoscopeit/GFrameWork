@@ -6,7 +6,7 @@
 $rpc = array (array (
 
 /* authentication server */
- 
+
 'server' => array (
   'type'     => 'string',
   'required' => true,
@@ -16,7 +16,7 @@ $rpc = array (array (
 )),
 
 /* bind user name */
- 
+
 'user' => array (
   'type'     => 'string',
   'required' => true,
@@ -25,7 +25,7 @@ $rpc = array (array (
 )),
 
 /* bind user pass */
- 
+
 'pass' => array (
   'type'     => 'string',
   'required' => true,
@@ -34,7 +34,7 @@ $rpc = array (array (
 )),
 
 /* bind realm */
- 
+
 'realm' => array (
   'type'     => 'string',
   'required' => true,
@@ -44,7 +44,7 @@ $rpc = array (array (
 )),
 
 /* base search */
- 
+
 'basedn' => array (
   'type'     => 'string',
   'required' => true,
@@ -76,42 +76,42 @@ $rpc = array (array (
 ),
 
 /* rpc function */
- 
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
-{   
+{
   $ldapuser = $_STDIN['user'] . "@" . $_STDIN['realm'];
-           
-  ldap_set_option($cnx, LDAP_OPT_PROTOCOL_VERSION, 3);
-  ldap_set_option($cnx, LDAP_OPT_REFERRALS, 0);
-  
+
   $cnx = ldap_connect($_STDIN['server'])
     or die("Could not connect to LDAP");
+
+  ldap_set_option($cnx, LDAP_OPT_PROTOCOL_VERSION, 3);
+  ldap_set_option($cnx, LDAP_OPT_REFERRALS, 0);
 
 
   // TODO : bind by using ldap trust user and get informations about user
   //        then try to bind with username
   if(@ldap_bind($cnx, $ldapuser, $_STDIN['pass']))
     $result = 'true';
-  
+
   else
-    $result = 'false';   
+    $result = 'false';
 
 
   $_STDOUT = array();
-    
-    
+
+
   switch($result) {
     case 'true' :
-      /* if accepted return the user information */      
+      /* if accepted return the user information */
 
 
 	// TODO : fix search by checking diabled flag
-	$filter = "(&(objectClass=user)(" 
+	$filter = "(&(objectClass=user)("
 	        . $_STDIN['uid_field']
 	        . "=" . $_STDIN['user'] . "))";
 	$sr     = ldap_search($cnx, $_STDIN['basedn'], $filter);
 	$entry  = ldap_first_entry($cnx, $sr);
-	$uid    = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);      
+	$uid    = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);
 	$uname  = ldap_get_values($cnx, $entry, $_STDIN['uname_field']);
 	$groups = ldap_get_values($cnx, $entry, "memberof");
 
@@ -119,7 +119,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 
       $_STDOUT[1]  = array(
         'id'    => $uid[0],
-        'name'  => $uname[0]);  
+        'name'  => $uname[0]);
 
       $_STDOUT['STDERR']['signal'] = 'AUTH_CHECKUSER_ACCEPTED';
       $_STDOUT['STDERR']['call']   = array($self['name']);
@@ -130,15 +130,15 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
         $value = $value[1];
       });
 
-      $_STDOUT[1]['group'] = $groups;        
+      $_STDOUT[1]['group'] = $groups;
 
       return TRUE;
-      break;            
+      break;
 
-    case 'false' :      
+    case 'false' :
       $_STDOUT['STDERR']['signal'] = 'AUTH_CHECKUSER_WRONGPASS';
       $_STDOUT['STDERR']['call']   = array($self['name']);
-     
+
       break;
 
     case 'error' :
@@ -148,6 +148,6 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
       $_STDOUT[0]  = array('id' => $_STDIN['user']);
       return FALSE;
   }
-});  
+});
 
 ?>

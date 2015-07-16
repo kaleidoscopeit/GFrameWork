@@ -2,17 +2,17 @@
 /*
  * attributes :
  *
- * onshow   : happens when this element will be shown 
+ * onshow   : happens when this element will be shown
  */
- 
+
 class pack_stackelm
-{ 
+{
   public $req_attribs = array(
     'style',
     'class',
     'preset'
   );
-  
+
   function __define(&$_)
   {
   }
@@ -22,14 +22,16 @@ class pack_stackelm
     $this->index = $this->parent->count;
     $this->parent->count++;
   }
-  
+
   function __flush(&$_)
   {
     /* builds syles */
-    $this->attributes['class'] = $_->ROOT->style_registry_add($this->style)
+    $boxing = (isset($this->boxing) ? $this->boxing : '');
+
+    $this->attributes['class'] = $_->ROOT->style_registry_add($style)
                                . $this->class;
 
-    /* builds code */    
+    /* builds code */
     $_->buffer[] = '<div wid="0131" '
                  . $_->ROOT->format_html_attributes($this)
                  . ($this->parent->preset != $this->index ?
@@ -43,6 +45,6 @@ class pack_stackelm
       gfwk_flush_children($this);
 
     $_->buffer[] = '</div>';
-  }  
+  }
 }
 ?>

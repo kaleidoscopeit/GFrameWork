@@ -1,13 +1,13 @@
 <?xml version="1.0"  encoding="UTF-8" ?>
-<base:htmlview id="gfwkstructure" style="padding:10px">
+<base:htmlview style="padding:10px">
 	<pack:vlayout naked="true">
-	    
+
 		<pack:vlaycell height="450">
 			<base:image
 			    src="images/gfwk-digram.png"
 			    boxing="512px,426px"/>
 		</pack:vlaycell>
-		
+
 		<pack:vlaycell height="30">
 			<base:label
 				class="font16 bold"
@@ -20,7 +20,7 @@
 				valign="top"
 				caption="Act like an HUB for client calls. Is responsible for the client authentication and authorization and will route the program flow through the right way depending by the type of client request. The type of calls, Engine can handle, is extensible by developing new plugins."/>
 		</pack:vlaycell>
-		
+
 		<pack:vlaycell height="30">
 			<base:label
 				class="font16 bold"
@@ -69,7 +69,7 @@
 				class="font16 bold"
 				caption="Web presentation :"/>
 		</pack:vlaycell>
-		
+
 		<pack:vlaycell height="70">
 			<base:label
 				class="font12"
@@ -82,7 +82,7 @@
 				class="font16 bold"
 				caption="Web dynamism :"/>
 		</pack:vlaycell>
-		
+
 		<pack:vlaycell height="130">
 			<base:label
 				class="font12"
@@ -102,7 +102,7 @@
 				class="font16 bold"
 				caption="G-BUS let Web application and their users to reach an extreme interaction level :"/>
 		</pack:vlaycell>
-				
+
 		<pack:vlaycell height="110">
 			<base:label
 				class="font12"
@@ -119,7 +119,7 @@
 				class="font16 bold"
 				caption="Others bindings : (not yet implemented)"/>
 		</pack:vlaycell>
-		
+
 		<pack:vlaycell height="50">
 			<base:label
 				class="font12"

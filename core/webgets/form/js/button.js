@@ -3,17 +3,15 @@ $_.js.reg['0250'] = {
 	f:['define','flush'],
   b:function(n) {
 		n.refresh=function(){
-			$_.jsimport('system.phpjs.vsprintf');
-      var fs = $_.js.reg['0310'].getfields(n.eval_field);
-			if(fs !== false) eval(vsprintf(n.eval_field_command,fs));
-				
-			var fs = $_.js.reg['0310'].getfields(n.field);
-			if(fs !== false) n.value = vsprintf(n.field_format,fs);
+			fs = $$._getFormattedFields(n.eval_field,n.eval_field_command);
+			if(fs !== false) eval(fs);
+			fs = $$._getFormattedFields(n.field,n.field_format);
+			if(fs !== false) n.value=fs;
 		};
-
+//console.log(n.define);
 		n.dispatchEvent(n.define);
   },
   fs:function(n) {
 	  n.dispatchEvent(n.flush);
   }
-}; 
+};

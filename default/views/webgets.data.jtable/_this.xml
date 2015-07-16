@@ -1,6 +1,6 @@
 <?xml version="1.0"  encoding="UTF-8" ?>
 
-<base:htmlview id="data_jtable" >
+<base:htmlview >
 
   <base:image
    src="images/text-xml.png"
@@ -8,21 +8,21 @@
     class="fade"
     tip="view source"
     onclick="subv_cont.goto('view_source&amp;source=webgets.data.jtable');$$.removeClass(view_source, 'diag_hidden');"
-    />    
-  
-  
+    />
+
+
   <data:jtable
     id="jtable"
     rowHeight="100"
     cellsByRow="1"
-    filling="p"     
+    filling="p"
     class="caption-item-middle "
     boxing=",40px,,40px">
-  
- 
+
+
     <data:jtablecell class="caption-item-middle" >
       <pack:hlayout naked="true">
-    
+
         <pack:hlaycell width="70px">
            <base:image
             id="icon"
@@ -31,33 +31,33 @@
             eval_field_command=""
             src="images/loading.gif"/>
         </pack:hlaycell>
-        
+
         <pack:hlaycell style="border-right:1px solid grey;">
           <base:label
             boxing="5px,20px,5px,top,,4px"
-            valign="middle" 
+            valign="middle"
             field="jtable:title"
             field_format="%s"
             class="caption-item-label font20" />
-    
+
           <base:label
             boxing="5px,30px,5px,5px"
             class="caption-item-label font12"
             valign="top"
             field="jtable:description" />
-         
+
         </pack:hlaycell>
-    
-        <pack:hlaycell width="150px" style="border-right:1px solid grey;">         
+
+        <pack:hlaycell width="150px" style="border-right:1px solid grey;">
           <base:label
             boxing="5px,5px,5px,5px"
             class="caption-item-label font12"
             valign="middle"
             halign="center"
             field_format="&lt;strong&gt;Year :&lt;/strong&gt; %s&lt;br&gt;&lt;strong&gt;Durat. :&lt;/strong&gt; %smin"
-            field="jtable:release_year,jtable:length"/> 
-    
- 
+            field="jtable:release_year,jtable:length"/>
+
+
         </pack:hlaycell>
 
       </pack:hlayout>
@@ -65,7 +65,7 @@
   </data:jtable>
   <base:label
     caption="Cerca :"
-    boxing="5px,20px,100px,bottom,,-10px" 
+    boxing="5px,20px,100px,bottom,,-10px"
     class="caption-item-label"/>
   <form:entry
     id="cerca"

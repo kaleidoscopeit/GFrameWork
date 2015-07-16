@@ -1,11 +1,10 @@
 $_.js.reg['0311']={
-	a:['eval_field','eval_field_command'],
+	a:['eval_field','eval_field_command','show_if'],
 	f:['ready'],
 	b:function(n){with(n){
 		n.refresh=function(){
-			$$.jsimport('system.phpjs.vsprintf');
-      var fs = $$.js.reg['0310'].getfields(n.eval_field);
-			if(fs !== false) eval(vsprintf(n.eval_field_command,fs));
+			fs = $$._getFormattedFields(n.eval_field,n.eval_field_command);
+			if(fs !== false) eval(fs);
 		};
 	}},
 	fs:function(n){

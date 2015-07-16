@@ -12,7 +12,7 @@ var $_ = {
   /* main loop */
   mloop : function(w, p) {
     var ch = w.childNodes, id, ln, r, a, f;
-    w.wid = $_.gea(w, 'wid');
+    w.wid = $$.getAttribute(w, 'wid');
     w.childWebgets = [];
     if (w.name)
       id = w.name;
@@ -30,9 +30,9 @@ var $_ = {
       if ( typeof $_.js.reg[w.wid] != 'undefined') {
         r = $_.js.reg[w.wid];
         for (a in r.a)
-        w[r.a[a]] = $_.gea(w, r.a[a]);
+        w[r.a[a]] = $$.getAttribute(w, r.a[a]);
         for (f in r.f)
-        w[r.f[f]] = new Function($_.gea(w, r.f[f]) || "");
+        w[r.f[f]] = new Function($$.getAttribute(w, r.f[f]) || "");
         r.b(w);
       }
     }
@@ -46,7 +46,7 @@ var $_ = {
   getChildWebgets : function(w) {
     var cw = w.childNodes, tmp = [];
     $_.each(cw, function(v, i) {
-      v.wid = $_.gea(v, 'wid');
+      v.wid = $$.getAttribute(v, 'wid');
       if (v.wid)
         tmp.push(v);
       tmp = tmp.concat($_.getChildWebgets(v));
@@ -258,7 +258,7 @@ var _w = function(w) {
 };
 
 /* Client code initialization */
-$_.ade(window, "load", function() {
+$S.bindEvent(window, "load", function() {
   document.body.id = 'root';
   $_.mloop(document.body, {
     childWebgets : []

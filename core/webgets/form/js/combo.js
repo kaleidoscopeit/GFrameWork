@@ -30,7 +30,7 @@ $_.js.reg['02A0'] = {
           no[se].selected = true;
         return 0;
       },
-      
+
       n.items_remove = function(i) {
         with (this) {
           if (n.options.length == 0)
@@ -62,7 +62,7 @@ $_.js.reg['02A0'] = {
         while (this.length != 0)
           this.remove(0);
       },
-      
+
       n.populate = function(v) {
         console.log(v);
         if (v.length == null & $_.count(v) == 0)
@@ -74,7 +74,7 @@ $_.js.reg['02A0'] = {
         });
         return true;
       },
-      
+
       // Reset to the original stack
       n.items_empty = function() {
         for (var i = n.options.length; i >= 0; i--) {
@@ -87,4 +87,4 @@ $_.js.reg['02A0'] = {
   fs : function(n) {
 	  n.dispatchEvent(n.flush);
   }
-}; 
+};
