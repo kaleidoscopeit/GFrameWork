@@ -1,6 +1,6 @@
 $_.js.reg['0070'] = {
   a : ["view"],
-  f : ["load"],
+  f : ["load","click"],
   b : function(n) {
     n.injJsBuf={};
 
@@ -8,6 +8,10 @@ $_.js.reg['0070'] = {
       if (v.indexOf("&ns=") > 1)
         console.log("Use of 'ns' in subview '" + n.id + "'");
       var x = $$.ajax({url:"?subview/" + v + "&ns=" + n.id, callback:n.xhrcbk});
+    };
+
+    n.refresh = function() {
+      n.goto(this.view);
     };
 
     n.back = function() {
@@ -29,7 +33,7 @@ $_.js.reg['0070'] = {
 
         if(typeof(c[0])!='undefined')n.injcss(c[0]);
         n.innerHTML = x.responseText;
-        if(typeof(c[1])!='undefined') n.injJs(c[1]);
+        if(typeof(c[1])!='undefined')n.injJs(c[1]);
         else n.initJs();
         n.dispatchEvent(n.load);
       }
@@ -92,9 +96,8 @@ $_.js.reg['0070'] = {
         });
       }
     };
-
-
   },
+
   fs : function(n) {
     if (n.view != '')
       n.goto(n.view);

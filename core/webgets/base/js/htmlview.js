@@ -405,9 +405,13 @@ var $_={
     var fld=fld.split(','),fs=[];
     $$.each(fld,function(f,i){
       f=f.split(':');
-      eval('var row='+f[0]+'.current_record');
-      if(f[1]) fs.push(row[f[1]]);
-      else fs.push(row);
+      var row=_w(f[0]).current_record;
+      if(typeof row[f[1]] == "string") // escape quotes if is a string
+        fs.push(row[f[1]].replace(/"/g, '\\x22').replace(/'/g, '\\x27'));
+      else if(f[1])                    // simply push if is not a string
+        fs.push(row[f[1]]);
+      else                             // simply push the record as is, i.e. in case recordset is a simple array
+        fs.push(row);
     });
 
     if(frm=='') return fs;
@@ -425,7 +429,7 @@ var openView=function(v){
 /* return a webget by [namespace:name]  */
 function _w(w){
   //  _dBG('E_DEBUG','_w',w);
-  w = w.split(':');
+  w = w.trim().split(':');
   var cNSp = [];
 
   if(w.length>1){
@@ -490,9 +494,6 @@ function _getViewParams(n) {
     p[kv[0]] = kv.length > 1 ? decodeURIComponent(kv[1]) : "";
   }
   return p;
-
-  // No scripts match
-  return {};
 };
 
 

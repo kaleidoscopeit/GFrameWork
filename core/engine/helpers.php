@@ -9,9 +9,9 @@ function array_get_nested(&$arr, $path, $separator = '.')
 
   foreach ($keys as $key) {
     if (isset($cursor[$key]))
-    $cursor = &$cursor[$key];
+      $cursor = &$cursor[$key];
     else
-    return false;
+      return null;
   }
 
   return $cursor;

@@ -12,7 +12,7 @@ $$.js.reg['0010']={
     else n.sub=n;
 
 		n.caption=function(c){with(n){
-			if(c===undefined)return sub.innerHTML.replace(/\t|\n|\r/g, '');
+			if(c===undefined || c==null)return sub.innerHTML.replace(/\t|\n|\r/g, '');
 			sub.innerHTML=c;
 			n.dispatchEvent(change);
 			return true;

@@ -4,7 +4,12 @@ $$.js.reg['0310']={
      'cellsByRow',
      'cellSize',
      'fillBoundary'],
-  f:['define','flush','scrollend','datarequired','fillcomplete'],
+  f:['define',
+     'flush',
+     'ready',
+     'scrollend',
+     'datarequired',
+     'fillcomplete'],
 
   b:function(n){
     n.rsObj = [];
@@ -121,8 +126,8 @@ $$.js.reg['0310']={
       n.innerHTML = '';
       n.recordSet = [];
       return;
-      while(n.children.length!=1)
-        n.innerHTML = '';
+      //while(n.children.length!=1)
+      //  n.innerHTML = '';
     };
 
     n.getExposedRecords = function(){
@@ -219,5 +224,6 @@ $$.js.reg['0310']={
 
     n.dispatchEvent(n.flush);
     n.prefillExposedArea();
+    n.dispatchEvent(n.ready);
   },
 };

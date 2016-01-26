@@ -13,6 +13,7 @@ class reports_fpdf_label
     'align',
     'rotation',
     'caption',
+    'caption_condition',
     'field',
     'field_format'
   );
@@ -72,10 +73,15 @@ class reports_fpdf_label
         $field_format
       );
 
-
+      /* force caption property content in case the "caption condition"
+         is satisfied */
+      if(isset($this->caption_condition))
+        if(eval($this->caption_condition))
+          $caption = $this->caption;
     }
 
     else $caption = $this->caption;
+
 
     /* calculate local geometry */
     $_->ROOT->calc_real_geometry($this);

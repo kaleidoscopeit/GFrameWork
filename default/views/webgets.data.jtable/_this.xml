@@ -37,7 +37,6 @@
             boxing="5px,20px,5px,top,,4px"
             valign="middle"
             field="jtable:title"
-            field_format="%s"
             class="caption-item-label font20" />
 
           <base:label

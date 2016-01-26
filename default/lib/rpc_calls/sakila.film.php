@@ -1,7 +1,7 @@
 <?php
 /*
  * Retrieve a list of warehouse family or items or both by a given path as
- * filter  
+ * filter
  */
 
 $rpc = array(array(
@@ -31,13 +31,13 @@ $rpc = array(array(
   'required' => true,
   'origin'   => array (
       'variable:$_STDIN["db"]',
-      'call:user.common.db_operations.connect'
+      'call:common.db_operations.connect'
 ))
 
 ),
 
 /* rpc function */
-  
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   $qs = "SELECT SQL_CALC_FOUND_ROWS * FROM sakila.film "
@@ -58,7 +58,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 
 
   return TRUE;
-  
+
 });
 
 ?>
