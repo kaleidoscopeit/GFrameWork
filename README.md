@@ -5,14 +5,14 @@ COSA E' :
 =========
 
 Un completo ambiente di sviluppo, con precise regole, sintassi e paradigma di
-progettazione. E' open source, modulare es estensibile, chiunque puo' lavorarci
+progettazione. E' open source, modulare ed estensibile, chiunque puo' lavorarci
 sopra a qualsiasi livello.
 
 
 A COSA SERVE :
 ==============
 
-A sviluppare rapidamente applicazioni distribuite utilizzando tecnologie e pro-
+A sviluppare rapidamente applicazioni distribuite utilizzando tecnologie e pro
 tocolli esistenti e molto diffusi, con il grande vantaggio di non dover distri
 buire e mantenere aggiornati software client personalizzati e mono piattaorma.
 
@@ -26,14 +26,14 @@ risultato, senza perdersi nei neandri dello sviluppo Web. E' possibile passare
 dal disegno delle varie 'viste' della propria applicazione, all'implementazione
 reale in pochissimo tempo. G-Framework contiene gia' tutto cio' che serve per
 creare complesse 'viste', far interagire i client con il server, autenticare
-gli utenti, internazionalizzare e personalizzare l'aspetto delle proprie appli-
+gli utenti, internazionalizzare e personalizzare l'aspetto delle proprie appli
 cazioni.
 
 
 OK, MI HAI INCURIOSITO, DIMMI ORA COSA FARE :
 =============================================
 
-Innanzitutto e' necessario capire cosa vuoi fare. Ci sono tre tipi di sviluppa-
+Innanzitutto e' necessario capire cosa vuoi fare. Ci sono tre tipi di sviluppa
 tori che possono operare con G-Framework :
 
 - Solution Developer : e' colui che utilizza il GFwk per creare applicazioni,
@@ -44,7 +44,7 @@ tori che possono operare con G-Framework :
                        webgets, librerie JavaScript hot-plug e temi. 
 
 - Core Developer     : si occupa del backend, di quella parte che fa funzionare
-                       il framework. Sistema bachi, migliorara il codice, ag-
+                       il framework. Sistema bachi, migliorara il codice, ag
                        giunge nuove caratteristiche.
 
 Se vuoi provare a creare la tua applicazione e' necessario seguire la parte del
@@ -74,15 +74,15 @@ A questo punto ti spiego cosa troverai nel pacchetto :
 
 - default       : il progetto di presentazione del framework
 
-- references    : contiente diverso codice che non forma un particolare proget-
+- references    : contiente diverso codice che non forma un particolare proget
                   to, ma utile come riferimento per lo sviluppo.
 
-- documentation : questa directory non contiene un progetto, ma tutta la docu-
+- documentation : questa directory non contiene un progetto, ma tutta la docu
                   mentazione che riuscirò a scrivere
 
 
 
-Die seguito c'è la vecchia presentazione in inglese del progetto che appena ho
+Di seguito c'è la vecchia presentazione in inglese del progetto che appena ho
 tempo aggiornerò :)
 
 Mi raccomando...
@@ -96,7 +96,7 @@ Mi raccomando...
 
 
                                 G-FRAMEWORK
-                                ===========
+===========================================
                                 
 G-Framework ToolKit is a system for creating Web applications. It is not a 
 semple framework, but a new approach to Web programming.
