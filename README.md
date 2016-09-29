@@ -1,5 +1,5 @@
-                                G-FRAMEWORK
-                                ===========
+G-FRAMEWORK
+===========
 
 COSA E' :
 =========
@@ -95,8 +95,8 @@ Mi raccomando...
 
 
 
-                                G-FRAMEWORK
-===========================================
+G-FRAMEWORK
+===========
                                 
 G-Framework ToolKit is a system for creating Web applications. It is not a 
 semple framework, but a new approach to Web programming.
