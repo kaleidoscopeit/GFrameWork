@@ -19,7 +19,7 @@ class base_image
     /* sets src depending by the presence of 'field' property */
     if(isset($this->field)) {
       $field        = explode(',', $this->field);
-      $field_format = ($this->field_format ? $this->field_format : '');
+      $field_format = (isset($this->field_format) ? $this->field_format : '{0}');
 
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
@@ -28,7 +28,7 @@ class base_image
         if(!isset($_->webgets[$param[0]]->current_record))
           $cfields[] = $field[$key];
 
-        $field[$key] = &array_get_nested
+        $field[$key] = array_get_nested
                        ($_->webgets[$param[0]]->current_record, $param[1]);
       }
 

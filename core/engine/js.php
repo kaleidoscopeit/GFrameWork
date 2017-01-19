@@ -9,17 +9,17 @@
 
 class _engine_js {
 
-  function init()
+  static function init($caller)
   {
     /* initialization */
-    if(!$this->CALL_TARGET) die ('TARGET_NOT_SPECIFIED');
+    if(!$caller->CALL_TARGET) die ('TARGET_NOT_SPECIFIED');
 
   }
-  
-  function build()
+
+  static function build($caller)
   {
     header('Content-type: text/javascript');
-    echo implode('', $this->static[$this->CALL_URI]['js']['raw']);
+    echo implode('', $caller->static[$caller->CALL_URI]['js']['raw']);
   }
 }
 ?>

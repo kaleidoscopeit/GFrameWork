@@ -54,12 +54,11 @@ class pack_hlayout
     /* builds syles */
     $style  = (isset($this->style) ? $this->style : '');
     $boxing = (isset($this->boxing) ? $this->boxing : '');
-    $class  = (isset($this->class) ? $this->class : '');
 
     $this->attributes['class'] =
         $_->ROOT->boxing($boxing)
       . $_->ROOT->style_registry_add('min-width:' . $fixed_width . 'px;' . $style)
-      . $class;
+      . (isset($this->class) ? $this->class : '');
 
     /* builds code */
     if(!isset($this->naked)) {

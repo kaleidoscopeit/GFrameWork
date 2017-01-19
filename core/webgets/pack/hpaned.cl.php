@@ -21,7 +21,7 @@ class pack_hpaned
     $css_style = 'class="'
                . $_->ROOT->boxing($boxing)
                . $_->ROOT->style_registry_add($style)
-               . $this->class .'" ';
+               . (isset($this->class) ? $this->class : '') .'" ';
 
     /* builds code */
     $_->buffer[] = '<div ' . $css_style . '">';

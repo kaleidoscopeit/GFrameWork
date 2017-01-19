@@ -15,11 +15,10 @@ class pack_area
     /* builds syles */
     $style  = (isset($this->style) ? $this->style : '');
     $boxing = (isset($this->boxing) ? $this->boxing : '');
-    $class = (isset($this->class) ? $this->class : '');    
 
     $this->attributes['class'] = $_->ROOT->boxing($boxing)
                                . $_->ROOT->style_registry_add($style)
-                               . $class;
+                               . (isset($this->class) ? $this->class : '');;
 
     /* builds code */
     $_->buffer[] = '<div wid="0100" '

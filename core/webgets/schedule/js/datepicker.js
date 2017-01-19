@@ -162,7 +162,7 @@ $_.js.reg['0400']={
 			var nn=m.cloneNode(true);
 			nn.wid=m.getAttribute('wid');
 			if($$._wAttachJs(nn)) $$.js.reg[nn.wid].fs(nn);
-			nn.style.visibility = "visible";
+			nn.style.visibility = "";
 			m.parentNode.appendChild(nn);
 			return nn;
 		}

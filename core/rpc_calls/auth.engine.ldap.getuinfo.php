@@ -7,7 +7,7 @@
 $rpc = array (array (
 
 /* authentication server */
- 
+
 'server' => array (
   'type'     => 'string',
   'required' => true,
@@ -17,7 +17,7 @@ $rpc = array (array (
 )),
 
 /* base search */
- 
+
 'basedn' => array (
   'type'     => 'string',
   'required' => true,
@@ -27,7 +27,7 @@ $rpc = array (array (
 )),
 
 /* realm */
- 
+
 'realm' => array (
   'type'     => 'string',
   'required' => true,
@@ -38,7 +38,7 @@ $rpc = array (array (
 
 
 /* query allowed user name */
- 
+
 'ldap_user' => array (
   'type'     => 'string',
   'required' => true,
@@ -47,7 +47,7 @@ $rpc = array (array (
 )),
 
 /* query allowed user pass */
- 
+
 'pass' => array (
   'type'     => 'string',
   'required' => true,
@@ -56,7 +56,7 @@ $rpc = array (array (
 )),
 
 /* search path */
- 
+
 'member_mask' => array (
   'type'     => 'array',
   'required' => false,
@@ -84,7 +84,7 @@ $rpc = array (array (
     'variable:$_STDIN["output_fields"]',
     'variable:$_->settings["auth_ldap_output_fields"]',
 )),
- 
+
 /* uname field */
 
 'uname_field' => array (
@@ -95,30 +95,39 @@ $rpc = array (array (
     'variable:$_->settings["auth_ldap_uname_field"]',
 )),
 
+/* searched user id */
+
+'user' => array (
+  'type'     => 'string',
+  'required' => false,
+  'origin'   => array (
+    'variable:$_STDIN["user"]',
+)),
+
 ),
 
 /* rpc function */
- 
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
 
-  /* Get the users list from ldap server */ 
+  /* Get the users list from ldap server */
   $cnx = ldap_connect($_STDIN['server'])
     or die("Could not connect to LDAP");
   ldap_set_option($cnx, LDAP_OPT_PROTOCOL_VERSION, 3);
   ldap_set_option($cnx, LDAP_OPT_REFERRALS, 0);
-  
+
   ldap_bind($cnx, $_STDIN['ldap_user'] . "@" . $_STDIN['realm'], $_STDIN['pass'])
     or die("Could not bind to LDAP");
-    
-    
-	$filter = "(&(objectClass=user)(" 
+
+
+	$filter = "(&(objectClass=user)("
 	        . $_STDIN['uid_field']
 	        . "=" . $_STDIN['user'] . "))";
 
   $sr     = ldap_search($cnx, $_STDIN['basedn'], $filter);
   $entry  = ldap_first_entry($cnx, $sr);
-  
+
   $_STDOUT = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);
   $_STDOUT = array(
     'uid' => $_STDOUT[0]
@@ -127,7 +136,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 
   foreach ($_STDIN["output_fields"] as $query => $target){
     $query = explode(',/', $query);
-    
+
     //echo $_STDOUT['uid'].'  '.$query[0]."\n";
 
     @$_STDOUT[$target] = ldap_get_values($cnx, $entry, $query[0]);
@@ -137,12 +146,12 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
       foreach ($_STDOUT[$target] as $index => $value)
         $_STDOUT[$target][$index] = preg_replace($query[1], '', $value);
     }
-    else 
-      $_STDOUT[$target] = $_STDOUT[$target][0]; 
+    else
+      $_STDOUT[$target] = $_STDOUT[$target][0];
   }
 
   return TRUE;
 
-});  
+});
 
 ?>

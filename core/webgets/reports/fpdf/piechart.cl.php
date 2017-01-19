@@ -3,40 +3,52 @@ class reports_fpdf_piechart
 {
   public $req_attribs = array(
     'geometry',                   // left,top,width as radius
-    'line_width',                 // thickness (default as parent)
     'labels',                     // labels enabled (1,0)
     'labels_position',            // position from the center (1 = radius)
-    'text_color',
-    'font_family',
-    'font_style',
-    'font_size',
     'start_angle',                // default : "0" (sin = 1) (0-359 degrees)
     'direction',                  // default : "CW"          (CW, CCW)
     'data',                       // accepts an array of subarray with :
                                   //   label --> label
                                   //   value --> numeric value (in %)
                                   //   color --> RED,GREEN,BLUE
-    'field'
+    'field',
+
+    /* common document flow attributes */
+    'text_color',
+    'draw_color',
+    'font_family',
+    'font_style',
+    'font_size',
+    'line_width',                 // thickness (default as parent)
   );
 
   function __define(&$_)
   {
-    // webget geometry
-    $this->geometry = explode(',',$this->geometry);
-    $this->left     = $this->geometry[0];
-    $this->top      = $this->geometry[1];
-    $this->width    = $this->geometry[2];
-    $this->height   = $this->geometry[3];
-
     // Set default values
-    $t = array();
-    $t['start_angle'][] = "0";
-    $t['direction'][] = "CW";
-    $t['labels_position'][] = "0.7";
+    $default = array();
 
-    foreach ($t as $key => $value)
+    /* queue webget geometry if sets through the XML */
+    if(isset($this->geometry)) {
+      $this->geometry = explode(',', $this->geometry);
+      $default['left'][]   = isset($this->geometry[0]) ? $this->geometry[0] : NULL;
+      $default['top'][]    = isset($this->geometry[1]) ? $this->geometry[1] : NULL;
+      $default['width'][]  = isset($this->geometry[2]) ? $this->geometry[2] : NULL;
+      $default['height'][] = isset($this->geometry[3]) ? $this->geometry[3] : NULL;
+    }
+
+    /* then sets default geometry */
+    $default['left'][]     = "0";
+    $default['top'][]      = "0";
+    $default['width'][]    = "100%";
+    $default['height'][]   = "100%";
+
+    $default['start_angle'][] = "0";
+    $default['direction'][] = "CW";
+    $default['labels_position'][] = "0.7";
+
+    foreach ($default as $key => $value)
       foreach ($value as $local)
-        if ($local != null && !isset($this->$key)) $this->$key=$local;
+        if ($local !== null && !isset($this->$key)) $this->$key=$local;
   }
 
   function __flush (&$_)

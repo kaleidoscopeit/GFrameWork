@@ -12,14 +12,15 @@ var $_={
   {
     n=n||'root';
     var ch=w.childNodes,id,ln,r,a,f;
-    if(w.attributes) w.wid=w.getAttribute('wid');
-    if(w.wid==9990) return;
-    if(w.attributes) w.childWebgets=[];
+    if(w.attributes) {
+      w.wid=w.getAttribute('wid');
+      if(w.wid==9990) return;
+      w.childWebgets=[];
+    }
+
     if(w.name) id=w.name;
     else if(typeof w.id == "string") id = w.id;
-
-    //if(id)if(window[id] != w)window[id] = w;
-    if(id)eval("window."+id+"=w;");
+    if(id && id != "") eval("window."+id+"=w;");
     if(w.wid) {
       p.childWebgets.push(w);
       w.parentWebget=p;
@@ -60,10 +61,11 @@ var $_={
     /*  Reads from the webget the properties */
     for(a in r.a)w[r.a[a]]=w.getAttribute(r.a[a]);
 
-    /*  Reads from the webget the 'function' passed as properties */
+    /* Reads from the webget the 'function' passed as properties
+     * then for each function passed try to attach it */
     for(f in r.f){
       f=r.f[f];
-      fn=w.getAttribute('on' + f) || w.getAttribute(f) || null;
+      var fn=w.getAttribute('on' + f) || w.getAttribute(f) || "";
 
       /* Makes a function from 'f' attribute and bind it to the webget using the
        * standard bind functions. Read from the root HTML element, in order,
@@ -76,29 +78,19 @@ var $_={
     return true;
   },
 
-  // space saving wrappers for common functions
-  getAttribute:function(n,a){
-    if(n.attributes)return n.getAttribute(a);
-    return false;},
+  /* ------------ SPACE SAVING WRAPPERS FOR COMMON FUNCTIONS ---------------- */
+  getAttribute:function(n,a){return (n.attributes?n.getAttribute(a):false);},
   cre:function(n){return document.createElement(n);},
   gei:function(n){return document.getElementById(n);},
+  getn:function(n){return document.getElementsByTagName(n);},
+  eve:function(e){return e || window.event;},                                   // Cross browser wrapper for event object
+  count:function(o){var c=0;for(var i in o)c++;return c;},                      // Count the length of an object
 
-  // Cross browser wrapper for event object
-  eve:function(e){
-    if (!e) e = window.event;
-    return e;
-  },
-
-  // TODO :count an object length
-  count:function(o){
-    var c=0;for(var i in o)c++;return c;
-  },
-
-  // TODO :
-  each:function(o,f){
+  // Executes a given function(f) for each element of an array or an object(o).
+  each:function(o,f,i){
     if(!o||!f)return false;
-    if(o.length!=null)for(var i=0;i<o.length;i++)f(o[i],i);
-    else for(var i in o)f(o[i],i);
+    if(o.length!==undefined)for(i=0;i<o.length;i++)f(o[i],i);
+    else for(i in o)f(o[i],i);
     return true;
   },
 
@@ -141,44 +133,46 @@ var $_={
     }
 
     var callback = function(x){
-      try{o=eval('(' + x.responseText + ')');}
+      try{o = eval('(' + x.responseText + ')');}
       catch(e){
-        alert('Parsing Call response failed (' + m + ') : '+x.responseText);
+        alert('Parsing Call response failed (' + m + ') : ' + x.responseText);
         return false;}
 
-      // if response is a string put that in the default subitem '0'
-      for(var i in o[1])c++;if(c==1)o[1]={0:o[1]};
+      /* if response is not an object and the required response type implies to
+         join the result with the request put that in the default subitem '0'.*/
+      if((typeof o[1] != 'object' || o[1] == null) && f>-1) o[1]={0:o[1]};
 
       /* empty input buffer if 'stack' flag is not set */
-      if(f==-1)for(p in b)delete b[p];
+      if(f==-1) for(p in b) delete b[p];
 
-      /* merges responses values */
-      for(p in o[1])b[p]=o[1][p];
+      /* merges responses values if response is an object and not a "null" */
+      if(typeof o[1] == 'object' && o[1] != null) for(p in o[1]) b[p] = o[1][p];
+      else b = o[1];
 
       if(o[0] === null) {
-        this.jsimport('system.phpjs.var_export');
-        var_export(b,true);
+        console.log("RPC call error, check following logs.");
+        console.log(b);
       }
 
       // returns the call status
-      if(cbk==null) return o[0];
+      if(cbk === undefined) return o[0];
       else cbk(b,o[0]);
       return true;
     };
 
     var x = this.ajax({
-      url:'?call/'+m.replace(/\./g,'/'),
-      post:p,
-      callback:(cbk!=null ? callback : null)
+      url : '?call/'+m.replace(/\./g,'/'),
+      post : p,
+      callback : (cbk !== undefined ? callback : undefined)
     });
 
-    if(cbk==null) return callback(x);
+    if(cbk === undefined) return callback(x);
     else return true;
   },
 
   // hotplug javascript code loader, l:library q:enqueue
   jsimport:function(l,c){
-    if(!$$.tmp.jsimport)$$.tmp.jsimport=new Array;
+    if(!$$.tmp.jsimport)$$.tmp.jsimport=[];
     if($$.tmp.jsimport[l])return true;
     var xhr=this.xhr(),url='?lib/'+l.replace(/\./g,'/'),er;
     xhr.open('GET',url,false);
@@ -196,9 +190,9 @@ var $_={
   /* let to hot-plug new javascript libraries on-demand, then execute the call-
    * back which depends on them. l:{array_of_libraries},c:callback */
   jsInclude:function(l,c){
-    if(!$$.tmp.jsimport)$$.tmp.jsimport=new Array;
+    if(!$$.tmp.jsimport)$$.tmp.jsimport=[];
 
-    if(l.length == 0) {
+    if(l.length === 0) {
       //console.log("jsInclude : I'll execute the callback");
       c();
     }
@@ -233,7 +227,8 @@ var $_={
 
   /* download and execute a javaScript file */
   importRawJs:function(l,c){
-    if(l=='')return false;
+    //console.log(document.getElementsByTagName('script'));
+    if(l==='')return false;
     var x=this.xhr();
     x.open('GET',l,false);
     x.setRequestHeader('Content-Type', 'application/text');
@@ -253,11 +248,24 @@ var $_={
     return true;
   },
 
+  // executes the special query in order to check the session status */
+  checkSession:function(cbk) {
+    if(typeof cbk != 'function') return false;
+
+    var callback = function(x){
+      cbk(x.responseText);
+    };
+    var x = this.ajax({
+      url : '?cksess',
+      callback : callback
+    });
+  },
+
   /* aribtrary ajax request */
   ajax:function(args){
-    var reqt = (args.post != null ? "POST" : "GET"),
+    var reqt = (args.post !== undefined ? "POST" : "GET"),
         x=this.xhr(),
-        cbks = (args.callback != null ? true : false);
+        cbks = (args.callback !== undefined ? true : false);
 
     x.open(reqt,args.url,cbks);
     if(cbks) x.onreadystatechange = function() {
@@ -320,6 +328,12 @@ var $_={
   {
     if(!obj) {
       _dBG('E_ERROR', 'bindEvent', ['Passed Object is not valid',[
+      obj,eve,hdl]]);
+      return;
+    };
+
+    if(typeof(hdl) !== 'function') {
+      _dBG('E_ERROR', 'bindEvent', ['Passed Handle is not a function',[
       obj,eve,hdl]]);
       return;
     };
@@ -402,15 +416,21 @@ var $_={
 
   _getFormattedFields:function(fld,frm){
     if(fld === null) return false;
-    var fld=fld.split(','),fs=[];
+    fld = fld.split(',');
+    var fs = [];
+
     $$.each(fld,function(f,i){
-      f=f.split(':');
-      eval('var row='+f[0]+'.current_record');
-      if(f[1]) fs.push(row[f[1]]);
-      else fs.push(row);
+      f = f.split(':');
+      var row = _w(f[0]).current_record;
+      if(typeof row[f[1]] == "string") // escape quotes if is a string
+        fs.push(row[f[1]].replace(/"/g, '\\x22').replace(/'/g, '\\x27'));
+      else if(f[1])                    // simply push if is not a string
+        fs.push(row[f[1]]);
+      else                             // simply push the record as is, i.e. in case recordset is a simple array
+        fs.push(row);
     });
 
-    if(frm=='') return fs;
+    if(frm === '') return fs;
     return frm.format(fs);
   }
 };
@@ -423,23 +443,15 @@ var openView=function(v){
 };
 
 /* return a webget by [namespace:name]  */
-function _w(w){
+function _w(w)
+{
   //  _dBG('E_DEBUG','_w',w);
-  w = w.split(':');
-  var cNSp = [];
-
-  if(w.length>1){
-    typeof $$.webgets[w[0]] != 'undefined' ?
-      cNSp = $$.webgets[w.shift()] :
-      cNSp = $$.webgets['root'];
-
-  }
-
-  else {
-    $$.each($$.webgets, function(o,v) {
-      cNSp = cNSp.concat(o);
-    });
-  }
+  w = w.trim().split(':');
+  var cNSp = [],e = $$.webgets;
+  if(w.length>1)
+    cNSp = (e[w[0]]!==undefined ? e[w.shift()] : e.root);
+  else
+    $$.each(e, function(o,v) { cNSp = cNSp.concat(o);});
 
   w = w.join(':');
 
@@ -448,7 +460,7 @@ function _w(w){
   }
 
 	return false;
-};
+}
 
 
 /* debug function, following log level codes are given as examples, at the
@@ -472,60 +484,60 @@ function _w(w){
  */
 function _dBG(l,a,m)
 {
-  if(($$.env.settings.cs_debug.search(l)
-    || $$.env.settings.cs_debug.search('E_ALL')) != -2)
-      console.log({'agent':a,'message':m});
-};
+  var d = $$.env.settings.cs_debug;
+  if((d.search(l) || d.search('E_ALL')) != -2)
+    console.log({'agent':a,'message':m});
+}
 
 
-// Extract "GET" parameters from a JS include query string // _getViewParams
+// Extract "GET" parameters from a JS include query string //
 function _getViewParams(n) {
   // Find all script tags
   var URL = document.URL;
   var pa = URL.split("?").pop().split("&");
-  // Look through them trying to find ourselves
+  // extract the URI of the view
   var p = {};
+  p.CALL_URI = pa.shift().split("/");
+  p.CALL_URI.shift();
+  p.CALL_URI = p.CALL_URI.join(".");
+
+  // Look through them trying to find ourselves
   for(var j=0; j<pa.length; j++) {
     var kv = pa[j].split("=");
     p[kv[0]] = kv.length > 1 ? decodeURIComponent(kv[1]) : "";
   }
-  return p;
 
-  // No scripts match
-  return {};
-};
+  return p;
+}
 
 
 
 /* Client side framework initialization (MAIN) */
-$$.bindEvent(window, "load", function(){with($$)
+$$.bindEvent(window, "load", function()
 {
   /* force document id (used as mnenonic reference and as namespace) */
   document.body.id='root';
 
-  /* binds enqueue events in the 'root' namespace */
-  _flushBinds('root');
+  /* binds enqueued events in the 'root' namespace */
+  $$._flushBinds('root');
 
-  /* clean root namespace container */
-  webgets['root']=[];
+  /* initialize root namespace container */
+  $$.webgets.root=[];
 
   /* launch initialization (page parsing) starting from 'body' TAG */
-  _wInit(document.body,{childWebgets:[]},'root');
-
-  /* legacy or testing code */
-  //  for(var s in lib)lib[s].construct();
+  $$._wInit(document.body,{childWebgets:[]},'root');
 
   /* client side flush event only if a linked library exists */
-  for(var s in webgets['root']){
-    if(js.reg[webgets['root'][s].wid])
-      js.reg[webgets['root'][s].wid].fs(webgets['root'][s]);
+  var r = $$.webgets.root, j = $$.js.reg;
+  for(var s in r){
+    if(j[r[s].wid]) j[r[s].wid].fs(r[s]);
   }
 
   /* dispatch 'ready' event for the body TAG (AKA 'root webget') */
   /* TODO : seems not follows the global rules for event dispatching */
   if(typeof(document.body.ready) == 'object')
     document.body.dispatchEvent(document.body.ready);
-}});
+});
 
 /* Non framework functions */
 String.prototype.format = function()

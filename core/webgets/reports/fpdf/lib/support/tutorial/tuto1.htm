@@ -21,15 +21,15 @@ Cominciamo con un esempio classico:
 </div>
 <p class='demo'><a href='tuto1.php' target='_blank' class='demo'>[Demo]</a></p>
 Dopo aver incluso il file libreria, creiamo un oggetto FPDF.
-Il costruttore <a href='../doc/fpdf.htm'>FPDF()</a> viene usato, qui sopra, con i valori di default:
+Il <a href='../doc/__construct.htm'>costruttore</a> viene usato, qui sopra, con i valori di default:
 le pagine sono formato A4, verticale, e con unità di misura in
 millimetri. Sarebbe possibile specificarli esplicitamente con:
 <div class="source">
 <pre><code>$pdf <span class="kw">= new </span>FPDF<span class="kw">(</span><span class="str">'P'</span><span class="kw">,</span><span class="str">'mm'</span><span class="kw">,</span><span class="str">'A4'</span><span class="kw">);
 </span></code></pre>
 </div>
-E' possibile usare il formato orrizzontale (<code>L</code>), altri tipi di formati (come <code>Letter</code>
-e <code>Legal</code>) e unità di misura (<code>pt</code>, <code>cm</code>, <code>in</code>).
+E' possibile usare il formato orrizzontale (<code>L</code>), altri tipi di formati (come <code>A3</code>
+e <code>A5</code>) e unità di misura (<code>pt</code>, <code>cm</code>, <code>in</code>).
 <br>
 <br>
 Per il momento non ci sono latri formato pagina. Dobbiamo aggiungerlo con <a href='../doc/addpage.htm'>AddPage()</a>. L'origine
@@ -37,8 +37,8 @@ Per il momento non ci sono latri formato pagina. Dobbiamo aggiungerlo con <a hre
 margini possono essere cambiati con <a href='../doc/setmargins.htm'>SetMargins()</a>.
 <br>
 <br>
-Prima che noi possiamo stampare il testo, è obbligatorio selezionare una fonte con <a href='../doc/setfont.htm'>SetFont()</a>,
-altrimenti il documento sarebbe nullo. Scegliamo Arial baldo 16:
+Prima che noi possiamo stampare il testo, è obbligatorio selezionare una fonte con <a href='../doc/setfont.htm'>SetFont()</a>.
+Scegliamo Arial baldo 16:
 <div class="source">
 <pre><code>$pdf<span class="kw">-&gt;</span>SetFont<span class="kw">(</span><span class="str">'Arial'</span><span class="kw">,</span><span class="str">'B'</span><span class="kw">,</span>16<span class="kw">);
 </span></code></pre>
@@ -68,7 +68,7 @@ specificare anche l'altezza dell'interruzione.
 <br>
 <br>
 Finalmente, il documento è chiuso e spedito al browser con <a href='../doc/output.htm'>Output()</a>. Ora possiamo
-salvarlo in un file passando il nome desiderato.
+salvarlo in un file.
 <br>
 <br>
 Attenzione: quando, nel caso, il PDF viene spedito al browser, non deve essere processato

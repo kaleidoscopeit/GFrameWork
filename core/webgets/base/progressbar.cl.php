@@ -29,15 +29,15 @@ class base_progressbar
 
     foreach ($default as $key => $value)
       foreach ($value as $local)
-      if ($local != null && !$this->$key) $this->$key=$local;
+      if ($local !== null && !isset($this->$key)) $this->$key=$local;
   }
 
   function __flush(&$_)
   {
     /* set progress depending by the presence of 'field' property */
-    if($this->field){
+    if(isset($this->field)){
       $field        = explode(',', $this->field);
-      $field_format = ($this->field_format ? $this->field_format : '');
+      $field_format = (isset($this->field_format) ? $this->field_format : '');
 
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
@@ -45,8 +45,8 @@ class base_progressbar
         /* if no record on server resultset send fields definition to client */
         if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
 
-        $field[$key] = &array_get_nested
-        ($_->webgets[$param[0]]->current_record, $param[1]);
+        $field[$key] = array_get_nested
+          ($_->webgets[$param[0]]->current_record, $param[1]);
       }
 
       $progress = preg_replace_callback(
@@ -61,8 +61,8 @@ class base_progressbar
     else $progress = $this->progress;
 
     /* enable client field definition */
-    if($cfields) $cfields = 'field="' . implode(',', $cfields) .
-    '" field_format="' . $field_format . '" ';
+    if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields)
+                                 . '" field_format="' . $field_format . '" ';
 
     else $cfields = "";
 
@@ -108,7 +108,7 @@ class base_progressbar
     $css_style  = 'class="w0030 '
                 . $_->ROOT->boxing($boxing)
                 . $_->ROOT->style_registry_add($style)
-                . $this->class
+                . (isset($this->class) ? $this->class : '')
                 . '" ';
 
     /* builds code */

@@ -18,7 +18,7 @@ class reports_toshibatec_box
 
     foreach ($default as $key => $value)
       foreach ($value as $local)
-      if ($local != null && !isset($this->$key)) $this->$key=$local;
+      if ($local !== null && !isset($this->$key)) $this->$key=$local;
    }
  
     

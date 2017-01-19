@@ -139,38 +139,49 @@ class _engine_call
         switch ($rule[0]) {
           /* Single variable assignement */
           case 'variable' :
-          //echo $rule[1];eval('echo '.$rule[1]);echo "\n";
-          eval('if(@isset('.$rule[1].'))$_STDIN[$name] = '.$rule[1].';');
-          break;
+            //echo $rule[1];eval('echo '.$rule[1]);echo "\n";
+            eval('if(@isset(' . $rule[1] . ')) $_STDIN[$name] = ' . $rule[1] . ';');
+            //echo $_STDIN[$name];
+            break;
 
           case 'call' :
-          //echo $rule[1];
-          $rule[1] = explode(';', $rule[1]);
-          $call = $rule[1][0];
-          if(isset($rule[1][1])) {
-            $args = explode(',', $rule[1][1]);
-            foreach($args as $argv){
-              $argv = explode('=', $argv);
-              $_STDIN[$name][$argv[0]] = $argv[1];
+            //echo $rule[1];
+            $rule[1] = explode(';', $rule[1]);
+            $call = $rule[1][0];
+            if(isset($rule[1][1])) {
+              $args = explode(',', $rule[1][1]);
+              foreach($args as $argv){
+                $argv = explode('=', $argv);
+                $_STDIN[$name][$argv[0]] = $argv[1];
+              }
             }
-          }
-          $this->call($call, $_STDIN[$name], NULL, $_);
-          break;
+            $this->call($call, $_STDIN[$name], NULL, $_);
+            break;
 
           /* composite string. May be made by a mix of quoted text and variables */
           case 'string' :
-            eval('$_STDIN[$name] = '.$rule[1].';');
+            $pre = ""; $post = "";
+            eval('$_STDIN[$name] = ' . $rule[1] . ';');
             if(substr($_STDIN[$name],0,1) != '"') $pre = '"';
             if(substr($_STDIN[$name],-1,1) != '"') $post = '"';
-            $_STDIN[$name] = $pre.$_STDIN[$name].$post;
-            eval('$_STDIN[$name] = '.$_STDIN[$name].';');
+            $_STDIN[$name] = $pre . $_STDIN[$name] . $post;
+            eval('$_STDIN[$name] = ' . $_STDIN[$name] . ';');
             break;
 
           case 'integer' :
-            $_STDIN[$name] = (integer)$rule[1];
+            $_STDIN[$name] = (integer)eval("return $rule[1];");
             break;
 
           case 'boolean' :
+            if($rule[1] != "0" && $rule[1] != "1" &&
+               strtoupper($rule[1]) != "TRUE" &&
+               strtoupper($rule[1]) != "FALSE") {
+              $bad = "Required origin type not match ("
+                   . "param : '" . $name . "', "
+                   . "required : boolean (0,1,TRUE,FALSE), "
+                   . "found : '"  . $rule[1] . "').";
+            }
+
             $_STDIN[$name] = (bool)$rule[1];
             break;
 
@@ -179,6 +190,12 @@ class _engine_call
             eval($rule[1].";");
             $_STDIN[$name] = ob_get_contents();
             ob_end_clean();
+            break;
+
+          case 'date' :
+            eval ('$date = ' . $rule[1] . ';');
+            $_STDIN[$name] = (1 === preg_match('~[0-9]~', $date) ?
+              strtotime($date) : false);
             break;
         }
 
@@ -189,14 +206,14 @@ class _engine_call
       /* check strict rules (IT'S A VERY VERY UGLY CODE)*/
       if (!isset($_STDIN[$name])) {
         if ($options['required'] == true)
-        $bad = "Cannot get required param -> '".$name."'.";
+          $bad = "Cannot get required param -> '" . $name . "'.";
       }
 
       else {
         $bad_text = "Required param type not match (".
-        "param : '".$name."', ".
-        "required : '".$options['type']."', ".
-        "found : '".gettype($_STDIN[$name])."').";
+        "param : '" . $name . "', " .
+        "required : '" . $options['type'] . "', " .
+        "found : '" . gettype($_STDIN[$name]) . "').";
 
         if (gettype($_STDIN[$name]) != $options['type'])
 

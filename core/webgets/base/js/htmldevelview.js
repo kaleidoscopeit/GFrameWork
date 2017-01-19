@@ -60,7 +60,7 @@ var $_={
   // space saving wrappers for common functions
   getAttribute:function(n,a){
     if(n.attributes)return n.getAttribute(a);
-    return false},
+    return false;},
   cre:function(n){return document.createElement(n);},
   gei:function(n){return document.getElementById(n);},
 
@@ -95,7 +95,7 @@ var $_={
   // TODO :
   each:function(o,f){
     if(!o||!f)return false;
-    if(o.length!=null)for(var i=0;i<o.length;i++)f(o[i],i);
+    if(o.length!==null)for(var i=0;i<o.length;i++)f(o[i],i);
     else for(var i in o)f(o[i],i);
     return true;
   },

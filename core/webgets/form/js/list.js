@@ -19,10 +19,6 @@ $_.js.reg['02B0'] = {
           if (opt[i].selected)
             out.push(opt[i]);
         }
-        try {
-          oncopy();
-        } catch(e) {
-        };
         return out;
       },
 
@@ -39,7 +35,8 @@ $_.js.reg['02B0'] = {
 
       n.cut = function() {
         var out = [], opt = this.copy(), i;
-        while (opt[0]) {
+        if(opt.length == 0) return [];
+        while (opt.length > 0) {
           this.options[opt[0].index] = null;
           out.push(opt.shift());
         }
@@ -49,27 +46,31 @@ $_.js.reg['02B0'] = {
       },
 
       n.paste = function(o) {
-        while (o[0])
+        if(typeof o == "undefined")
+          return;
+        while (o.length > 0)
           this.add(o.shift());
         this._refresh();
         n.dispatchEvent(n.contentchange);
       },
 
-      n.clear = function() {
-        while (this.length != 0)
-        this.remove(0);
-        n.dispatchEvent(n.contentchange);
+      n.clear = function(r=true) {
+        while (this.length > 0)
+          this.remove(0);
+        if(r)
+          n.dispatchEvent(n.contentchange);
       },
 
       n.populate = function(v) {
         if (v.length == null & $_.count(v) == 0)
           return false;
-        n.clear();
+        n.clear(false);
         $_.tmp.n = n;
         $_.each(v, function(v, i) {
           $_.tmp.n.item_push(v[0], (v[1] ? v[1] : v[0]));
         });
         this._refresh();
+        n.dispatchEvent(n.contentchange);
         return true;
       },
 
@@ -99,9 +100,8 @@ $_.js.reg['02B0'] = {
             z = -1;
           return z;
         });
-        this.clear();
-        while (out[0])
-          this.add(out.shift());
+        n.clear(false);
+        while (out.length > 0) this.add(out.shift());
         this._refresh();
       };
     }

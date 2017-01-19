@@ -7,7 +7,7 @@
 $rpc = array (array (
 
 /* authentication server */
- 
+
 'server' => array (
   'type'     => 'string',
   'required' => true,
@@ -17,7 +17,7 @@ $rpc = array (array (
 )),
 
 /* base search */
- 
+
 'basedn' => array (
   'type'     => 'string',
   'required' => true,
@@ -27,7 +27,7 @@ $rpc = array (array (
 )),
 
 /* realm */
- 
+
 'realm' => array (
   'type'     => 'string',
   'required' => true,
@@ -37,18 +37,18 @@ $rpc = array (array (
 )),
 
 
-/* query user name */
- 
-'user' => array (
+/* query allowed user name */
+
+'ldap_user' => array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$_STDIN["user"]',
+    'variable:$_STDIN["ldap_user"]',
     'variable:$_->settings["auth_ldap_user"]',
 )),
 
-/* query user pass */
- 
+/* query allowed user pass */
+
 'pass' => array (
   'type'     => 'string',
   'required' => true,
@@ -58,7 +58,7 @@ $rpc = array (array (
 )),
 
 /* search group */
- 
+
 'group' => array (
   'type'     => 'string',
   'required' => true,
@@ -68,7 +68,7 @@ $rpc = array (array (
 )),
 
 /* search group */
- 
+
 'member_mask' => array (
   'type'     => 'array',
   'required' => false,
@@ -101,15 +101,15 @@ $rpc = array (array (
 ),
 
 /* rpc function */
- 
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-  /* Get the users list from ldap server */ 
+  /* Get the users list from ldap server */
   $cnx = ldap_connect($_STDIN['server'])
     or die("Could not connect to LDAP");
   ldap_set_option($cnx, LDAP_OPT_PROTOCOL_VERSION, 3);
   ldap_set_option($cnx, LDAP_OPT_REFERRALS, 0);
-  ldap_bind($cnx, $_STDIN['user'] . "@" . $_STDIN['realm'], $_STDIN['pass'])
+  ldap_bind($cnx, $_STDIN['ldap_user'] . "@" . $_STDIN['realm'], $_STDIN['pass'])
     or die("Could not bind to LDAP");
   $filter = "(&(objectClass=group)(cn=".$_STDIN['group']."))";
   $sr     = ldap_search($cnx, $_STDIN['basedn'], $filter);
@@ -130,18 +130,18 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     $filter = "(&(objectClass=user)(cn=".$uid."))";
     $sr     = ldap_search($cnx, $_STDIN['basedn'], $filter);
     $entry  = ldap_first_entry($cnx, $sr);
-    $uid    = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);    
+    $uid    = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);
     $uname  = ldap_get_values($cnx, $entry, $_STDIN['uname_field']);
 
-    $ulist[$uid[0]]['uid'] = $uid[0];  
+    $ulist[$uid[0]]['uid'] = $uid[0];
     $ulist[$uid[0]]['uname'] = $uname[0];
   }
- 
+
   $_STDOUT[0]['signal'] = 'AUTH_USERLIST_READY';
   $_STDOUT[0]['call']   = $self['name'];
   $_STDOUT[1] = $ulist;
 
-  return TRUE;      
-});  
+  return TRUE;
+});
 
 ?>

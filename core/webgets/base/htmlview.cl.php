@@ -72,10 +72,11 @@ class base_htmlview
     /**************************************************************************/
 
     /* project global CSS */
-    if ($_->CALL_OBJECT!='subview') $this->css .= ' global';
+    if ($_->CALL_OBJECT!='subview')
+      $this->css = (!isset($this->css) ? "global" : $this->css .= ' global');
 
     /* current view attaced CSS plus global */
-    if($this->css!='')
+    if(isset($this->css))
       array_map(function($css) use (&$_){
         $_->ROOT->css_rules['includes']['css/'.$css.'.css'] = 1;
       }, explode(' ', trim($this->css)));
@@ -261,6 +262,9 @@ class base_htmlview
 
     if (isset($bpc) || isset($bpx)) {
 
+      if(!isset($bpc)) $bpc = 0;
+      if(!isset($bpx)) $bpx = 0;
+
       $top  = $hpx+$tpx;
       $mtop = $hpc+$tpc;
       $bot  = $bpx-$tpx;
@@ -383,6 +387,7 @@ class base_htmlview
   function browser_info ($agent=null)
   {
     global $_;
+
     /* Declare known browsers to look for */
     $known = array(
       'msie',
@@ -396,7 +401,6 @@ class base_htmlview
       'chrome'
     );
 
-
     /* Clean up agent and build regex that matches phrases for known browsers
      * (e.g. "Firefox/2.0" or "MSIE 6.0" (This only matches the major and minor
      * version numbers.  E.g. "2.0.0.6" is parsed as simply "2.0"
@@ -404,14 +408,19 @@ class base_htmlview
 
     $agent = strtolower($agent ? $agent : $_SERVER['HTTP_USER_AGENT']);
 
-    $pattern = '#(?<browser>'.
-               join('|', $known).
-               ')[/ ]+(?<version>[0-9]+(?:\.[0-9]+)?)#';
+    $pattern = '#(?<browser>' . join('|', $known)
+             . ')[/ ]+(?<version>[0-9]+(?:\.[0-9]+)?)#';
 
     /* Find all phrases (or return empty array if none found) */
     if (!preg_match_all($pattern, $agent, $matches)) return array();
 
-    switch ($_->static['client']['browser'])
+    /* Since some UAs have more than one phrase (e.g Firefox has a Gecko phrase,
+     *  Opera 7,8 have a MSIE phrase), use the last one found (the right-most one
+     *  in the UA).  That's usually the most correct.
+     */
+    $i = count($matches['browser'])-1;
+
+    switch ($matches['browser'][$i])
     {
       case 'firefox' :
       case 'gecko' :
@@ -432,12 +441,6 @@ class base_htmlview
         $engine = 'presto';
         break;
     }
-
-    /* Since some UAs have more than one phrase (e.g Firefox has a Gecko phrase,
-     *  Opera 7,8 have a MSIE phrase), use the last one found (the right-most one
-     *  in the UA).  That's usually the most correct.
-     */
-    $i = count($matches['browser'])-1;
 
     return array(
       'browser' => $matches['browser'][$i],

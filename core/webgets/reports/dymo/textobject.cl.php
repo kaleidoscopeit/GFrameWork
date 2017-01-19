@@ -4,20 +4,20 @@ class reports_dymo_textobject
   public $req_attribs = array(
     'string',
   );
-  
+
   function __define(&$_)
   {
     /* sets the default values */
     $default                  = array();
- 
+
 
     foreach ($default as $key => $value)
       foreach ($value as $local)
-      if ($local != null && !$this->$key) $this->$key=$local;
+      if ($local !== null && !isset($this->$key)) $this->$key=$local;
    }
- 
-    
-  function __flush (&$_)  
+
+
+  function __flush (&$_)
   {
     $_->buffer[] = '<TextObject>';
     $_->buffer[] = '<Name>TESTO</Name>';

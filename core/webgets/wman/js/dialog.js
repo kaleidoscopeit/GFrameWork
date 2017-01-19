@@ -37,6 +37,11 @@ $_.js.reg['0510']={
       n.error_args=args;
       n.dispatchEvent(n.error);
     };
+
+    n.isActive=function(){
+      if(n.style.opacity==1) return true;
+      else return false;
+    };
   }},
 
   fs:function(n){

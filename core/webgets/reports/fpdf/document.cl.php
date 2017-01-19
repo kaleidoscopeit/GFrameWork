@@ -9,7 +9,15 @@ class reports_fpdf_document
     'creator',
     'title',
     'fonts',
-    'fontpath'
+    'fontpath',
+    /* common document flow attributes */
+    'text_color',
+    'draw_color',
+    'fill_color',
+    'font_family',
+    'font_style',
+    'font_size',
+    'line_width'
   );
 
   function __define(&$_)
@@ -31,9 +39,13 @@ class reports_fpdf_document
       $last_plugin = 'FPDF';
 
     else {
+      /* load all plugins found */
       foreach($plugins as $plugin)
         require($plugin_path . $plugin);
-      $last_plugin = array_shift(explode('_', array_pop($plugins)));
+
+      /* get last found plugin in order to instantiate it */
+      $last_plugin = explode('_', array_pop($plugins));
+      $last_plugin = array_shift($last_plugin);
     }
 
     /* make the instance of the library */
@@ -45,14 +57,14 @@ class reports_fpdf_document
     }
 
     /* declares available fonts */
-    $this->fonts = explode(',', $this->fonts);
+    if(isset($this->fonts)) $this->fonts = explode(',', $this->fonts);
 
     /* declares default styles by initializine 'style' database */
     $this->style = array();
     $this->style['text_color'][0]  = '0,0,0';
     $this->style['draw_color'][0]  = '0,0,0';
-    $this->style['fill_color'][0]  = '255,255,255';
-    $this->style['font_family'][0] = 'arial';
+    $this->style['fill_color'][0]  = '';
+    $this->style['font_family'][0] = 'helvetica';
     $this->style['font_style'][0]  = '';
     $this->style['font_size'][0]   = '10';
     $this->style['line_width'][0]  = '0';
@@ -70,10 +82,11 @@ class reports_fpdf_document
     @$this->fpdf->setCreator($this->creator,1);
 
     /* import fonts */
-    foreach($this->fonts as $font){
-      $font = explode(' ', $font);
-      $this->fpdf->AddFont($font[0],@$font[1]);
-    }
+    if(isset($this->fonts))
+      foreach($this->fonts as $font){
+        $font = explode(' ', $font);
+        $this->fpdf->AddFont($font[0],@$font[1]);
+      }
 
     $this->fpdf->SetAutoPageBreak('',5);
 
@@ -84,7 +97,7 @@ class reports_fpdf_document
     $this->fpdf->Output();
   }
 
-
+  /* Update global styles which are applied to all elements in the document flow */
   function update_styles ()
   {
     if(isset($this->style['text_color'][0])){
@@ -105,6 +118,10 @@ class reports_fpdf_document
                                 @$fill_color[2]);
     }
 
+    if(isset($this->style['line_width'][0])){
+      $this->fpdf->SetLineWidth($this->style['line_width'][0]);
+    }
+
     $this->fpdf->SetFont(@$this->style['font_family'][0],
                          @$this->style['font_style'][0],
                          @$this->style['font_size'][0]);
@@ -118,10 +135,12 @@ class reports_fpdf_document
     $inheritables = array                                                         // defines common inheritable styles
     (
       'text_color',
+      'fill_color',
       'draw_color',
       'font_family',
       'font_style',
       'font_size',
+      'line_width'
     );
 
     if(is_array($styles)) $inheritables = array_merge($styles, $inheritables);     // allow custom inheritable styles
@@ -157,9 +176,11 @@ class reports_fpdf_document
     (
       'text_color',
       'draw_color',
+      'fill_color',
       'font_family',
       'font_style',
       'font_size',
+      'line_width'
     );
 
     if(is_array($styles)) $inheritables = array_merge($styles, $inheritables);     // allow custom inheritable styles

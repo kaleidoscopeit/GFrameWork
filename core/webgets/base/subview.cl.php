@@ -18,9 +18,9 @@ class base_subview
 
     $css_style = $_->ROOT->boxing($boxing)
                . $_->ROOT->style_registry_add($style)
-               . $this->class;
+               . (isset($this->class) ? $this->class : '');
 
-    if($css_style!="") $css_style = 'class="'.$css_style.'" ';
+    if($css_style!="") $css_style = 'class="' . $css_style . '" ';
 
     /* builds code */
     $_->buffer[] = '<div wid="0070" '

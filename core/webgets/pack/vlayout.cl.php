@@ -54,13 +54,12 @@ class pack_vlayout
     /* builds syles */
     $boxing    = (isset($this->boxing) ? $this->boxing : '');
     $style     = (isset($this->style) ? $this->style : '');
-    $class     = (isset($this->class) ? $this->class : '');
 
     $this->attributes['class'] =
         $_->ROOT->boxing($boxing)
       . $_->ROOT->style_registry_add(
         'min-height:' . $fixed_height . 'px;' . $style)
-      . $class;
+      . (isset($this->class) ? $this->class : '');
 
     /* builds code */
     if(!isset($this->naked))

@@ -1,7 +1,7 @@
-This document descibe the right srtucture of a call-library file.
+This document descibes the right srtucture of a call-library file.
 
 
-There are two places where you can put a call-library : 
+There are two places where you can put a call-library :
 
 - 'system' context : /core/rpc_calls
 - 'user' context   : /[project-root]/lib/calls
@@ -20,7 +20,7 @@ call from js  : $_.call("system.common.call_tools" , arguments);
 
 --
 
-- Every library starts and ends always with the php block tag '<?php' and '?>' 
+- Every library starts and ends always with the php block tag '<?php' and '?>'
 - A call is an array with 2 elements : argument definition and anonymous function
 - Inside the function call are available a number of reserved variables :
 		$_       : reference to the 'buck'

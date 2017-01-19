@@ -26,10 +26,11 @@ class pack_stackelm
   function __flush(&$_)
   {
     /* builds syles */
+    $style  = (isset($this->style) ? $this->style : '');
     $boxing = (isset($this->boxing) ? $this->boxing : '');
 
     $this->attributes['class'] = $_->ROOT->style_registry_add($style)
-                               . $this->class;
+                               . (isset($this->class) ? $this->class : '');
 
     /* builds code */
     $_->buffer[] = '<div wid="0131" '

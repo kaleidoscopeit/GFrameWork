@@ -7,6 +7,7 @@ class form_switch
     'disabled',
     'labels',
     'field',
+    'field_format',
     'value'
   );
 
@@ -18,7 +19,7 @@ class form_switch
 
     foreach ($t as $key => $value)
       foreach ($value as $local)
-        if ($local != null && !$this->$key) $this->$key=$local;
+        if ($local !== null && !isset($this->$key)) $this->$key=$local;
 
 
   }
@@ -32,9 +33,9 @@ class form_switch
     if($this->field){
       $field        = explode(',', $this->field);
       $param        = explode(':', $field[0]);
-      $field_format = ($this->field_format ? $this->field_format : '{0}');
+      $field_format = (isset($this->field_format) ? $this->field_format : '{0}');
       if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[0];
-      else $field[0] = &array_get_nested
+      else $field[0] = array_get_nested
         ($_->webgets[$param[0]]->current_record, $param[1]);
 
       $value = preg_replace_callback(
@@ -68,7 +69,7 @@ class form_switch
 
     /* builds code */
     $_->buffer[] = '<div id="' . $this->id . '" wid="0290" '
-                 . ($this->disabled ? 'disabled="disabled" ' : '')
+                 . (isset($this->disabled) ? 'disabled="disabled" ' : '')
                  . $css_style
                  . $cfields
                  . $_->ROOT->format_html_attributes($this)

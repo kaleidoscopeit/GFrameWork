@@ -38,7 +38,7 @@ class pack_iview
     $css_style = 'class="w0150 '
                . $_->ROOT->boxing($boxing)
                . $_->ROOT->style_registry_add($style)
-               . $this->class . '" ';
+               . (isset($this->class) ? $this->class : '') . '" ';
 
 
     /* builds code */

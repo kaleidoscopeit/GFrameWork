@@ -8,9 +8,9 @@ class reports_dymo_rootcell
     'borderwidth',
     'borderstyle',
     'bordercolor'
- 
+
   );
-  
+
   function __define(&$_)
   {
     /* sets the default values */
@@ -22,15 +22,15 @@ class reports_dymo_rootcell
     $default['borderstyle'][]  = "Solid";
     $default['bordercolor'][]  = "255,0,0,0";
 
-  
+
 
     foreach ($default as $key => $value)
       foreach ($value as $local)
-      if ($local != null && !$this->$key) $this->$key=$local;
+      if ($local !== null && !isset($this->$key)) $this->$key=$local;
    }
- 
-    
-  function __flush (&$_)  
+
+
+  function __flush (&$_)
   {
     $_->buffer[] = '<RootCell>';
 
@@ -39,7 +39,7 @@ class reports_dymo_rootcell
 
     $bordercolor = explode(',', $this->bordercolor);
     $margin = explode(',', $this->margin);
-    
+
     $_->buffer[] = '<ObjectMargin Left="' . $margin[0]
                  . '" Top="' . $margin[1]
                  . '" Right="' . $margin[2]

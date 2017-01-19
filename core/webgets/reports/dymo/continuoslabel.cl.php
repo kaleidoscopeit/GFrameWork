@@ -11,14 +11,14 @@ class reports_dymo_continuoslabel
     'orientation',
     'papername',
     'lengthmode',
-    'labellength' 
+    'labellength'
   );
-  
+
   function __define(&$_)
   {
     /* sets ROOT placeholder */
     $_->ROOT = $this;
-     
+
     /* sets the default values */
     $default                  = array();
     $default['orientation'][] = "L";
@@ -27,10 +27,10 @@ class reports_dymo_continuoslabel
 
     foreach ($default as $key => $value)
       foreach ($value as $local)
-      if ($local != null && !$this->$key) $this->$key=$local;
+      if ($local !== null && !isset($this->$key)) $this->$key=$local;
    }
- 
-    
+
+
   function __flush (&$_)
   {
     $orientation = ($this->orientation == "L" ? "Landscape" : "Portrait" );
@@ -42,12 +42,12 @@ class reports_dymo_continuoslabel
     $_->buffer[] = '<PaperName>' . $this->papername . '</PaperName>';
     $_->buffer[] = '<LengthMode>' . $this->lengthmode . '</LengthMode>';
     $_->buffer[] = '<LabelLength>5669.25</LabelLength>';
-    
+
     /* flushes children */
     gfwk_flush_children($this);
 
     $_->buffer[] = '</ContinuousLabel>';
-    
+
     // Set appropriate output
     header('Content-type: text/plain');
     header('Content-Disposition: attachment; filename="dymo.label"');

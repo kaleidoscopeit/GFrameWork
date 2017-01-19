@@ -4,26 +4,41 @@ class reports_fpdf_cell
   public $req_attribs = array(
     'show_if',
     'geometry',
+    /* common document flow attributes */
+    'text_color',
+    'draw_color',
+    'fill_color',
+    'font_family',
+    'font_style',
+    'font_size',
+    'line_width'
   );
 
 	function __define(&$_)
 	{
-    // webget geometry
-    $this->geometry = explode(',',$this->geometry);
-    $this->left     = 0;
-    $this->top      = 0;
-    $this->width    = $this->geometry[0];
-    $this->height   = $this->geometry[1];
-
     /* Set default values */
-    $t                   = array();
-    $t['show_if'][]      = 'true';
-    $default['width'][]  = "10%";
-    $default['height'][] = "10%";
+    $default                = array();
+    $default['show_if'][]   = 'true';
 
-    foreach ($t as $key => $value)
+    /* queue webget geometry if sets through the XML */
+    if(isset($this->geometry)) {
+      $this->geometry = explode(',', $this->geometry);
+      $default['left'][]   = isset($this->geometry[0]) ? $this->geometry[0] : NULL;
+      $default['top'][]    = isset($this->geometry[1]) ? $this->geometry[1] : NULL;
+      $default['width'][]  = isset($this->geometry[2]) ? $this->geometry[2] : NULL;
+      $default['height'][] = isset($this->geometry[3]) ? $this->geometry[3] : NULL;
+    }
+
+    /* then sets default geometry */
+    $default['left'][]     = "0";
+    $default['top'][]      = "0";
+    $default['width'][]    = "100%";
+    $default['height'][]   = "100%";
+
+    foreach ($default as $key => $value)
       foreach ($value as $local)
-        if ($local != null && !$this->$key) $this->$key=$local;
+        if ($local !== null && !isset($this->$key)) $this->$key=$local;
+
  	}
 
   function __preflush(&$_)
@@ -46,9 +61,10 @@ class reports_fpdf_cell
     $this->offsetLeft = $this->pxleft + $this->parent->cellOffsetLeft;
     $this->offsetTop  = $this->pxtop  + $this->parent->cellOffsetTop;
 
-    /* send local geometry to the parent iterator */
-    $this->parent->cell_width = $this->pxwidth;
-    $this->parent->cell_height = $this->pxheight;
+    /* send local geometry to the parent iterator (DEPRECATED
+        -> may be used in variable cell dimensions but not for now) */
+//    $this->parent->cell_width = $this->pxwidth;
+//    $this->parent->cell_height = $this->pxheight;
 
     /* paint contained webgets */
     gfwk_flush_children($this);

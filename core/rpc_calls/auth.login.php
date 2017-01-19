@@ -65,7 +65,8 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
       if (!$_->settings['auth_login_event']($_STDIN, $_)){
         $_STDOUT['STDERR'] = array(
           'call'          => array($self['name']),
-          'signal'        => 'AUTH_LOGINSTACK_ERROR');
+          'signal'        => 'AUTH_LOGINSTACK_ERROR',
+          'data'          => $_STDIN);
 
         return FALSE;
       }

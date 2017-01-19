@@ -16,7 +16,7 @@ class pack_iframe
     /* Enable a reference to te parent View in the contained iframe View
        NOTE : parentView became available only after the onload event in
        the contained document */
-    if($this->enableparent)
+    if(isset($this->enableparent))
       $this->attributes['onload'] = 'this.contentWindow.parentView=window;'
                                   . (isset($this->attributes['onload'])
                                     ? $this->attributes['onload'] : '');
@@ -28,7 +28,7 @@ class pack_iframe
     $css_style = 'class="w0140 '
                . $_->ROOT->boxing($boxing)
                . $_->ROOT->style_registry_add($style)
-               . $this->class . '" ';
+               . (isset($this->class) ? $this->class : '') . '" ';
 
 
     /* builds code */

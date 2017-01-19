@@ -10,14 +10,14 @@ $this->settings = array(
   'debug'             => true,                                                  // enable server side debug
   'cs_debug'          => true,                                                  // enable client side debug
   'formatted_output'  => true,                                                  // HTML output to client sent formatted
-  
+
 
   /* authentication stuff */
 
   'auth_engine'       => 'samdb',
 //'auth_hashing_method' => 'md5',
   'auth_admin_group'  => 'administrators',
-  'auth_login_page'   => false, //'login',
+  'auth_login_page'   => NULL,                                                  // set to to null to disable login features,
   'auth_logout_page'  => 'logout',
   'auth_denied_page'  => 'denied',
   'auth_login_event'  =>

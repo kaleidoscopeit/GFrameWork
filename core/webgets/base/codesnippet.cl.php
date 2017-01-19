@@ -25,7 +25,7 @@ class base_codesnippet
 		$css_style  = 'class="w0050 '
 		            . $_->ROOT->boxing($boxing)
 		            . $_->ROOT->style_registry_add($style)
-		            . $this->class . '" ';
+		            . (isset($this->class) ? $this->class : '') . '" ';
 
 		/* hilights */
 		switch($this->hilight) {

@@ -30,11 +30,8 @@ class _engine_views
   /* classes generate client code.                                            */
   /****************************************************************************/
 
-  function build()
+  function build(&$_)
   {
-    /* grab the buck */
-    global $_;
-
     /* Check if the view exists */
     if(is_file("views/" . $_->CALL_URI . "/_this.xml"))
       $view_path = "views/" . $_->CALL_URI;
@@ -206,7 +203,7 @@ class _engine_views
 
       else if(isset($type))
         $this->codes[$type][$target][$event] .=
-          ($_->settings['debug'] == true ? $row."\n" : trim($row).' ');
+          ($_->settings['debug'] == true ? $row . "\n" : trim($row) . ' ');
     }
   }
 
@@ -218,6 +215,7 @@ class _engine_views
   {
     /* grab the buck */
     global $_;
+
 
     $library_class = str_replace(':', '_', $library_name);
 
@@ -302,7 +300,7 @@ function gfwk_flush(&$webget, $dry_run = null)
 
   /* bound 'onflush' server event to the webget and trig-it */
   if(isset($webget->onflush)){
-    $onflush = function() use (&$_){eval($this->onflush.';');};
+    $onflush = function() use (&$_){eval($this->onflush . ';');};
     $boundClosure = $onflush->bindTo($webget);
     $boundClosure();
   }
@@ -323,7 +321,7 @@ function gfwk_flush_children(&$webget, $filter = NULL)
           gfwk_flush($child);
     }
     else
-      foreach ($webget->childs as $child) gfwk_flush($child);
+      foreach ($webget->childs as $child) {gfwk_flush($child);}
   }
 }
 

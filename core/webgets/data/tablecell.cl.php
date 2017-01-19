@@ -15,7 +15,7 @@ class data_tablecell
 
     foreach ($t as $key => $value)
       foreach ($value as $local)
-        if ($local != null && !$this->$key) $this->$key=$local;
+        if ($local !== null && !isset($this->$key)) $this->$key=$local;
   }
 
   function __preflush(&$_)

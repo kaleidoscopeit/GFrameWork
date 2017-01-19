@@ -5,25 +5,31 @@ class reports_fpdf_chapter
     'orientation',
     'page_size',
     'margins',
+    /* common document flow attributes */
     'text_color',
     'draw_color',
     'fill_color',
     'font_family',
     'font_style',
     'font_size',
+    'line_width'
   );
 
 	function __define(&$_)
 	{
-    /* grab the offset */
-    $this->margins      = explode(',', $this->margins);
-    $this->marginLeft   = $this->margins[0];
-    $this->marginTop    = $this->margins[1];
-    $this->marginRight  = $this->margins[2];
-    $this->marginBottom = $this->margins[3];
-
     /* Set default values */
     $default = array();
+
+    /* queue webget margins if sets through the XML */
+    if(isset($this->margins)) {
+      $this->margins = explode(',', $this->margins);
+      $default['marginLeft'][]   = isset($this->margins[0]) ? $this->margins[0] : NULL;
+      $default['marginTop'][]    = isset($this->margins[1]) ? $this->margins[1] : NULL;
+      $default['marginRight'][]  = isset($this->margins[2]) ? $this->margins[2] : NULL;
+      $default['marginBottom'][] = isset($this->margins[3]) ? $this->margins[3] : NULL;
+    }
+
+    /* then sets default margins */
     $default['marginLeft'][]   = "10";
     $default['marginTop'][]    = "10";
     $default['marginRight'][]  = "10";
@@ -31,7 +37,7 @@ class reports_fpdf_chapter
 
     foreach ($default as $key => $value)
       foreach ($value as $local)
-        if ($local != null && !$this->$key) $this->$key=$local;
+        if ($local !== null && !isset($this->$key)) $this->$key=$local;
 
 	}
 
@@ -52,9 +58,9 @@ class reports_fpdf_chapter
 		/* add a new page */
 		$_->ROOT->fpdf->AddPage($this->orientation, @$this->page_size);
 
-        /* build margins */
-        $this->pxwidth = $_->ROOT->fpdf->w - $this->marginLeft - $this->marginRight;
-        $this->pxheight = $_->ROOT->fpdf->h - $this->marginTop - $this->marginBottom;
+    /* build margins */
+    $this->pxwidth = $_->ROOT->fpdf->GetPageWidth() - $this->marginLeft - $this->marginRight;
+    $this->pxheight = $_->ROOT->fpdf->GetPageHeight() - $this->marginTop - $this->marginBottom;
 
 		/* paint page mask */
 		gfwk_flush_children($this, 'reports_fpdf_mask');

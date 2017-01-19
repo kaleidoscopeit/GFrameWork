@@ -22,14 +22,14 @@ class form_entry
     /* set value depending by the presence of 'field' property */
     if(isset($this->field)){
       $field        = explode(',', $this->field);
-      $field_format = ($this->field_format ? $this->field_format : '{0}');
+      $field_format = (isset($this->field_format) ? $this->field_format : '{0}');
 
       foreach($field as $key => $param) {
         $param       = explode(':', $param);
 
         if(!$_->webgets[$param[0]]->current_record) $cfields[] = $field[$key];
 
-        $field[$key] = &array_get_nested
+        $field[$key] = array_get_nested
                        ($_->webgets[$param[0]]->current_record, $param[1]);
       }
 

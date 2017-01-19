@@ -13,9 +13,9 @@ $rpc = array(array(
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   // Temporary escape
-  if ($_->settings['auth_login_page'] &&
+  if (isset($_->settings['auth_login_page']) &&
 	    !isset($_->static['auth']['user']['id'])) {
-
+        
     $_STDOUT['STDERR'] = array(
       'signal'    => 'AUTH_USER_NOT_AUTHENTICATED',
       'call'      => array($self['name']));

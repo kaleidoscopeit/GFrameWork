@@ -24,13 +24,13 @@ class data_table
 
     foreach ($default as $key => $value)
       foreach ($value as $local)
-        if ($local != null && !isset($this->$key)) $this->$key=$local;
+        if ($local !== null && !isset($this->$key)) $this->$key=$local;
   }
 
   function __flush(&$_)
   {
-    /* Sets an empty default record if the result_set is empty */
-    if(count($this->result_set) < 1) $this->result_set = array('empty');
+    /* Sets a NULL default record if the result_set is empty */
+    if(count($this->result_set) < 1) $this->result_set = array(NULL);
     $this->max_records = count($this->result_set);
     $this->page_pointer = 0;
 
@@ -69,6 +69,7 @@ class data_table
 
 
     /* Rows/columns iterator */
+    #print_r($this);
     while ($this->page_pointer < $this->page_records) {
       for ($icol=0;$icol<$this->columns;$icol++){
         if ($this->page_pointer < $this->page_records){

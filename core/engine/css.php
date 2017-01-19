@@ -9,30 +9,30 @@
 
 class _engine_css {
 
-  function init()
+  static function init($caller)
   {
     /* initialization */
-    if(!$this->CALL_TARGET) die ('TARGET_NOT_SPECIFIED');
+    if(!$caller->CALL_TARGET) die ('TARGET_NOT_SPECIFIED');
   }
 
-  function build()
+  static function build($caller)
   {
     $ftimes         = array();
 
-    if(isset($this->static[$this->CALL_URI]['css']))
-      $css_static = $this->static[$this->CALL_URI]['css'];
+    if(isset($caller->static[$caller->CALL_URI]['css']))
+      $css_static = $caller->static[$caller->CALL_URI]['css'];
 
     $style_prefix   = $css_static['prefix'];
     $style_registry = $css_static['registry'];
     $expires         = 60*3;
 
-    unset($this->static[$this->CALL_URI]['css']);
+    unset($caller->static[$caller->CALL_URI]['css']);
 
     /* gets the file list and modify time */
-    switch($this->CALL_TARGET){
+    switch($caller->CALL_TARGET){
       case 'webgets' :
         $css_files = array();
-        $_ = $this;
+        $_ = $caller;
         @array_map(function($package) use (&$css_files, $_){
           if($package == '.' || $package == '..') return;
           return array_map(function($file) use ($package, &$css_files, $_){
@@ -40,7 +40,7 @@ class _engine_css {
               $css_file = $_->WEBGETS_PATH . $package . '/css/' . $file;
               $css_files[$css_file] = filemtime($css_file);
             }, (array)scandir($_->WEBGETS_PATH . $package . '/css'));
-         }, (array)scandir($this->WEBGETS_PATH));
+         }, (array)scandir($caller->WEBGETS_PATH));
 
         $ftimes = $css_files;
         sort($ftimes , SORT_NUMERIC);
@@ -68,7 +68,7 @@ class _engine_css {
 header("Cache-Control: maxage=0");
 
 
-    switch($this->CALL_TARGET){
+    switch($caller->CALL_TARGET){
       case 'webgets' :
         @array_map(function($file){
           echo preg_replace('/[\t\n]+/', '', file_get_contents($file));

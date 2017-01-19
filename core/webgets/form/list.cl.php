@@ -24,7 +24,7 @@ class form_list
   function __flush(&$_)
   {
     /* Import static values from the view */
-    if ($this->values) {
+    if (isset($this->values)) {
       $this->items['values'] = explode('|', $this->values);
       $this->items['labels'] = explode('|', $this->labels);
 
@@ -41,12 +41,12 @@ class form_list
     $w_class  = 'class="w02B0 '
               . $_->ROOT->boxing($boxing)
               . $_->ROOT->style_registry_add($wstyle)
-              . $this->wclass
+              . (isset($this->wclass) ? $this->wclass : '')
               . '" ';
 
     /* -- */
     $css_style  = $_->ROOT->style_registry_add($style)
-                . $this->class;
+                . (isset($this->class) ? $this->class : '');
 
     if($css_style!="") $css_style = 'class="' . $css_style . '" ';
 
@@ -77,7 +77,7 @@ class form_list
 
 
 
-    if($this->items['values']) {
+    if(isset($this->items['values'])) {
       foreach ($this->items['values'] as $key => $value) {
         $_->buffer[] = '<option value="' . $value . '" ' . $item_style
                      . ($this->default == $value ? 'selected' : '') . '>';

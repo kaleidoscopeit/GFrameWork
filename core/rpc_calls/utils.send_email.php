@@ -1,6 +1,6 @@
 <?php
 /*
- * rpc helper for PHPMailer 
+ * rpc helper for PHPMailer
  */
 
 $rpc = array(array(
@@ -104,34 +104,32 @@ $rpc = array(array(
 ),
 
 /* rpc function */
-  
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
-  require_once("../core/3rd/PHPMailer/class.phpmailer.php");
+  require_once("../core/3rd/PHPMailer/PHPMailerAutoload.php");
 
   $mail             = new PHPMailer();
 
   /* server stuff */
-
   $mail->IsSMTP();
   $mail->Host       = $_STDIN["smtp_server"];
   $mail->SMTPDebug  = 0;                    // enables SMTP debug information
-                                            // 1 = errors and messages
-                                            // 2 = messages only
+                                            // 1 = client -> server messages
+                                            // 2 = client -> server and server -> client messages
   $mail->SMTPAuth   = true;
-//$mail->Port       = 26;
   $mail->Username   = $_STDIN["smtp_user"];
   $mail->Password   = $_STDIN["smtp_pass"];
+  $mail->SMTPAutoTLS = false;
 
-  
   /* message stuff */
 
   $mail->SetFrom      ($_STDIN["sender"], $_STDIN["sender_name"]);
 //$mail->AddReplyTo   ("name@yourdomain.com","First Last");
   $mail->Subject    = $_STDIN["subject"];
-  
+
   $mail->AltBody    = $_STDIN["message"];
-  $body             = eregi_replace("[\]",'',$_STDIN["message_html"]);
+  
   $mail->MsgHTML      ($_STDIN["message_html"]);
 
   foreach($_STDIN["mail_to"] as $receiver) {
@@ -145,10 +143,10 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
       'signal'    => 'EMAIL_SEND_FAILED',
       'call'      => array($self['name']),
       'info'      => $mail->ErrorInfo);
-      
-    return FALSE;  
+
+    return FALSE;
   }
 
-  return TRUE; 
+  return TRUE;
 });
 ?>

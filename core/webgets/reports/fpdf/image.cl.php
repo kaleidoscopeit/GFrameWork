@@ -9,11 +9,13 @@ class reports_fpdf_image
 	function __define(&$_)
   {
     // webget geometry
-    $this->geometry = explode(',',$this->geometry);
-    $this->left     = $this->geometry[0];
-    $this->top      = $this->geometry[1];
-    $this->width    = $this->geometry[2];
-    $this->height   = $this->geometry[3];
+    if(isset($this->geometry)) {
+      $this->geometry = explode(',',$this->geometry);
+      $this->left     = isset($this->geometry[0]) ? $this->geometry[0] : NULL;
+      $this->top      = isset($this->geometry[1]) ? $this->geometry[1] : NULL;
+      $this->width    = isset($this->geometry[2]) ? $this->geometry[2] : NULL;
+      $this->height   = isset($this->geometry[3]) ? $this->geometry[3] : NULL;
+    }
 	}
 
 	function __flush(&$_)

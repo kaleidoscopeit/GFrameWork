@@ -1,6 +1,6 @@
 $_.js.reg['0070'] = {
   a : ["view"],
-  f : ["load"],
+  f : ["load","click"],
   b : function(n) {
     n.injJsBuf={};
 
@@ -10,12 +10,12 @@ $_.js.reg['0070'] = {
       var x = $$.ajax({url:"?subview/" + v + "&ns=" + n.id, callback:n.xhrcbk});
     };
 
+    n.refresh = function() {
+      n.goto(this.view);
+    };
+
     n.back = function() {
-      with (this.history) {
-        stack.pop();
-        v = stack.pop();
-      }
-      this.goto(v);
+      n.goto(n.history.stack.pop().pop());
     };
 
     n.xhrcbk = function(x,c,i,t){
@@ -27,9 +27,9 @@ $_.js.reg['0070'] = {
              .replace('\n-->', '')
              .split('\n\n');
 
-        if(typeof(c[0])!='undefined')n.injcss(c[0]);
+        if(typeof c[0]!='undefined')n.injcss(c[0]);
         n.innerHTML = x.responseText;
-        if(typeof(c[1])!='undefined') n.injJs(c[1]);
+        if(typeof c[1]!='undefined')n.injJs(c[1]);
         else n.initJs();
         n.dispatchEvent(n.load);
       }
@@ -58,18 +58,18 @@ $_.js.reg['0070'] = {
 
     n.injcss = function(u) {
       /* remove previous styles */
-      var a = document.getElementsByTagName('link')
+      var a = document.getElementsByTagName('link');
       var h = document.getElementsByTagName("head")[0];
 
       for(var i = a.length-1;i>-1;i--){
         if(a[i].id == n.id) {
           h.removeChild(a[i]);
         }
-      };
+      }
 
       u=u.split('\n');
 
-      for(var i in u){
+      for(i in u){
         var l = $$.cre('link');
         l.type = 'text/css';
         l.id = n.id;
@@ -83,20 +83,19 @@ $_.js.reg['0070'] = {
     /* load javascript libraries */
     n.injJs = function(u)
     {
-      var u=u.split('\n');
+      u=u.split('\n');
       var i=u.length;
       while(u.length > 0){
         $$.importRawJs(u.pop(),function(){
           i--;
-          if(i==0) n.initJs();
+          if(i===0) n.initJs();
         });
       }
     };
-
-
   },
+
   fs : function(n) {
-    if (n.view != '')
+    if (n.view !== '')
       n.goto(n.view);
   }
 };

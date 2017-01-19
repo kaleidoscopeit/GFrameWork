@@ -9,10 +9,10 @@
 <h1>Error</h1>
 <code>Error(<b>string</b> msg)</code>
 <h2>Descrizione</h2>
-Questo metodo viene automaticamente chiamato in caso di errore fatale; ritorna semplicemente
-il messaggio e ferma l'esecuzione. Una classe ereditata può sovrascriverlo per customizzare
-la gestione degli errori ma deve sempre fermare lo script, oppure il documento risultante
-potrebbe essere probabilmente non valido.
+Questo metodo viene chiamato automaticamente in caso di errore fatale; assieme al messaggio fornito
+viene semplicemente generata un'eccezione.<br>
+Una classe ereditata potrebbe sovrascriverlo personalizzando la gestione degli errori, ma il metodo
+non dovrebbe mai tornare, altrimenti il documento risultante sarebbe probabilmente non valido.
 <h2>Parametri</h2>
 <dl class="param">
 <dt><code>msg</code></dt>
