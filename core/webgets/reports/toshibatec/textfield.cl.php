@@ -30,6 +30,7 @@
  * increment    : increment step. The letters in the text will be removed
  *                and remaining digit will be treated as an unique number
  *                to be incremented
+ * zero_supp    : No. of zeros to be suppressed
  * field        : field/fields linked to the data source in the root iterator
  * field_format : mask to be applied to the data obtained from fields
  */
@@ -48,6 +49,7 @@ class reports_toshibatec_textfield
     'font',
     'caption',
     'increment',
+    'zero_supp',
     'field',
     'field_format'
   );
@@ -136,7 +138,7 @@ class reports_toshibatec_textfield
     /* simply put the caption content as is */
     else $caption = $this->caption;
 
-
+    $fhgt = sprintf("%04d", round($this->height * 10));
     /* style */
     $padding = explode(',', $this->padding);
     $style = $this->style
@@ -179,7 +181,7 @@ class reports_toshibatec_textfield
                    . $this->rotation . $this->rotation . ','
                    . $style . ','
                    . (isset($row_incr) ? $row_incr . ',' : '')
-                   . 'Z04,'
+                   . (isset($this->zero_supp) ? sprintf("Z%02d,", $this->zero_supp) : "")
                    . $alignment
                    . '=' . $caption
                    . '|}';

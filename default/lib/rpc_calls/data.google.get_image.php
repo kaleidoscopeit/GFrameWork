@@ -1,7 +1,7 @@
 <?php
 /*
  * Retrieve a list of warehouse family or items or both by a given path as
- * filter  
+ * filter
  */
 
 $rpc = array(array(
@@ -22,13 +22,13 @@ $rpc = array(array(
   'required' => true,
   'origin'   => array (
       'variable:$_STDIN["db"]',
-      'call:user.common.db_operations.connect'
+      'call:common.db_operations.connect'
 ))
 
 ),
 
 /* rpc function */
-  
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   $jsrc = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="
@@ -36,7 +36,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 
   $json = file_get_contents($jsrc);
   $jset = json_decode($json, true);
-  
+
   $_STDOUT[0] = $jset["responseData"]["results"][0]["url"];
 
   return TRUE;
@@ -44,4 +44,3 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 });
 
 ?>
-

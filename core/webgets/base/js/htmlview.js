@@ -29,7 +29,6 @@ var $_={
       this._wAttachJs(w);
     }
 
-//    this._wInitChilds(w,n);
     if(ch.length>0)
       this.each(ch,function(v,i){$$._wInit(v,(w.wid?w:p),n);});
   },
@@ -119,6 +118,14 @@ var $_={
   // executes a remote call asynchronously, works similar the one at server side
   // eventually a string is returned, it will put in the default sub item '0'
   call:function(m,b,h,cbk) {
+    // If the call URL is empty the imput buffer is directly dump to the ouput and
+    // the remote call is not performed.
+    if(m=='' || m === undefined) {
+      if(cbk === undefined) return b;
+      else cbk(b,true);
+      return true;
+    }
+
     var f=-1,p='b='+JSON.stringify(b),c=1,i,o;
 
     // look-up for 'stack' flag in order to manage it locally
@@ -178,7 +185,7 @@ var $_={
     xhr.open('GET',url,false);
     xhr.setRequestHeader('Content-Type', 'application/text');
     xhr.send(null);
-    try{eval('window.'+xhr.responseText);}
+    try{window.eval('window.'+xhr.responseText);}
     catch(e){
       console.log(xhr.responseText);er=1;
       throw('Cannot import '+l+' -> '+e+'; Response :'+xhr.responseText);
@@ -212,7 +219,7 @@ var $_={
       x.onreadystatechange = function() {
         if(x.readyState == 4 && x.status == 200) {
           try{
-            eval('window.'+x.responseText);
+            window.eval('window.'+x.responseText);
             //console.log("jsInclude : '" + l[0] + "' loaded.");
             $$.tmp.jsimport[l[0]]=1;}
           catch(e){
@@ -230,15 +237,15 @@ var $_={
     //console.log(document.getElementsByTagName('script'));
     if(l==='')return false;
     var x=this.xhr();
-    x.open('GET',l,false);
-    x.setRequestHeader('Content-Type', 'application/text');
+    x.open('GET',l,true);
     x.onreadystatechange=function(){
-      if(x.readyState==4&&x.status==200){
-        try{eval(x.responseText);if(c)c(true);}
+      if(x.readyState==4 && x.status==200){
+        try{window.eval(x.responseText);if(c)c(true);}
         catch(e){
           if(c)c(false);
           throw('Cannot import '+l+' -> '+e+'; Response :'+x.responseText);
         }
+
       }
       else if(c)c(false);
 
@@ -282,7 +289,6 @@ var $_={
       }
 
       else var p=args.post;
-      x.setRequestHeader("Content-length", p.length);
     }
 
     else if(reqt == "GET"){
@@ -361,11 +367,14 @@ var $_={
   /* ----------------------- JS DYNAMIC ATTACH HANDLERS --------------------- */
 
   /* enqueue a bind into the FiFo buffer (TODO : evalutate the opportunity to
-   * use a namespaced FiFo)*/
+   * use a namespaced FiFo)
+   * ot : object_type, on : object_name, oe : object_event
+   */
+
   bind:function(t,f){
     t=t.split(".");
     t=[t.shift(),t.pop(),t.join('.')];
-    this.tmp.jsBindsFiFo.push({ot:t[0],on:t[2],oa:t[1].replace('on',''),hd:f});
+    this.tmp.jsBindsFiFo.push({'ot':t[0],'on':t[2],'oe':t[1].replace('on',''),'hd':f});
   },
 
   /* attach all pending binds enqueued into FiFo. "n" attribute force a
@@ -381,8 +390,8 @@ var $_={
     if(tmp.jsBindsNS[n]){
       while (tmp.jsBindsNS[n][0]){
         var i=tmp.jsBindsNS[n].pop();
-          try{gei(i.on).removeEventListener(i.oa, i.hd);}
-          catch (e) {}
+        try{_w(i.on).removeEventListener(i.oe, i.hd);}
+        catch (e) {}
       }
     }
 
@@ -390,7 +399,7 @@ var $_={
 
     /* bind enqueued new events */
     while (tmp.jsBindsFiFo[0] != null){
-      var i=tmp.jsBindsFiFo.pop(), obj=gei(i.on);
+      var i=tmp.jsBindsFiFo.pop(), obj=_w(i.on);
 
       if(!obj) {
         _dBG('E_ERROR', '_flushBinds', ['Passed Object is not valid',i]);
@@ -401,11 +410,11 @@ var $_={
         case 'webget' :
 
           if(typeof(i.hd) == 'function') {
-            bindEvent(obj, i.oa, i.hd);
+            bindEvent(obj, i.oe, i.hd);
             tmp.jsBindsNS[n].push(i);
           }
 
-          else obj.setAttribute(i.oa, i.hd);
+          else obj.setAttribute(i.oe, i.hd);
 
           break;
       }
@@ -422,11 +431,11 @@ var $_={
     $$.each(fld,function(f,i){
       f = f.split(':');
       var row = _w(f[0]).current_record;
-      if(typeof row[f[1]] == "string") // escape quotes if is a string
+      if(typeof row[f[1]] == "string")                                          // escape quotes if is a string
         fs.push(row[f[1]].replace(/"/g, '\\x22').replace(/'/g, '\\x27'));
-      else if(f[1])                    // simply push if is not a string
+      else if(f[1])                                                             // simply push if is not a string
         fs.push(row[f[1]]);
-      else                             // simply push the record as is, i.e. in case recordset is a simple array
+      else                                                                      // simply push the record as is, i.e. in case recordset is a simple array
         fs.push(row);
     });
 
@@ -462,6 +471,9 @@ function _w(w)
 	return false;
 }
 
+/* top level shortcut to the call function in order to uniform the syntax with
+   the php code */
+function _call(m,b,h,cbk) {return $_.call(m,b,h,cbk)};
 
 /* debug function, following log level codes are given as examples, at the
  * current stage I don't know what code will be very useful.
@@ -493,7 +505,7 @@ function _dBG(l,a,m)
 // Extract "GET" parameters from a JS include query string //
 function _getViewParams(n) {
   // Find all script tags
-  var URL = document.URL;
+  var URL = (typeof n != "undefined" ? n : document.URL);
   var pa = URL.split("?").pop().split("&");
   // extract the URI of the view
   var p = {};
@@ -518,14 +530,14 @@ $$.bindEvent(window, "load", function()
   /* force document id (used as mnenonic reference and as namespace) */
   document.body.id='root';
 
-  /* binds enqueued events in the 'root' namespace */
-  $$._flushBinds('root');
-
   /* initialize root namespace container */
   $$.webgets.root=[];
 
   /* launch initialization (page parsing) starting from 'body' TAG */
   $$._wInit(document.body,{childWebgets:[]},'root');
+
+  /* binds enqueued events in the 'root' namespace */
+  $$._flushBinds('root');
 
   /* client side flush event only if a linked library exists */
   var r = $$.webgets.root, j = $$.js.reg;

@@ -30,7 +30,7 @@ $$.js.reg['0010']={
 			fs = $$._getFormattedFields(n.eval_field,n.eval_field_command);
 			if(fs !== false) eval(fs);
 			fs = $$._getFormattedFields(n.field,n.field_format);
-			if(fs !== false) n.caption(fs);
+			if(fs !== false) n.caption(fs.replace(/\\x22/g,'"').replace(/\\x27/g,"'"));
 		};
 
 		n.dispatchEvent(n.define);

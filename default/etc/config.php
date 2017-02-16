@@ -48,7 +48,7 @@ $this->settings = array(
         );
 
 
-      //if (!$_->call("user.common.logs.trace_me", $buffer)) return FALSE;
+      //if (!$_->call("common.logs.trace_me", $buffer)) return FALSE;
 
       return TRUE;
     },
@@ -64,7 +64,7 @@ $this->settings = array(
 
 
 
-  //'calls' => array('system.locale' => array('lc_path') => array('locale/');
+  //'calls' => array('locale' => array('lc_path') => array('locale/');
 
 
   /* default locale */

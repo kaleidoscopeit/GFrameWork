@@ -40,11 +40,11 @@ class base_htmlview
     /* static and dynamic webgets specific CSS and JS inclusions */
     foreach ($_->libraries as $library) {
 
+      if($library == "base/htmlview" && $_->CALL_OBJECT == 'subview') continue;
+
       $library = explode('/', $library);
       $library_js  = $_->WEBGETS_PATH . implode('/js/', $library);
       $library_css = $_->WEBGETS_PATH . implode('/css/', $library).'.css';
-
-
 
     /**************************************************************************/
     /*                           Javascript stuff                             */
@@ -109,6 +109,7 @@ class base_htmlview
                       '<title>'.$this->title.'</title>' : '');
         $top_code[] = '<meta http-equiv="Content-Type" '
                     . 'content="text/html;charset=UTF-8" />';
+        $top_code[] = '<link rel="icon" href="images/favicon.ico" />';
 
         array_map(function($css) use (&$top_code){
           $top_code[] = '<link rel="stylesheet" type="text/css" '
@@ -128,9 +129,11 @@ class base_htmlview
 
         $top_code[] = '<style type="text/css">';
 
-        foreach($this->css_rules['registry'] as $index => $value) {
-          $top_code[] = '.' . $this->css_rules['prefix']
-                      . $index . '{'.$value."}";
+        if(isset($this->css_rules['registry'])) {
+          foreach($this->css_rules['registry'] as $index => $value) {
+            $top_code[] = '.' . $this->css_rules['prefix']
+                        . $index . '{'.$value."}";
+          }
         }
         $top_code[] = '</style>';
         $top_code[] = '</head>';

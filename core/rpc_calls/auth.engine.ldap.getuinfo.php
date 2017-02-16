@@ -99,7 +99,7 @@ $rpc = array (array (
 
 'user' => array (
   'type'     => 'string',
-  'required' => false,
+  'required' => true,
   'origin'   => array (
     'variable:$_STDIN["user"]',
 )),
@@ -120,13 +120,23 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
   ldap_bind($cnx, $_STDIN['ldap_user'] . "@" . $_STDIN['realm'], $_STDIN['pass'])
     or die("Could not bind to LDAP");
 
-
 	$filter = "(&(objectClass=user)("
 	        . $_STDIN['uid_field']
 	        . "=" . $_STDIN['user'] . "))";
 
   $sr     = ldap_search($cnx, $_STDIN['basedn'], $filter);
   $entry  = ldap_first_entry($cnx, $sr);
+
+  /* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
+  if ($entry == FALSE) {
+    $_STDOUT['STDERR'] = array(
+      'call'       => array($self['name']),
+      'signal'     => 'USER_NOT_FOUND',
+      'user'       => $_STDIN['user'],
+      'filter'     => $filter);
+
+    return FALSE;
+  }
 
   $_STDOUT = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);
   $_STDOUT = array(

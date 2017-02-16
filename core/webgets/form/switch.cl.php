@@ -20,17 +20,15 @@ class form_switch
     foreach ($t as $key => $value)
       foreach ($value as $local)
         if ($local !== null && !isset($this->$key)) $this->$key=$local;
-
-
   }
 
   function __flush (&$_)
   {
     if(isset($this->attributes['id']))
-      $name = 'name="' . $this->attributes['id'] .'" ';
+      $this->attributes['name'] = $this->attributes['id'];
 
     /* set value depending by the presence of 'field' property */
-    if($this->field){
+    if(isset($this->field)){
       $field        = explode(',', $this->field);
       $param        = explode(':', $field[0]);
       $field_format = (isset($this->field_format) ? $this->field_format : '{0}');
@@ -46,7 +44,9 @@ class form_switch
       $field_format);
     }
 
-    else $value = $this->value;
+    else if (isset($this->value)) $value = $this->value;
+
+    else $value = false;
 
     /* enable client field definition */
     if(isset($cfields)) $cfields = 'field="' . implode(',', $cfields)
@@ -64,18 +64,17 @@ class form_switch
     $css_style = 'class="w0290 '
                . $_->ROOT->boxing($boxing)
                . $_->ROOT->style_registry_add($style)
-               . $this->class
+               . (isset($this->class) ? $this->class : "")
                . '" ';
 
     /* builds code */
-    $_->buffer[] = '<div id="' . $this->id . '" wid="0290" '
+    $_->buffer[] = '<div wid="0290" '
                  . (isset($this->disabled) ? 'disabled="disabled" ' : '')
                  . $css_style
                  . $cfields
                  . $_->ROOT->format_html_attributes($this)
                  .  '>';
     $_->buffer[] = '<input type="text" value="' . $value . '" '
-                 . $name
                  . '></input>';
     $_->buffer[] = '<span>';
     $_->buffer[] = '<span>' . $labels[0] . '</span>';

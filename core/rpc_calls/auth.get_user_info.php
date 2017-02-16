@@ -29,10 +29,10 @@ $rpc = array (array (
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* check authentication  credentials */
-  _call("auth.engine." . $_STDIN["auth_engine"] . ".getuinfo", $_STDIN);
+  $status = _call("auth.engine." . $_STDIN["auth_engine"] . ".getuinfo", $_STDIN);
 
   $_STDOUT = $_STDIN;
-  return TRUE;
+  return $status;
 });
 
 ?>

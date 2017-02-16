@@ -30,7 +30,8 @@ $_.js.reg['0510']={
     };
 
     n.callback=function(args){
-      if(n.cbkf(args)!=false) n.hide();
+      if(n.cbkf == undefined) n.hide();
+      else if(n.cbkf(args)!=false) n.hide();
     };
 
     n.setError=function(args){

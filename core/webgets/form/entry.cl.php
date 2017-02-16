@@ -72,7 +72,7 @@ class form_entry
     $_->buffer[] = '<div ' . $w_class . '>';
     $_->buffer[] = '<input type="text" wid="0210" '
                  . $cfields
-                 . (isset($value) ? ' value="'.$value.'" ' : '')
+                 . (isset($value) ? ' value="' . $value . '" ' : '')
                  . $_->ROOT->format_html_attributes($this)
                  . $css_style . '>';
 

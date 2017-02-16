@@ -5,9 +5,13 @@ $_.js.reg['0070'] = {
     n.injJsBuf={};
 
     n.goto = function(v) {
-      if (v.indexOf("&ns=") > 1)
-        console.log("Use of 'ns' in subview '" + n.id + "'");
-      var x = $$.ajax({url:"?subview/" + v + "&ns=" + n.id, callback:n.xhrcbk});
+      n.ns = _getViewParams(v);
+      if (typeof n.ns.ns != "undefined") {
+        console.log("Use of personalized namespace '" + n.ns.ns + "' in subview ");
+        n.ns = n.ns.ns;}
+      else
+        n.ns = n.id;
+      var x = $$.ajax({url:"?subview/" + v + "&ns=" + n.ns, callback:n.xhrcbk});
     };
 
     n.refresh = function() {
@@ -37,23 +41,25 @@ $_.js.reg['0070'] = {
     };
 
     n.initJs = function(){
-      $$._flushBinds(n.id);
-      $$.webgets[n.id]=[];
+      /* initialize root namespace container */
+      $$.webgets[n.ns]=[];
+
+      /* launch initialization (HTML parsing) starting from this subview root */
       $$.each(n.childNodes,function(v,i){
-        $$._wInit(v,n,n.id);
+        $$._wInit(v,n,n.ns);
       });
 
+      /* binds enqueued events in the subview namespace */
+      $$._flushBinds(n.ns);
 
-      //$$._wInit(n,{childWebgets:[]},n.id);
-      //$$.webgets[n.id].shift();
-      for(var s in $$.webgets[n.id]) {
-        if($$.js.reg[$$.webgets[n.id][s].wid])
-          $$.js.reg[$$.webgets[n.id][s].wid].fs($$.webgets[n.id][s]);
+      /* client side flush event only if a linked library exists */
+      for(var s in $$.webgets[n.ns]) {
+        if($$.js.reg[$$.webgets[n.ns][s].wid])
+          $$.js.reg[$$.webgets[n.ns][s].wid].fs($$.webgets[n.ns][s]);
       }
 
-/*      $$.each($$._wGetPlain(n), function(elm,i){
-          if($$._wAttachJs(elm)) $$.js.reg[elm.wid].fs(elm);
-        });*/
+      /* dispatch 'ready' event for the root of this subview */
+      _w(n.ns + ":root").dispatchEvent(_w(n.ns + ":root").ready);
     };
 
     n.injcss = function(u) {
@@ -86,16 +92,18 @@ $_.js.reg['0070'] = {
       u=u.split('\n');
       var i=u.length;
       while(u.length > 0){
-        $$.importRawJs(u.pop(),function(){
-          i--;
-          if(i===0) n.initJs();
+        $$.importRawJs(u.pop(),function(s){
+          if(s) {
+            i--;
+            if(i===0) n.initJs();
+          }
         });
       }
     };
   },
 
   fs : function(n) {
-    if (n.view !== '')
+    if (n.view !== '' && n.view !== null)
       n.goto(n.view);
   }
 };

@@ -1,9 +1,10 @@
 window.getImage = function(target,query){
+  console.log(query);
   var url={
     'query' : query + "+poster+film",
   }
- 
-  $$.call('user.data.google.get_image', url,null,function(buffer){
+
+  $$.call('data.google.get_image', url,null,function(buffer){
     target.src=buffer[0];
   });
 
@@ -12,7 +13,7 @@ window.getImage = function(target,query){
 
 $$.bind('webget.icon.define', function()
 {
-  this.setAttribute("eval_field_command","getImage(this,'%s')");
+  this.setAttribute("eval_field_command","getImage(this,'{0}')");
 });
 
 $$.bind('webget.jtable.datarequired', function()
@@ -27,7 +28,7 @@ $$.bind('webget.jtable.datarequired', function()
       'filter' : record_filter
     };
 
-    $$.call('user.sakila.film', recordset);
+    $$.call('sakila.film', recordset);
     //console.log(recordset);
     //var_dump(recordset.items);
     //  $$.ajaxGet("test","foo");

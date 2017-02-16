@@ -6,7 +6,7 @@
 $rpc = array (array (
 
 /* group name filter */
- 
+
 'filter' => array (
   'type'     => 'array',
   'required' => false,
@@ -17,7 +17,7 @@ $rpc = array (array (
 ),
 
 /* rpc function */
- 
+
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* Import authentication files */
@@ -27,10 +27,12 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 
   /* prepare the default result with all users */
   foreach ($passwd as $record) {
-   $record = explode(':', $record);
-   if (substr($record[0], 0, 2) == '//') {
-    $ulist[substr($record[0], 2)]['uid']   = substr($record[0], 2);
-    $ulist[substr($record[0], 2)]['uname'] = $record[1];
+    $record = explode(':', $record);
+    if (substr($record[0], 0, 2) == '//') {
+      $ulist[] = array(
+        'uid'   => substr($record[0], 2),
+        'uname' => $record[1]
+      );
    }
   }
 
@@ -40,24 +42,22 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     $users = explode(',',$group[1]);
     $group = substr($group[0], 2);
 
-    foreach ($users as $user) {
-     $ulist[trim($user)]['group'][] = $group;
+    foreach ($ulist as $key => $user) {
+      if(in_array($user['uid'], $users)) $ulist[$key]['group'][] = $group;
     }
    }
-  }     
+  }
 
   // Filter results
   if ($_STDIN['filter']){
    foreach ($ulist as $key => $user) {
     if (!array_intersect($_STDIN['filter'], $user['group']))
     unset($ulist[$key]);
-   }  
+   }
   }
 
-  $_STDOUT[0]['signal'] = 'AUTH_USERLIST_READY';
-  $_STDOUT[0]['call']   = $self['name'];
-  $_STDOUT[1] = $ulist;
-  return TRUE;      
-});  
+  $_STDOUT = $ulist;
+  return TRUE;
+});
 
 ?>

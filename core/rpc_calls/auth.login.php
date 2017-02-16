@@ -1,6 +1,6 @@
 <?php
 /*
-  * Authenticate the user against the server
+  * Authenticate the user within the application
  */
 
 $rpc = array (array (
@@ -49,9 +49,18 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
               . $_STDIN["auth_engine"]
               . ".ckuser", $_STDIN)) {
 
-    $_STDOUT = $_STDIN;
-    $_STDOUT['STDERR']['call'][] = $self['name'];
+    $_STDIN['STDERR']['call'][] = $self['name'];
 
+    /* calls login custom function */
+    if (is_callable($_->settings['auth_login_event'])) {
+      /* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
+      if (!$_->settings['auth_login_event']($_STDIN, $_)){
+        $_STDIN['STDERR']['call'][] = $self['name'];
+        $_STDIN['STDERR']['signal'] = 'AUTH_LOGINSTACK_ERROR';
+      }
+    }
+
+    $_STDOUT = $_STDIN;
     return FALSE;
   }
 

@@ -133,13 +133,13 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     $uid    = ldap_get_values($cnx, $entry, $_STDIN['uid_field']);
     $uname  = ldap_get_values($cnx, $entry, $_STDIN['uname_field']);
 
-    $ulist[$uid[0]]['uid'] = $uid[0];
-    $ulist[$uid[0]]['uname'] = $uname[0];
+    $ulist[] = array(
+      'uid'   => $uid[0],
+      'uname' => $uname[0]
+    );
   }
 
-  $_STDOUT[0]['signal'] = 'AUTH_USERLIST_READY';
-  $_STDOUT[0]['call']   = $self['name'];
-  $_STDOUT[1] = $ulist;
+  $_STDOUT = $ulist;
 
   return TRUE;
 });

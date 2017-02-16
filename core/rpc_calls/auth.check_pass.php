@@ -1,6 +1,6 @@
 <?php
 /*
-  * Authenticate the user against the server
+  * Check the credentials provided by the user to the authentication engine
  */
 
 $rpc = array (array (
@@ -42,7 +42,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   $user   = $_STDIN['user'];
   $pass   = $_STDIN['pass'];
-  $domain = $_STDIN['domain'];
+  $domain = (isset($_STDIN['domain']) ? $_STDIN['domain'] : null);
 
   /* check authentication  credentials */
   if(!_call("auth.engine."
