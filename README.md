@@ -12,9 +12,10 @@ sopra a qualsiasi livello.
 A COSA SERVE :
 ==============
 
-A sviluppare rapidamente applicazioni distribuite utilizzando tecnologie e pro
-tocolli esistenti e molto diffusi, con il grande vantaggio di non dover distri
-buire e mantenere aggiornati software client personalizzati e mono piattaorma.
+A sviluppare rapidamente applicazioni distribuite utilizzando tecnologie e 
+protocolli esistenti e molto diffusi, con il grande vantaggio di non dover
+distribuire e mantenere aggiornati software client personalizzati e mono 
+piattaorma.
 
 
 QUALI VANTAGGI HO AD USARLO :
@@ -26,15 +27,15 @@ risultato, senza perdersi nei neandri dello sviluppo Web. E' possibile passare
 dal disegno delle varie 'viste' della propria applicazione, all'implementazione
 reale in pochissimo tempo. G-Framework contiene gia' tutto cio' che serve per
 creare complesse 'viste', far interagire i client con il server, autenticare
-gli utenti, internazionalizzare e personalizzare l'aspetto delle proprie appli
-cazioni.
+gli utenti, internazionalizzare e personalizzare l'aspetto delle proprie
+applicazioni.
 
 
 OK, MI HAI INCURIOSITO, DIMMI ORA COSA FARE :
 =============================================
 
-Innanzitutto e' necessario capire cosa vuoi fare. Ci sono tre tipi di sviluppa
-tori che possono operare con G-Framework :
+Innanzitutto e' necessario capire cosa vuoi fare. Ci sono tre tipi di sviluppatori
+che possono operare con G-Framework :
 
 - Solution Developer : e' colui che utilizza il GFwk per creare applicazioni,
                        non aggiunge nuove funzionalita', ma puo' contribuire
@@ -44,8 +45,8 @@ tori che possono operare con G-Framework :
                        webgets, librerie JavaScript hot-plug e temi. 
 
 - Core Developer     : si occupa del backend, di quella parte che fa funzionare
-                       il framework. Sistema bachi, migliorara il codice, ag
-                       giunge nuove caratteristiche.
+                       il framework. Sistema bachi, migliorara il codice, aggiunge
+                       nuove caratteristiche.
 
 Se vuoi provare a creare la tua applicazione e' necessario seguire la parte del
 manuale che ti spiega come diventare un "Solution Developer". Se, dopo aver
@@ -64,8 +65,8 @@ di generazione dei contenuti mentre tutte le altre directory sono progetti.
 G-Framework è multiprogetto, questo significa che puoi creare diverse
 applicazioni utilizzanto una sola installazione. Il progetto che viene aperto in
 assenza di un percorso specifico è 'default', quindi quando ti connetti via Web
-al tuo server digitando il percorso 'http://mio_server/' verrai rediretto auto-
-maticamente a 'http://mio_server/default'. se intendi connetterti ad un'altra
+al tuo server digitando il percorso 'http://mio_server/' verrai rediretto
+automaticamente a 'http://mio_server/default'. se intendi connetterti ad un'altra
 appllicazione ti basterà digitare 'http://mio_server/nome_applicazione/'  
 
 A questo punto ti spiego cosa troverai nel pacchetto :
@@ -74,11 +75,11 @@ A questo punto ti spiego cosa troverai nel pacchetto :
 
 - default       : il progetto di presentazione del framework
 
-- references    : contiente diverso codice che non forma un particolare proget
-                  to, ma utile come riferimento per lo sviluppo.
+- references    : contiente diverso codice che non forma un particolare progetto,
+                  ma utile come riferimento per lo sviluppo.
 
-- documentation : questa directory non contiene un progetto, ma tutta la docu
-                  mentazione che riuscirò a scrivere
+- documentation : questa directory non contiene un progetto, ma tutta la 
+                  documentazione che riuscirò a scrivere
 
 
 
