@@ -1,0 +1,8 @@
+- main.php
+  - Recognize the "view" object
+  - Checks the security policy
+    - 
+  - Call views.php handler
+
+- views.php
+  - 

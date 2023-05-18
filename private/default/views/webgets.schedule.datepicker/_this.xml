@@ -1,0 +1,85 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<!DOCTYPE view [
+  <!ENTITY datePickerId
+    "datepicker">
+]>
+
+<root:htmlview>
+
+  <base:image
+    src="images/text-xml.png"
+    boxing=",,right,top,-4px,4px"
+    class="fade"
+    tip="view source"
+    onclick="subv_cont.goto('view_source&amp;source=webgets.schedule.datepicker');$_.removeClass(view_source, 'diag_hidden');"
+    />
+
+  <schedule:datepicker
+      id="&datePickerId;"
+      boxing="300px,300px"
+      style="border:1px solid black;"
+      day_names="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday"
+      month_names="January,February,March,April,May,June,July,August,September,October,November,December">
+    <pack:vlayout>
+
+      <pack:vlaycell height="40px" id="&datePickerId;_active_bar">
+        <pack:hlayout >
+
+          <pack:hlaycell width="40px">
+            <base:label
+                boxing="5px,5px,5px,5px"
+                id="&datePickerId;_month_prev"
+                caption="&lt;"
+                halign="center"/>
+          </pack:hlaycell>
+
+          <pack:hlaycell >
+            <base:label id="&datePickerId;_month_label" halign="center" />
+          </pack:hlaycell>
+
+          <pack:hlaycell width="40px">
+            <base:label
+              id="&datePickerId;_month_next"
+              boxing="5px,5px,5px,5px"
+              caption="&gt;"
+              halign="center"/>
+          </pack:hlaycell>
+
+        </pack:hlayout>
+      </pack:vlaycell>
+
+      <pack:vlaycell height="20px">
+        <pack:hlayout id="&datePickerId;_weekday_bar">
+          <pack:hlaycell width="25px">
+          </pack:hlaycell>
+          <pack:hlaycell>
+              <base:label
+                  id="&datePickerId;_weekday_cell"
+                  halign="center" />
+          </pack:hlaycell>
+
+        </pack:hlayout>
+      </pack:vlaycell>
+
+      <pack:vlaycell>
+        <pack:hlayout>
+
+          <pack:hlaycell width="25px">
+            <base:label
+              id="&datePickerId;_week_cell"
+              halign="center"/>
+          </pack:hlaycell>
+
+          <pack:hlaycell id="&datePickerId;_month_area">
+            <base:label
+              id="&datePickerId;_day_cell"
+              halign="center"/>
+
+          </pack:hlaycell>
+
+        </pack:hlayout>
+      </pack:vlaycell>
+    </pack:vlayout>
+  </schedule:datepicker>
+</root:htmlview>

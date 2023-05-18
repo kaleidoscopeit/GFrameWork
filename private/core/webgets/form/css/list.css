@@ -1,0 +1,11 @@
+.w02B0
+{
+  overflow:visible;
+}
+
+.w02B0>select
+{
+  height:100%;
+  width:100%;
+  overflow:auto;
+}

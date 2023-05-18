@@ -1,0 +1,22 @@
+.w0010
+{
+	white-space:nowrap;
+	cursor:default;
+}
+
+.w0011
+{
+	display:table;
+	table-layout:fixed;
+	width:100%;
+	height:100%;
+	overflow:visible;
+
+}
+
+.w0011>span
+{
+	display:table-cell;
+	vertical-align:middle;
+	text-overflow:ellipsis;
+}

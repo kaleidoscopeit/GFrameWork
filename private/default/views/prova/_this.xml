@@ -1,0 +1,14 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<root:htmlview title="Pippo">
+	<pack:area
+		boxing="200px,200px"
+		style="border:1px solid blue">
+		<base:label
+			id="etichetta"
+			caption="pluto"
+			boxing="10px,50px,10px,middle"
+			valign="bottom"
+			style="border:1px red solid"/>
+	</pack:area>
+</root:htmlview>

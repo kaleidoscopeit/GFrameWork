@@ -1,0 +1,15 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<root:htmlview
+	title="G-Framework Web3.0 Toolkit"
+	css="dialog captions">
+	<pack:vlayout>
+		<pack:vlaycell height="50px" style="background-color:#6A6A6A;">
+			<base:label
+				caption="Reference table"
+				halign="center"
+				valign="middle"
+				class="text-shadowed font20 italic"/>
+		</pack:vlaycell>
+	</pack:vlayout>
+</root:htmlview>
