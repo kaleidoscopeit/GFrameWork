@@ -57,7 +57,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     global $_;
     
     // Loads the authentication file
-    $passwd = file ( 'vars/auth/passwd.php' );
+    $passwd = file ( 'etc/auth/passwd.php' );
 
     // Load all user database in memory
     foreach ( $passwd as $value ) {
@@ -87,7 +87,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     $db_uid[$uid][pass] = md5 ( $password ) ;
 
     // Save the users database on disk
-    $fp = fopen('vars/auth/passwd.php', 'w');
+    $fp = fopen('etc/auth/passwd.php', 'w');
     $stream = "<?php\n";
         
     foreach ( $db_uid as $record ) {

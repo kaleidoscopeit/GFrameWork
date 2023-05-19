@@ -1,0 +1,8 @@
+[18-May-2023 14:11:43 Europe/Berlin] PHP Fatal error:  Uncaught Exception: Division by zero. in /mnt/storage/Servizi/apache/gfwk.soundcafe.it/public_html/default/index.php:9
+Stack trace:
+#0 {main}
+  thrown in /mnt/storage/Servizi/apache/gfwk.soundcafe.it/public_html/default/index.php on line 9
+[18-May-2023 14:13:11 Europe/Berlin] PHP Fatal error:  Uncaught Exception: Division by zero. in /mnt/storage/Servizi/apache/gfwk.soundcafe.it/public_html/default/index.php:11
+Stack trace:
+#0 {main}
+  thrown in /mnt/storage/Servizi/apache/gfwk.soundcafe.it/public_html/default/index.php on line 11

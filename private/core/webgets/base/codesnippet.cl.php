@@ -53,8 +53,8 @@ class base_codesnippet
 
         $s = htmlspecialchars($s);
 
-        $s = str_replace("\t","&nbsp;&nbsp;",$s);
-        $s = str_replace(" ","&nbsp;",$s);
+        $s = str_replace("\t","   ",$s);
+        //$s = str_replace(" ","&nbsp;",$s);
 
         $replace = array(
           1=>'0000FF',
@@ -70,18 +70,15 @@ class base_codesnippet
             "<font color=\"#".$v."\">\\1</font>",
             $s);
         }
-        $this->code = nl2br($s);
+        $this->code = $s;
         break;
     }
 
     /* builds code */
-    $_->buffer[] = '<div wid="0050" '
+    $_->buffer[] = '<pre wid="0050" '
                  . $css_style
                  . $_->ROOT->format_html_attributes($this)
-                 . '> ';
-
-    $_->buffer[] = @$this->code;
-    $_->buffer[] = '</div>';
+                 . '>' . @$this->code . '</pre>';
   }
 
 }

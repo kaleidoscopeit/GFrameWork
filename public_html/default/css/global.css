@@ -40,9 +40,7 @@
 .font20 { font: 20px sans; }
 .italic { font-style:italic; }
 .bold   { font-weight:bold; }
-
-
-
+.mono12 { font: 12px monospace; }
 
 .menuitem
 {

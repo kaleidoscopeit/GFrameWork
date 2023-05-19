@@ -1,11 +1,11 @@
 <?php
-require "$_->APP_PATH/etc/secpol.php";
+require $_->APP_PATH . '/etc/secpol.php';
 
 $this->settings = array(
 
   /* gfwk stuff */
 
-  'app-uuid'          => '33815ed0-0d33-4fac-8721-55dccb86f424',                // unique application id
+  'app-uuid'          => 'f55d681b-dcb8-490b-b5e8-60302020478e',                // unique application id (make id with bash -> uuidgen)
   'app_admin_pwd'     => 'test',                                                // application admin password (MD5 hash, not actually used, for 'the builder app')
   'debug'             => false,                                                 // enable server side debug
   'cs_debug'          => true,                                                  // enable client side debug

@@ -1,4 +1,4 @@
-<?php die;
+<?php
 
 //?global.before
 
@@ -11,22 +11,22 @@
 
 //?webget.table.onflush
 
-$this->result_set=array(
+$this->result_set = array(
    array('description'=>'GENERAL',
          'type'=>'caption'),
          
-	 array('description'=>'Framework Structure',
+   array('description'=>'Framework Structure',
          'type'=>'item',
-  	     'view'=>'general/framework_structure'),
-  	     
-	 array('description'=>'Installation',
+         'view'=>'general/framework_structure'),
+          
+   array('description'=>'Installation',
          'type'=>'item',
-	       'view'=>'installation'),
-	       
-	 array('description'=>'Boxing',
+         'view'=>'installation'),
+
+   array('description'=>'Boxing',
          'type'=>'item',
-	       'view'=>'boxing'),
-	       
+         'view'=>'boxing'),
+
    array('description'=>'WEBGETS LIBRARY',
          'type'=>'caption'),
 

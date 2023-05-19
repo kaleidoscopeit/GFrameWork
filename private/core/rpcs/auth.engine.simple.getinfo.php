@@ -20,7 +20,7 @@ $rpc = array (array (
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* imports authentication files */
-  include('vars/auth/passwd.php');
+  include('etc/auth/passwd.php');
   
   if(!isset($passwd)) {
     $_STDOUT['STDERR'] = array(
@@ -30,7 +30,7 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     return FALSE;  
   }
   
-  //$groups = file('vars/auth/group.php');
+  //$groups = file('etc/auth/group.php');
 
 
   /* user info part */  

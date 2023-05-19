@@ -1,21 +1,50 @@
-This document descibes the right srtucture of a call-library file.
-
+This document describes the srtucture of a call-library file.
 
 There are two places where you can put a call-library :
 
-- 'system' context : /core/rpc_calls
-- 'user' context   : /[project-root]/lib/calls
+- 'system' context : /private/core/rpcs
+- 'user' context   : /private/[project-root]/rpcs
 
-The name of the file is a part of the virtual call path :
 
-e.g.
+The name of the file is composed by an URN + .php, the URN is used to call the
+RPC. 
 
-- file name : common.call_tools.php
-- context   : system
-- call_path : system.common.call_tools
+Server CALLs are syncronous, Client CALLs are asynchronous
 
-call from php : $_->call("system.common.call_tools" , $arguments);
-call from js  : $_.call("system.common.call_tools" , arguments);
+In order to a call an RPC the following syntax is used :
+
+### Server Context (PHP) - Mock-up of a login check: 
+
+$buffer = array(
+    'user' => "User Name",
+    'pass' => "Secret Password"
+);
+
+if (!_call("auth.login", $buffer)) {
+	
+	"$buffer" <- Contains a response, for example an error message;
+
+}
+
+### Client Context (JS) - Mock-up of a login check: 
+
+var buffer = {
+	'user' :  "User Name",
+	'pass' : "Secret Password"
+};
+
+_call("auth.login", buffer, null, function(r,s) {
+	// s contains the error code
+    if(!s) {
+		Alert ("Login Failed");
+		return;
+	}
+
+	// Proceed with login operations
+});
+
+
+
 
 
 --

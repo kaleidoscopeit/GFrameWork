@@ -1,4 +1,4 @@
-<?php die;
+<?php
 
 //?webget.xml_code.onflush
 

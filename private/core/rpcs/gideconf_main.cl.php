@@ -17,7 +17,7 @@
 // Another cool idea is to load a further configurations file wich stores the specifics per-user preference 
 class base_gideconf {
 	function __construct () {
-		$this->db = getcwd()."/vars/gideconf.php";
+		$this->db = getcwd()."/etc/gideconf.php";
 		// If the configuration DB exists will load it else will creates a new one 
 		if ( is_file( $this->db ) )  {
 			$this->config = file ( $this->db );

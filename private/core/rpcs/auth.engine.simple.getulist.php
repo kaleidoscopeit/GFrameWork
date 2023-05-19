@@ -21,8 +21,8 @@ $rpc = array (array (
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* Import authentication files */
-  $passwd = file('vars/auth/passwd.php');
-  $groups = file('vars/auth/group.php');
+  $passwd = file('etc/auth/passwd.php');
+  $groups = file('etc/auth/group.php');
   $ulist  = array();
 
   /* prepare the default result with all users */

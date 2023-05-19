@@ -103,8 +103,7 @@
                 	classfx="ttstack"
                 	preset="1">
 
-								<pack:stackelm>
-                </pack:stackelm>
+                <pack:stackelm>a</pack:stackelm>
 
                 <pack:stackelm>
                   <base:label
