@@ -20,7 +20,7 @@ var $_={
 
     if(w.name) id=w.name;
     else if(typeof w.id == "string") id = w.id;
-    if(id && id != "") eval("window."+id+"=w;");
+    if(id && id != "") eval("window['"+id+"']=w;");
     if(w.wid) {
       p.childWebgets.push(w);
       w.parentWebget=p;

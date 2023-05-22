@@ -14,13 +14,13 @@ $this->settings = array(
 
   /* authentication stuff */
 
-  'auth_engine'       => 'samdb',
-//'auth_hashing_method' => 'md5',
-  'auth_admin_group'  => 'administrators',
-  'auth_login_page'   => NULL,                                                  // set to to null to disable login features,
-  'auth_logout_page'  => 'logout',
-  'auth_denied_page'  => 'denied',
-  'auth_login_event'  =>
+  'auth_engine'         => 'samdb',                                             // Authentication engine
+//'auth_hashing_method' => 'md5',                                               // Used in simple auth engine
+  'auth_admin_group'    => 'administrators',
+  'auth_login_page'     => NULL,                                                // Login view. Set to to null to disable login features,
+  'auth_logout_page'    => 'logout',                                            // Logout view, currently not used
+  'auth_denied_page'    => 'denied',                                            // Access denied view, currently not used
+  'auth_login_event'    =>                                                      // Default login event
 
     function($_STDIN, &$_)
     {
@@ -69,7 +69,7 @@ $this->settings = array(
 
   /* default locale */
 
-  'default_i18n'      => 'en_EN',
+  'default_i18n'      => 'en_EN',                                               // Internazionalization, currently not used
 
 
   /* database connections */

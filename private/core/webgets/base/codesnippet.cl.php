@@ -34,7 +34,7 @@ class base_codesnippet
         $s = preg_replace(
           "|<([^/?])(.*)([\s\n])(.*)>|isU",
           "[1]<[2]\\1\\2[/2]\\3[5]\\4[/5]>[/1]",
-          $this->code);
+          @$this->code);
 
         $s = preg_replace(
           "|</(.*)>|isU",

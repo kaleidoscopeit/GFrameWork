@@ -23,7 +23,7 @@ $rpc = array (array (
   'type'     => 'string',
   'required' => true,
   'origin'   => array (
-    'variable:$this->settings["auth_hashing_method"]',
+    'variable:$_->settings["auth_hashing_method"]',
     'string:"md5"'
 ))
 
@@ -34,28 +34,29 @@ $rpc = array (array (
 function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 {
   /* Import authentication files */
-  $passwd = file('etc/passwd.php');
-  $groups = file('etc/group.php');
+  $passwd = file($_->APP_PATH . '/etc/passwd.php');
+  $groups = file($_->APP_PATH . '/etc/group.php');
 
   /* find user in the database file */
   foreach ($passwd as $record) {
     $record = explode(':', trim ($record));
 
     /* if at least in one record the user name exists checks the password */
-    if ('//'.$_STDIN['user'] == $record[0]) {
+    if ('//' . $_STDIN['user'] == $record[0]) {
       switch($_STDIN['hashing_method']) {
         case 'md5':
         default:
+          /* bash: echo -n 'user-password' | md5sum */
           if (md5($_STDIN['pass']) == $record[1]) $accepted = TRUE;
           break;
       }
 
       /* if accepted return the user information */      
-      if($accepted) {
+      if(isset($accepted)) {
         $_STDOUT = array();
         $_STDOUT['STDERR']['signal'] = 'AUTH_CHECKUSER_ACCEPTED';
         $_STDOUT['STDERR']['call']   = $self['name'];
-        $record[2] = explode(',', trim ($record[2]));  // Info
+        $record[3] = explode(',', trim ($record[2]));  // Info
         $_STDOUT[1]  = array(
           'id'    => substr($record[0], 2),
           'name'  => $record[2][0],

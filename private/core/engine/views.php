@@ -49,11 +49,6 @@ class _engine_views
 
     $_->static[$_->CALL_URN]['js']['raw'] = Array();
 
-    // Probably useless code never used, then may be removed in the next release
-    //if(isset($this->codes['global']))
-    //  $_->static[$_->CALL_URN]['js']['raw'][] =
-    //    $this->codes['global']['javascript']['default'];
-
     /* the initial global scope php code will be executed */
     if(isset($this->codes['global']['before'])) eval($this->codes['global']['before']);
 
@@ -229,19 +224,19 @@ class _engine_views
     /* If no already registred, force the first webegt as root webget */
     if (!isset($_->ROOT)) $library_attribs['id'] = 'root';
 
-    /* If not explicitly requested assigns an automatic id
-       (for internal coherence) */
+    /* Set the Server side Webget ID. Uses the ID from the view XML,
+       otherwise assigns an automatic one (for internal coherence) */
     if (!isset($library_attribs['id'])) $cwid = 'wbg' . $this->webget_enum++;
     else $cwid = $library_attribs['id'];
 
-    /* attach the external property to the webget by ID if is not already
-       defined in the XML file */
+    /* attach the server side code or propety to the webget by ID if is not
+       already defined in the XML file */
     if (isset($this->codes['webget'][$cwid]))
       foreach ($this->codes['webget'][$cwid] as $property => $value)
         if (!isset($library_attribs[$property]))
           $library_attribs[$property] = trim($value);
 
-    /* attach the external property to the webget by CLASS if is not already
+    /* attach server side code or propety the webget by CLASS if is not already
        defined in the XML file */
     if (isset($this->codes['class'][$library_name]))
       foreach ($this->codes['class'][$library_name] as $property => $value)
@@ -258,7 +253,7 @@ class _engine_views
     /* creates a shotcut to the first root webget */
   //  if (!isset($_->ROOT))
 
-    /* register the webget attrtibutes */
+    /* Import the webget attrtibutes required by the server side code */
     $this->register_attributes($_->webgets[$cwid],
                                 $library_attribs,
                                 $_->webgets[$cwid]->req_attribs);
@@ -266,10 +261,11 @@ class _engine_views
     /* Sets the webget scope as gkfw buck */
     //$_->webgets[$cwid]->scope = &$_;
 
+    /* Executes the __define server event of the current webget */
     if(method_exists($_->webgets[$cwid],"__define"))
       $_->webgets[$cwid]->__define($_);
 
-    /* bound 'ondefine' server event to the webget and trig-it */
+    /* bound 'ondefine' custom server event to the webget and trig-it */
     if(isset($_->webgets[$cwid]->ondefine)){
       $ondefine = function() use (&$_) {eval($this->ondefine . ';');};
       $boundClosure = $ondefine->bindTo($_->webgets[$cwid]);

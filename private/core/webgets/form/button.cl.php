@@ -36,7 +36,7 @@ class form_button
     /* builds code */
     $_->buffer[] = '<div ' . $w_class . '>';
     $_->buffer[] = '<button wid="0250" '
-                 . 'value="' . $this->value . '" '
+                 . (isset($this->value) ? 'value="' . $this->value . '" ' : "")
                  . $b_class
                  . $_->ROOT->format_html_attributes($this)
                  . '>';

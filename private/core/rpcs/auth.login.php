@@ -44,11 +44,11 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
 //  $pass   = $_STDIN['pass'];
 //  $domain = $_STDIN['domain'];
 
-  /* check authentication  credentials */
+  /* check authentication credentials by using the specified engine */
   if(!_call("auth.engine." . $_STDIN["auth_engine"] . ".ckuser", $_STDIN)) {
     $_STDIN['STDERR']['call'][] = $self['name'];
 
-    /* calls login custom function */
+    /* call the custom login function in config.php anyway */
     if (is_callable($_->settings['auth_login_event'])) {
       /* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
       if (!$_->settings['auth_login_event']($_STDIN, $_)){
@@ -61,10 +61,11 @@ function(&$_, $_STDIN, &$_STDOUT) use (&$self)
     return FALSE;
   }
 
+  /* If the authentication engine validate the user credentials */
   if($_STDIN['STDERR']['signal'] == 'AUTH_CHECKUSER_ACCEPTED') {
     $_->static['auth']['user'] = $_STDIN[1];
 
-    /* calls login custom function */
+    /* call the custom login function in config.php */
     if (is_callable($_->settings['auth_login_event'])) {
       /* >>>>>>>>> ERROR BREAK POINT <<<<<<<<<<< */
       if (!$_->settings['auth_login_event']($_STDIN, $_)){

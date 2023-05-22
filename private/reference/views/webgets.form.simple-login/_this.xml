@@ -1,0 +1,39 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+
+<root:htmlview
+	title="G-Framework Web3.0 Toolkit"
+	style="overflow:auto;"
+	css="bootstrap">
+	<form:simple id="login-form">
+		<pack:vlayout boxing="30%">
+			<pack:vlaycell height="30">
+				<base:label caption="Login" halign="center"/>
+			</pack:vlaycell>
+
+			<pack:vlaycell height="50">
+				<form:entry
+					id="user"
+					class="form-control"
+					placeholder="Username"
+					autocomplete="user name"
+					boxing=",30px" />
+			</pack:vlaycell>
+
+			<pack:vlaycell height="50">
+				<form:password
+					id="password"
+					class="form-control"
+					autocomplete="current password"
+					boxing=",30px" />
+			</pack:vlaycell>
+
+			<pack:vlaycell height="50">
+				<form:button
+					id="invia"
+					caption="Send"
+					class="btn btn-success"
+					boxing=",30px" />
+			</pack:vlaycell>
+		</pack:vlayout>
+	</form:simple>
+</root:htmlview>

@@ -6,7 +6,7 @@ $this->settings = array(
   /* gfwk stuff */
 
   'app-uuid'          => '33815ed0-0d33-4fac-8721-55dccb86f424',                // unique application id (make id with bash -> uuidgen)
-  'app_admin_pwd'     => 'test',                                                // application admin password (MD5 hash, not actually used, for 'the builder app')
+  'app_admin_pwd'     => 'test',                                                // application admin password (MD5 hash, not actually used, will be used in the 'builder app')
   'debug'             => true,                                                  // enable server side debug
   'cs_debug'          => true,                                                  // enable client side debug
   'formatted_output'  => true,                                                  // HTML output to client sent formatted
@@ -14,17 +14,18 @@ $this->settings = array(
 
   /* authentication stuff */
 
-  'auth_engine'       => 'samdb',
-//'auth_hashing_method' => 'md5',
-  'auth_admin_group'  => 'administrators',
-  'auth_login_page'   => NULL,                                                  // set to to null to disable login features,
-  'auth_logout_page'  => 'logout',
-  'auth_denied_page'  => 'denied',
-  'auth_login_event'  =>
+  'auth_engine'         => 'simple',                                            // Authentication engine
+  'auth_hashing_method' => 'md5',                                               // Used in simple auth engine
+  'auth_admin_group'    => 'administrators',
+  'auth_login_page'     => NULL,                                                // Login view. Set to to null to disable login features,
+  'auth_logout_page'    => 'logout',                                            // Logout view, currently not used
+  'auth_denied_page'    => 'denied',                                            // Access denied view, currently not used
+  'auth_login_event'    =>                                                      // Default login event
 
     function($_STDIN, &$_)
     {
-      $signal = $_STDIN[0]['signal'];
+      // Audit trail code example
+      $signal = $_STDIN['STDERR']['signal'];
 
       if ($signal == 'AUTH_CHECKUSER_ACCEPTED')
 
@@ -50,6 +51,7 @@ $this->settings = array(
 
       //if (!$_->call("user.common.logs.trace_me", $buffer)) return FALSE;
 
+      // Returns TRUE in order to let the login stack continue
       return TRUE;
     },
 
@@ -69,7 +71,7 @@ $this->settings = array(
 
   /* default locale */
 
-  'default_i18n'      => 'en_EN',
+  'default_i18n'      => 'en_EN',                                               // Internazionalization, currently not used
 
 
   /* database connections */
